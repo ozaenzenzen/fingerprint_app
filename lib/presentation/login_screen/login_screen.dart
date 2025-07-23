@@ -1,4 +1,5 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:fingerprint_app/presentation/home_screeen/home_screen.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
 import 'package:flutter/material.dart';
 
@@ -151,7 +152,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         onPressed: () {
-                          //
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) {
+                              return HomeScreen();
+                            }),
+                          );
                         },
                         child: Text(
                           "Sign In",

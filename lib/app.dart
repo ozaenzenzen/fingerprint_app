@@ -1,5 +1,5 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
-import 'package:fingerprint_app/home_screen.dart';
+import 'package:fingerprint_app/presentation/home_screeen/home_screen.dart';
 import 'package:fingerprint_app/presentation/login_screen/login_screen.dart';
 import 'package:flutter/material.dart';
 
