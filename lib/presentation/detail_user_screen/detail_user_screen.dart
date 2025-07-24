@@ -1,4 +1,5 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:fam_coding_supply/logic/app_bottomsheet_utils.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
 import 'package:flutter/material.dart';
 
@@ -94,6 +95,7 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                     ),
                     onPressed: () {
                       AppBottomSheetAction().showBottomSheetV3(
+                        withClose: true,
                         context: context,
                         radius: 12.h,
                         withStrip: true,
