@@ -1,5 +1,6 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/presentation/detail_user_screen/detail_user_screen.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/register_user_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -93,17 +94,29 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         SizedBox(width: 12.w),
-                        Container(
-                          height: 40.h,
-                          width: 40.h,
-                          decoration: BoxDecoration(
-                            color: const Color(0xff1183FF),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.add,
-                            color: Colors.white,
-                            size: 20.h,
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return RegisterUserScreen();
+                                },
+                              ),
+                            );
+                          },
+                          child: Container(
+                            height: 40.h,
+                            width: 40.h,
+                            decoration: BoxDecoration(
+                              color: const Color(0xff1183FF),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.white,
+                              size: 20.h,
+                            ),
                           ),
                         )
                       ],
