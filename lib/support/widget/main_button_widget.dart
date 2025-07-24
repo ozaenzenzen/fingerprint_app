@@ -1,0 +1,40 @@
+import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:flutter/material.dart';
+
+class MainButtonWidget extends StatelessWidget {
+  final String title;
+  final void Function()? onPressed;
+
+  const MainButtonWidget({
+    super.key,
+    required this.title,
+    this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 40.h,
+      width: MediaQuery.of(context).size.width,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          backgroundColor: const Color(0xff1183FF),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.h),
+          ),
+        ),
+        onPressed: onPressed,
+        child: Text(
+          title,
+          style: GoogleFonts.lato(
+            fontWeight: FontWeight.w700,
+            fontSize: 14.sp,
+            color: Colors.white,
+            // color: const Color(0xff999999),
+          ),
+        ),
+      ),
+    );
+  }
+}

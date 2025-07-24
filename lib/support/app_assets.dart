@@ -15,4 +15,6 @@ class AppAssets {
   static String iconSearch = "assets/icon_search.png";
   static String iconSecured = "assets/icon_secured.png";
   static String iconKtp = "assets/image_ktp.png";
+  static String iconEyeOpen = "assets/icon_eye_open.png";
+  static String imageScanId = "assets/image_scan_id.png";
 }
