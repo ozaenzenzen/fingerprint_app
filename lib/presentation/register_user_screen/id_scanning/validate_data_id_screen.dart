@@ -133,6 +133,7 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                 SizedBox(height: 8.h),
                 MainButtonWidget(
                   title: "Simpan",
+                  width: MediaQuery.of(context).size.width,
                   onPressed: () {
                     Navigator.push(
                       context,

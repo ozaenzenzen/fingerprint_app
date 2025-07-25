@@ -149,7 +149,8 @@ class _CameraScanFaceScreenState extends State<CameraScanFaceScreen> {
                       onPressed: () {
                         // actionTakePicture(context);
                         // actionTakePictureV2(context);
-                        Navigator.push(
+                        cameraController?.stopImageStream();
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) {

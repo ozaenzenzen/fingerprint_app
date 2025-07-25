@@ -16,177 +16,225 @@ class _InfoScanIdScreenState extends State<InfoScanIdScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        child: Column(
+        child: Stack(
           children: [
-            Stack(
+            Column(
               children: [
-                Container(
-                  height: 432.h,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(34.h),
-                      bottomRight: Radius.circular(34.h),
-                    ),
-                    image: DecorationImage(
-                      image: AssetImage(
-                        AppAssets.imageScanId,
+                Stack(
+                  children: [
+                    Container(
+                      height: 432.h,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(34.h),
+                          bottomRight: Radius.circular(34.h),
+                        ),
+                        image: DecorationImage(
+                          image: AssetImage(
+                            AppAssets.imageScanId,
+                          ),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                      fit: BoxFit.cover,
                     ),
-                  ),
+                    //
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(height: kToolbarHeight),
+                          Text(
+                            "Scan ID Card",
+                            style: GoogleFonts.poppins(
+                              color: const Color(0xffFFFFFF),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                          SizedBox(height: 8.h),
+                          Text(
+                            "We use your ID Card to validate your data",
+                            style: GoogleFonts.poppins(
+                              color: const Color(0xffECECEC),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                //
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
+                SizedBox(height: 32.h),
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                  ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: kToolbarHeight),
-                      Text(
-                        "Scan ID Card",
-                        style: GoogleFonts.poppins(
-                          color: const Color(0xffFFFFFF),
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16.sp,
-                        ),
+                      Row(
+                        children: [
+                          Container(
+                            height: 32.h,
+                            width: 32.h,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: const Color(0xff1183FF),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Text(
+                              "1",
+                              style: GoogleFonts.poppins(
+                                color: const Color(0xffFFFFFF),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13.sp,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 16.w),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Pencahayaan baik",
+                                  style: GoogleFonts.poppins(
+                                    color: const Color(0xff284D75),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                                SizedBox(height: 8.h),
+                                Text(
+                                  "Pastikan berada di tempat terang. Hindari bayangan atau cahaya berlebih pada ID.",
+                                  style: GoogleFonts.poppins(
+                                    color: const Color(0xff383838),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 13.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      SizedBox(height: 8.h),
-                      Text(
-                        "We use your ID Card to validate your data",
-                        style: GoogleFonts.poppins(
-                          color: const Color(0xffECECEC),
-                          fontWeight: FontWeight.w400,
-                          fontSize: 14.sp,
-                        ),
+                      SizedBox(height: 24.h),
+                      Row(
+                        children: [
+                          Container(
+                            height: 32.h,
+                            width: 32.h,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: const Color(0xff1183FF),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Text(
+                              "2",
+                              style: GoogleFonts.poppins(
+                                color: const Color(0xffFFFFFF),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13.sp,
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 16.w),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "ID terlihat jelas",
+                                  style: GoogleFonts.poppins(
+                                    color: const Color(0xff284D75),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                                SizedBox(height: 8.h),
+                                Text(
+                                  "Arahkan kamera dengan posisi lurus dan stabil. Pastikan seluruh ID masuk bingkai dan teks mudah dibaca.",
+                                  style: GoogleFonts.poppins(
+                                    color: const Color(0xff383838),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 13.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 24.h),
+                      MainButtonWidget(
+                        title: "Go to Scan",
+                        width: MediaQuery.of(context).size.width,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return CameraScanIdScreen(
+                                    // callback: (textDetected) {},
+                                    // callbackImage: (image) {},
+                                    // callbackImageCard: (image) {},
+                                    // callbackKTPMapping: (mapping) {},
+                                    // callbackSIMMapping: (mapping) {},
+                                    );
+                              },
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 32.h),
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 16.w,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        height: 32.h,
-                        width: 32.h,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff1183FF),
-                          shape: BoxShape.circle,
+            SafeArea(
+              child: Container(
+                alignment: Alignment.centerLeft,
+                height: kToolbarHeight,
+                width: MediaQuery.of(context).size.width,
+                // color: Colors.red,
+                child: Stack(
+                  children: [
+                    // Container(
+                    //   // color: Colors.black,
+                    //   height: 40.h,
+                    //   alignment: Alignment.center,
+                    //   child: Text(
+                    //     "Detail Data",
+                    //     style: GoogleFonts.lato(
+                    //       color: Colors.white,
+                    //       fontSize: 16.sp,
+                    //       fontWeight: FontWeight.w700,
+                    //     ),
+                    //   ),
+                    // ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
                         ),
-                        child: Text(
-                          "1",
-                          style: GoogleFonts.poppins(
-                            color: const Color(0xffFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 13.sp,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 16.w),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Pencahayaan baik",
-                              style: GoogleFonts.poppins(
-                                color: const Color(0xff284D75),
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14.sp,
-                              ),
-                            ),
-                            SizedBox(height: 8.h),
-                            Text(
-                              "Pastikan berada di tempat terang. Hindari bayangan atau cahaya berlebih pada ID.",
-                              style: GoogleFonts.poppins(
-                                color: const Color(0xff383838),
-                                fontWeight: FontWeight.w400,
-                                fontSize: 13.sp,
-                              ),
-                            ),
-                          ],
+                        // color: Colors.amber,
+                        height: 40.h,
+                        width: 40.h,
+                        child: Icon(
+                          Icons.arrow_back_ios,
+                          color: Colors.white,
+                          size: 20.h,
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 24.h),
-                  Row(
-                    children: [
-                      Container(
-                        height: 32.h,
-                        width: 32.h,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: const Color(0xff1183FF),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Text(
-                          "2",
-                          style: GoogleFonts.poppins(
-                            color: const Color(0xffFFFFFF),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 13.sp,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 16.w),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "ID terlihat jelas",
-                              style: GoogleFonts.poppins(
-                                color: const Color(0xff284D75),
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14.sp,
-                              ),
-                            ),
-                            SizedBox(height: 8.h),
-                            Text(
-                              "Arahkan kamera dengan posisi lurus dan stabil. Pastikan seluruh ID masuk bingkai dan teks mudah dibaca.",
-                              style: GoogleFonts.poppins(
-                                color: const Color(0xff383838),
-                                fontWeight: FontWeight.w400,
-                                fontSize: 13.sp,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 24.h),
-                  MainButtonWidget(
-                    title: "Go to Scan",
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return CameraScanIdScreen(
-                                // callback: (textDetected) {},
-                                // callbackImage: (image) {},
-                                // callbackImageCard: (image) {},
-                                // callbackKTPMapping: (mapping) {},
-                                // callbackSIMMapping: (mapping) {},
-                                );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

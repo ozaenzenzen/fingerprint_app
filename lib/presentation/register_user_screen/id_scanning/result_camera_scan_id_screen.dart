@@ -68,6 +68,7 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
                       MainButtonWidget.inverse(
                         title: "Ambil Ulang",
                         height: 48.h,
+                        width: MediaQuery.of(context).size.width,
                         onPressed: () {
                           Navigator.pop(context);
                           widget.retryCaptureCallback?.call();
@@ -77,6 +78,7 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
                       MainButtonWidget(
                         title: "Lanjutkan",
                         height: 48.h,
+                        width: MediaQuery.of(context).size.width,
                         onPressed: () {
                           Navigator.push(
                             context,

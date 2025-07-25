@@ -171,6 +171,7 @@ class _InfoScanFaceScreenState extends State<InfoScanFaceScreen> {
                       SizedBox(height: 24.h),
                       MainButtonWidget(
                         title: "Go to Scan",
+                        width: MediaQuery.of(context).size.width,
                         onPressed: () {
                           Navigator.push(
                             context,

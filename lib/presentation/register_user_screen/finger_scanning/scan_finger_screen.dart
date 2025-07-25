@@ -1,5 +1,7 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:fingerprint_app/presentation/home_screeen/home_screen.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
+import 'package:fingerprint_app/support/widget/main_button_widget.dart';
 import 'package:flutter/material.dart';
 
 class ScanFingerScreen extends StatefulWidget {
@@ -28,21 +30,9 @@ class _ScanFingerScreenState extends State<ScanFingerScreen> {
             child: SafeArea(
               child: Column(
                 children: [
-                  SizedBox(height: 156.h),
-                  Image.asset(
-                    AppAssets.iconFingerprint,
-                    height: 146.h,
-                    width: 114.h,
-                  ),
-                  SizedBox(height: 149.h),
-                  Text(
-                    "Place your fingertip over the sensor",
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 14.sp,
-                      color: Colors.white,
-                    ),
-                  ),
+                  // initialState(),
+                  // scanningState(),
+                  doneScanState(),
                 ],
               ),
             ),
@@ -92,6 +82,116 @@ class _ScanFingerScreenState extends State<ScanFingerScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget initialState() {
+    return Column(
+      children: [
+        SizedBox(height: 156.h),
+        Image.asset(
+          AppAssets.iconFingerprint,
+          height: 146.h,
+          width: 114.h,
+        ),
+        SizedBox(height: 149.h),
+        Text(
+          "Place your fingertip over the sensor",
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w400,
+            fontSize: 14.sp,
+            color: Colors.white,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget scanningState() {
+    return Stack(
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: 156.h),
+            Image.asset(
+              AppAssets.iconFingerprint,
+              height: 146.h,
+              width: 114.h,
+            ),
+            SizedBox(height: 149.h),
+            Text(
+              "Collecting data, please keep hold your hand",
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.w400,
+                fontSize: 14.sp,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+        Positioned(
+          top: 80.h,
+          child: Align(
+            alignment: Alignment.center,
+            child: Container(
+              height: 320.h,
+              width: 320.h,
+              // color: Colors.red,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget doneScanState() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(height: 245.h),
+        Image.asset(
+          AppAssets.iconSecured,
+          height: 80.h,
+          width: 80.h,
+        ),
+        SizedBox(height: 24.h),
+        Text(
+          "Registrasi Berhasil",
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600,
+            fontSize: 16.sp,
+            color: Colors.white,
+          ),
+        ),
+        SizedBox(height: 8.h),
+        Text(
+          "Nikmati berbagai layanan yang kami sediakan.",
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w400,
+            fontSize: 14.sp,
+            color: Colors.white,
+          ),
+        ),
+        SizedBox(height: 24.h),
+        MainButtonWidget(
+          title: "Back to Home",
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return HomeScreen();
+                },
+              ),
+              (Route<dynamic> route) => false,
+            );
+          },
+        ),
+      ],
     );
   }
 }

@@ -5,6 +5,7 @@ class MainButtonWidget extends StatelessWidget {
   final String title;
   final void Function()? onPressed;
   final double? height;
+  final double? width;
   final Color backgroundColor;
   final Color textColor;
 
@@ -13,6 +14,7 @@ class MainButtonWidget extends StatelessWidget {
     required this.title,
     this.onPressed,
     this.height,
+    this.width,
   })  : backgroundColor = const Color(0xff1183FF),
         textColor = const Color(0xffffffff);
 
@@ -21,6 +23,7 @@ class MainButtonWidget extends StatelessWidget {
     required this.title,
     this.onPressed,
     this.height,
+    this.width,
   })  : textColor = const Color(0xff1183FF),
         backgroundColor = const Color(0xffffffff);
 
@@ -28,7 +31,7 @@ class MainButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: height ?? 40.h,
-      width: MediaQuery.of(context).size.width,
+      width: width,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           elevation: 0,
