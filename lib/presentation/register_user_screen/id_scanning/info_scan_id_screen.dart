@@ -1,5 +1,5 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
-import 'package:fingerprint_app/presentation/register_user_screen/camera_scan_id_screen.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/id_scanning/camera_scan_id_screen.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
 import 'package:fingerprint_app/support/widget/main_button_widget.dart';
 import 'package:flutter/material.dart';
@@ -174,7 +174,13 @@ class _InfoScanIdScreenState extends State<InfoScanIdScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return CameraScanIdScreen();
+                            return CameraScanIdScreen(
+                                // callback: (textDetected) {},
+                                // callbackImage: (image) {},
+                                // callbackImageCard: (image) {},
+                                // callbackKTPMapping: (mapping) {},
+                                // callbackSIMMapping: (mapping) {},
+                                );
                           },
                         ),
                       );

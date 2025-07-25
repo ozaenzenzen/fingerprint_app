@@ -17,4 +17,12 @@ class AppAssets {
   static String iconKtp = "assets/image_ktp.png";
   static String iconEyeOpen = "assets/icon_eye_open.png";
   static String imageScanId = "assets/image_scan_id.png";
+  static String iconArrowDown = "assets/icon_arrow_down.png";
+  static String iconArrowLeft = "assets/icon_arrow_left.png";
+  static String iconCamera1 = "assets/icon_camera1.png";
+  static String iconCamera2 = "assets/icon_camera2.png";
+  static String iconCamera3 = "assets/icon_camera3.png";
+  static String imageScanningFace = "assets/image_scanning_face.png";
+  static String imageScanningFinger = "assets/image_scanning_finger.png";
+  static String imageScanningId = "assets/image_scanning_id.png";
 }

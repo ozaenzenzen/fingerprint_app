@@ -1,6 +1,7 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/presentation/detail_user_screen/detail_user_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/register_user_screen.dart';
+import 'package:fingerprint_app/support/app_assets.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -39,21 +40,33 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      alignment: Alignment.centerRight,
+                    SizedBox(
+                      // alignment: Alignment.centerRight,
                       height: kToolbarHeight,
                       width: MediaQuery.of(context).size.width,
-                      child: Container(
-                        height: 32.h,
-                        width: 32.h,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white38,
-                        ),
-                        child: Icon(
-                          Icons.person_2_outlined,
-                          color: Colors.white,
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            height: 32.h,
+                            width: 32.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white38,
+                            ),
+                            child: Container(
+                              height: 24.h,
+                              width: 24.h,
+                              alignment: Alignment.center,
+                              child: Image.asset(
+                                AppAssets.iconAvatar,
+                                color: const Color(0xffffffff),
+                                height: 24.h,
+                                width: 24.h,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Text(
@@ -81,8 +94,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             height: 40.h,
                             child: TextField(
                               decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.search,
+                                prefixIcon: Padding(
+                                  padding: EdgeInsets.all(10.h),
+                                  child: Image.asset(
+                                    AppAssets.iconSearch,
+                                    height: 20.h,
+                                    width: 20.h,
+                                  ),
                                 ),
                                 fillColor: Colors.white,
                                 filled: true,

@@ -76,9 +76,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: 34.h),
                     TextField(
                       decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.email_outlined,
-                          color: const Color(0xff5A6684),
+                        prefixIcon: Padding(
+                          padding: EdgeInsets.all(10.h),
+                          child: Image.asset(
+                            AppAssets.iconMail,
+                            color: const Color(0xff5A6684),
+                            height: 24.h,
+                            width: 24.h,
+                          ),
                         ),
                         hintText: "Email",
                         hintStyle: GoogleFonts.openSans(
@@ -107,13 +112,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextField(
                       obscureText: true,
                       decoration: InputDecoration(
-                        prefixIcon: Icon(
-                          Icons.lock_outlined,
-                          color: const Color(0xff5A6684),
+                        prefixIcon: Padding(
+                          padding: EdgeInsets.all(10.h),
+                          child: Image.asset(
+                            AppAssets.iconLock,
+                            color: const Color(0xff5A6684),
+                            height: 24.h,
+                            width: 24.h,
+                          ),
                         ),
-                        suffixIcon: Icon(
-                          Icons.remove_red_eye_sharp,
-                          color: const Color(0xff5A6684),
+                        suffixIcon: Padding(
+                          padding: EdgeInsets.all(10.h),
+                          child: Image.asset(
+                            AppAssets.iconEyeClose,
+                            color: const Color(0xff5A6684),
+                            height: 24.h,
+                            width: 24.h,
+                          ),
                         ),
                         hintText: "Password",
                         hintStyle: GoogleFonts.openSans(
