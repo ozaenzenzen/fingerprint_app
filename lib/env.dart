@@ -9,11 +9,11 @@ class EnvironmentConfig {
     if (_baseUrl.isEmpty || _baseUrl == "") {
       switch (flavor) {
         case Flavor.development:
-          return 'http://localhost:8080';
+          return 'https://finger-app.wahidfeb.my.id';
         case Flavor.staging:
-          return 'http://localhost:8080';
+          return 'https://finger-app.wahidfeb.my.id';
         default:
-          return 'http://localhost:8080';
+          return 'https://finger-app.wahidfeb.my.id';
       }
     }
     return _baseUrl;

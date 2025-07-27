@@ -6,15 +6,20 @@ class InitConfig {
 
   static AppApiServiceCS appApiService = AppApiServiceCS(EnvironmentConfig.baseUrl());
 
-  static AppConnectivityServiceCS appConnectivityServiceCS = AppConnectivityServiceCS();
-  static AppDeviceInfoCS appDeviceInfo = AppDeviceInfoCS();
-  static AppInfoCS appInfoCS = AppInfoCS();
-  static LocalServiceHive localServiceHive = LocalServiceHive();
-  
+  // static AppConnectivityServiceCS appConnectivityServiceCS = AppConnectivityServiceCS();
+  // static AppDeviceInfoCS appDeviceInfo = AppDeviceInfoCS();
+  // static AppInfoCS appInfoCS = AppInfoCS();
+  // static LocalServiceHive localServiceHive = LocalServiceHive();
+
   static Future<void> init() async {
-    await localServiceHive.init();
-    await appInfoCS.init();
-    await appConnectivityServiceCS.init();
-    await appDeviceInfo.getDeviceData();
+    AppLoggerCS.useLogger = true;
+    appApiService.useLogger = true;
+
+    EnvironmentConfig.flavor = Flavor.staging;
+
+    await famCodingSupply.localServiceHive.init();
+    await famCodingSupply.appInfo.init();
+    await famCodingSupply.appConnectivityService.init();
+    await famCodingSupply.appDeviceInfo.getDeviceData();
   }
 }
