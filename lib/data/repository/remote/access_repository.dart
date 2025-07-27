@@ -1,5 +1,6 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/data/model/remote/access/request/login_request_model.dart';
+import 'package:fingerprint_app/data/model/remote/access/response/get_profile_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/access/response/login_response_model.dart';
 import 'package:fingerprint_app/support/app_api_path.dart';
 
@@ -21,6 +22,23 @@ class AccessRepository {
       }
     } catch (errorMessage) {
       AppLoggerCS.debugLog("[AccessRepository][login] errorMessage $errorMessage");
+      return null;
+    }
+  }
+
+  Future<GetProfileResponseModel?> getProfile() async {
+    try {
+      final response = await appApiService.call(
+        AppApiPath.login,
+        method: MethodRequestCS.get,
+      );
+      if (response.data != null) {
+        return GetProfileResponseModel.fromJson(response.data);
+      } else {
+        return null;
+      }
+    } catch (errorMessage) {
+      AppLoggerCS.debugLog("[AccessRepository][getProfile] errorMessage $errorMessage");
       return null;
     }
   }
