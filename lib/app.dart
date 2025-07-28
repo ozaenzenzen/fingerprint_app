@@ -25,11 +25,14 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       String? value = await localAccessRepository.getAccessToken();
+      AppLoggerCS.debugLog("value: $value");
       if (value != null) {
         isLogin = true;
       } else {
         isLogin = false;
       }
+      AppLoggerCS.debugLog("isLogin: $isLogin");
+      setState(() {});
     });
   }
 
@@ -43,8 +46,10 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
-        initialBinding: isLogin ? LoginBinding() : HomeBinding(),
-        home: isLogin ? const LoginScreen() : const HomeScreen(),
+        initialBinding: isLogin ? HomeBinding() : LoginBinding(),
+        home: isLogin ? const HomeScreen() : const LoginScreen(),
+        // initialBinding: isLogin ? LoginBinding() : HomeBinding(),
+        // home: isLogin ? const LoginScreen() : const HomeScreen(),
         // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
