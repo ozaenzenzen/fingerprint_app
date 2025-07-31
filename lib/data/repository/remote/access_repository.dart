@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/data/model/remote/access/request/login_request_model.dart';
 import 'package:fingerprint_app/data/model/remote/access/response/get_profile_response_model.dart';
@@ -15,6 +18,7 @@ class AccessRepository {
         request: data.toJson(),
         method: MethodRequestCS.post,
       );
+      log("response.data: ${jsonEncode(response.data)}");
       if (response.data != null) {
         return LoginResponseModel.fromJson(response.data);
       } else {

@@ -44,7 +44,7 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: true,
+      canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         widget.retryCaptureCallback?.call();
       },
@@ -99,6 +99,7 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
                         height: 48.h,
                         width: MediaQuery.of(context).size.width,
                         onPressed: () {
+                          registerController.isLoading.value = false;
                           Get.to(
                             () => ValidateDataIdScreen(
                               dataOCR: widget.dataOCR,

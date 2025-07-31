@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:fingerprint_app/data/model/remote/registration/response/face_compare_process_response_model.dart';
@@ -9,6 +11,7 @@ import 'package:fingerprint_app/domain/ocr_data_holder_model.dart';
 import 'package:fingerprint_app/init_config.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:http_parser/http_parser.dart';
 
 class RegisterController extends GetxController {
   final AccessRepository accessRepository = AccessRepository(InitConfig.appApiService);
@@ -37,12 +40,14 @@ class RegisterController extends GetxController {
       onFailed?.call(errorMessage);
     }
 
-    dio.MultipartFile image = await dio.MultipartFile.fromFile(
-      faceFromKtp.path,
-      filename: faceFromKtp.path.toString().split('/').last,
-    );
-
     try {
+      log("faceLiveness.path: ${faceFromKtp.path}");
+      log("faceLiveness.path.toString().split('/').last: ${faceFromKtp.path.toString().split('/').last}");
+      dio.MultipartFile image = await dio.MultipartFile.fromFile(
+        faceFromKtp.path,
+        filename: faceFromKtp.path.toString().split('/').last,
+        contentType: MediaType('image', 'png'),
+      );
       OcrProcessResponseModel? response = await registrationRepository.ocrProcess(
         image: image,
         requestData: reqBody,
@@ -58,7 +63,7 @@ class RegisterController extends GetxController {
       }
 
       if (response.statusCode != 200) {
-        onFailedCallback.call("${response.message} #0002");
+        onFailedCallback.call("${response.message}: ${(response.data != null) ? (jsonEncode(response.data)) : ""} #0002");
         return;
       }
 
@@ -74,6 +79,7 @@ class RegisterController extends GetxController {
         return;
       }
     } catch (e) {
+      isLoading.value = false;
       onFailedCallback.call("${e.toString()} #0004");
     }
   }
@@ -82,7 +88,6 @@ class RegisterController extends GetxController {
 
   Future<void> faceCompareProcess({
     required File faceLiveness,
-    // required String requestId,
     void Function(FaceCompareProcessResponseModel result)? onSuccess,
     void Function(String errorMessage)? onFailed,
   }) async {
@@ -92,9 +97,13 @@ class RegisterController extends GetxController {
       onFailed?.call(errorMessage);
     }
 
+    log("faceLiveness.path: ${faceLiveness.path}");
+    log("faceLiveness.path.toString().split('/').last: ${faceLiveness.path.toString().split('/').last}");
+
     dio.MultipartFile image = await dio.MultipartFile.fromFile(
       faceLiveness.path,
       filename: faceLiveness.path.toString().split('/').last,
+      contentType: MediaType('image', 'png'),
     );
 
     try {
@@ -115,7 +124,7 @@ class RegisterController extends GetxController {
       }
 
       if (response.statusCode != 200) {
-        onFailedCallback.call("${response.message} #0002");
+        onFailedCallback.call("${response.message}: ${(response.data != null) ? (jsonEncode(response.data)) : ""} #0002");
         return;
       }
 

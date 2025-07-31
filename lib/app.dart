@@ -1,5 +1,6 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/data/repository/local/local_access_repository.dart';
+import 'package:fingerprint_app/init_config.dart';
 import 'package:fingerprint_app/presentation/home_screeen/binding/home_binding.dart';
 import 'package:fingerprint_app/presentation/home_screeen/home_screen.dart';
 import 'package:fingerprint_app/presentation/login_screen/binding/login_binding.dart';
@@ -15,7 +16,7 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   //final LoginController loginController = Get.find<LoginController>();
   final LocalAccessRepository localAccessRepository = LocalAccessRepository();
   bool isLogin = false;
@@ -23,6 +24,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       String? value = await localAccessRepository.getAccessToken();
       AppLoggerCS.debugLog("value: $value");
@@ -34,6 +36,23 @@ class _MyAppState extends State<MyApp> {
       AppLoggerCS.debugLog("isLogin: $isLogin");
       setState(() {});
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      AppLoggerCS.debugLog("anyone call here: AppLifecycleState.resumed");
+      AppLoggerCS.debugLog("anyone call here: ${(await LocalAccessRepository().getAccessToken() ?? "")}");
+      InitConfig.accessToken = await LocalAccessRepository().getAccessToken() ?? "";
+    } else {
+      AppLoggerCS.debugLog("anyone call here 2: ${state.toString()}");
+    }
   }
 
   @override

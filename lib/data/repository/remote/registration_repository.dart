@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/face_compare_process_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/get_list_registration_response_model.dart';
@@ -90,11 +93,15 @@ class RegistrationRepository {
         request: requestDataEdited,
         method: MethodRequestCS.post,
         useFormData: true,
+        // header: {
+        //   "Authorization": "Bearer ${InitConfig.accessToken}",
+        // },
         header: {
           "Authorization": "Bearer ${InitConfig.accessToken}",
           "Content-Type": "multipart/form-data",
         },
       );
+      log("response.data: ${jsonEncode(response.data)}");
       if (response.data != null) {
         return OcrProcessResponseModel.fromJson(response.data);
       } else {
@@ -122,8 +129,10 @@ class RegistrationRepository {
         useFormData: true,
         header: {
           "Authorization": "Bearer ${InitConfig.accessToken}",
+          "Content-Type": "multipart/form-data",
         },
       );
+      log("response.data: ${jsonEncode(response.data)}");
       if (response.data != null) {
         return FaceCompareProcessResponseModel.fromJson(response.data);
       } else {

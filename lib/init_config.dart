@@ -1,4 +1,5 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:fingerprint_app/data/repository/local/local_access_repository.dart';
 import 'package:fingerprint_app/env.dart';
 
 class InitConfig {
@@ -15,7 +16,10 @@ class InitConfig {
 
   static Future<void> init() async {
     AppLoggerCS.useLogger = true;
+    AppLoggerCS.useFoundation = true;
     appApiService.useLogger = true;
+
+    AppLoggerCS.debugLog("call init");
 
     EnvironmentConfig.flavor = Flavor.staging;
 
@@ -23,5 +27,7 @@ class InitConfig {
     await famCodingSupply.appInfo.init();
     await famCodingSupply.appConnectivityService.init();
     await famCodingSupply.appDeviceInfo.getDeviceData();
+
+    InitConfig.accessToken = await LocalAccessRepository().getAccessToken() ?? "";
   }
 }
