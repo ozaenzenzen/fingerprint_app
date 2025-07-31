@@ -202,12 +202,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 req: reqData,
                                 onSuccess: () {
                                   Get.off(() => HomeScreen());
-                                  // Navigator.pushReplacement(
-                                  //   context,
-                                  //   MaterialPageRoute(builder: (context) {
-                                  //     return HomeScreen();
-                                  //   }),
-                                  // );
                                 },
                                 onFailed: (errorMessage) {
                                   AppDialogActionCS.showFailedPopup(

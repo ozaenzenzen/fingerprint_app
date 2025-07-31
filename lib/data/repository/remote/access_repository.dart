@@ -12,13 +12,17 @@ class AccessRepository {
   AccessRepository(this.appApiService);
 
   Future<LoginResponseModel?> login(LoginRequestModel data) async {
+    log("data: ${jsonEncode(data.toJson())}");
     try {
       final response = await appApiService.call(
         AppApiPath.login,
         request: data.toJson(),
         method: MethodRequestCS.post,
+        header: {
+          'Accept': 'application/json',
+        },
       );
-      log("response.data: ${jsonEncode(response.data)}");
+      log("[login] response.data: ${jsonEncode(response.data)}");
       if (response.data != null) {
         return LoginResponseModel.fromJson(response.data);
       } else {
@@ -33,7 +37,7 @@ class AccessRepository {
   Future<GetProfileResponseModel?> getProfile() async {
     try {
       final response = await appApiService.call(
-        AppApiPath.login,
+        AppApiPath.getProfile,
         method: MethodRequestCS.get,
       );
       if (response.data != null) {
