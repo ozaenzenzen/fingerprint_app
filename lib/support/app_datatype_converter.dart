@@ -140,6 +140,51 @@ class AppDatatypeConverter {
     }
   }
 
+  Future<File?> fileToFile({
+    required File sourceFile,
+    required String outputFileName,
+    String? format,
+    int quality = 85,
+    int? resizeWidth,
+  }) async {
+    try {
+      final Directory tempDir = await getTemporaryDirectory();
+      final String outputPath = '${tempDir.path}/$outputFileName';
+      final File outputFile = File(outputPath);
+
+      if (format == null) {
+        await sourceFile.copy(outputPath);
+        return outputFile;
+      }
+
+      final Uint8List bytes = await sourceFile.readAsBytes();
+      img.Image? decodedImage = img.decodeImage(bytes);
+      if (decodedImage == null) {
+        throw Exception('Invalid image data');
+      }
+
+      // Resize if specified
+      if (resizeWidth != null) {
+        decodedImage = img.copyResize(decodedImage, width: resizeWidth);
+      }
+
+      Uint8List? imageBytes;
+      if (format.toLowerCase() == 'jpeg' || format.toLowerCase() == 'jpg') {
+        imageBytes = img.encodeJpg(decodedImage, quality: quality);
+      } else if (format.toLowerCase() == 'png') {
+        imageBytes = img.encodePng(decodedImage);
+      } else {
+        throw ArgumentError('Unsupported format: $format. Use "png" or "jpeg".');
+      }
+
+      await outputFile.writeAsBytes(imageBytes);
+      return outputFile;
+    } catch (e) {
+      print('Error converting File to File: $e');
+      return null;
+    }
+  }
+
   // /// Converts a plain base64 string to a base64 string with MIME type (data URI).
   // /// Parameters:
   // /// - base64String: The plain base64 string (e.g., 'iVBORw0KGgo...').

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:fam_coding_supply/logic/app_base64converter_helper.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/face_compare_process_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/ocr_process_response_model.dart';
 import 'package:fingerprint_app/data/repository/local/local_access_repository.dart';
@@ -9,6 +10,7 @@ import 'package:fingerprint_app/data/repository/remote/access_repository.dart';
 import 'package:fingerprint_app/data/repository/remote/registration_repository.dart';
 import 'package:fingerprint_app/domain/ocr_data_holder_model.dart';
 import 'package:fingerprint_app/init_config.dart';
+import 'package:fingerprint_app/support/app_datatype_converter.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:http_parser/http_parser.dart';
@@ -41,13 +43,33 @@ class RegisterController extends GetxController {
     }
 
     try {
-      log("faceLiveness.path: ${faceFromKtp.path}");
-      log("faceLiveness.path.toString().split('/').last: ${faceFromKtp.path.toString().split('/').last}");
-      dio.MultipartFile image = await dio.MultipartFile.fromFile(
-        faceFromKtp.path,
-        filename: faceFromKtp.path.toString().split('/').last,
-        contentType: MediaType('image', 'png'),
+      File? outputFile = await AppDatatypeConverter().fileToFile(
+        sourceFile: faceFromKtp,
+        outputFileName: 'faceFromKtp.jpg',
+        format: 'jpeg',
+        quality: 100,
+        // resizeWidth: 200, // Resize to 200px width
       );
+
+      if (outputFile == null) {
+        onFailedCallback.call("failed at processing image");
+        return;
+      }
+
+      log("outputFile.path: ${outputFile.path}");
+      log("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
+      dio.MultipartFile image = await dio.MultipartFile.fromFile(
+        outputFile.path,
+        filename: outputFile.path.toString().split('/').last,
+        contentType: MediaType('image', 'jpeg'),
+      );
+      // log("faceLiveness.path: ${faceFromKtp.path}");
+      // log("faceLiveness.path.toString().split('/').last: ${faceFromKtp.path.toString().split('/').last}");
+      // dio.MultipartFile image = await dio.MultipartFile.fromFile(
+      //   faceFromKtp.path,
+      //   filename: faceFromKtp.path.toString().split('/').last,
+      //   contentType: MediaType('image', 'png'),
+      // );
       OcrProcessResponseModel? response = await registrationRepository.ocrProcess(
         image: image,
         requestData: reqBody,
@@ -97,16 +119,36 @@ class RegisterController extends GetxController {
       onFailed?.call(errorMessage);
     }
 
-    log("faceLiveness.path: ${faceLiveness.path}");
-    log("faceLiveness.path.toString().split('/').last: ${faceLiveness.path.toString().split('/').last}");
-
-    dio.MultipartFile image = await dio.MultipartFile.fromFile(
-      faceLiveness.path,
-      filename: faceLiveness.path.toString().split('/').last,
-      contentType: MediaType('image', 'png'),
-    );
-
     try {
+      File? outputFile = await AppDatatypeConverter().fileToFile(
+        sourceFile: faceLiveness,
+        outputFileName: 'faceLiveness.jpg',
+        format: 'jpeg',
+        quality: 100,
+        // resizeWidth: 200, // Resize to 200px width
+      );
+
+      if (outputFile == null) {
+        onFailedCallback.call("failed at processing image");
+        return;
+      }
+
+      log("outputFile.path: ${outputFile.path}");
+      log("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
+      dio.MultipartFile image = await dio.MultipartFile.fromFile(
+        outputFile.path,
+        filename: outputFile.path.toString().split('/').last,
+        contentType: MediaType('image', 'jpeg'),
+      );
+
+      // log("faceLiveness.path: ${faceLiveness.path}");
+      // log("faceLiveness.path.toString().split('/').last: ${faceLiveness.path.toString().split('/').last}");
+      // dio.MultipartFile image = await dio.MultipartFile.fromFile(
+      //   faceLiveness.path,
+      //   filename: faceLiveness.path.toString().split('/').last,
+      //   contentType: MediaType('image', 'png'),
+      // );
+
       FaceCompareProcessResponseModel? response = await registrationRepository.faceCompareProcess(
         image: image,
         requestData: {

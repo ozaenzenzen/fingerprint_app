@@ -48,6 +48,23 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
 
   final RegisterController controller = Get.find<RegisterController>();
 
+  final int _minLengthNIK = 16;
+  final int _maxLength = 16;
+
+  String? _errorTextNIK;
+
+  void _validateText(String text) {
+    if (text.length < _minLengthNIK) {
+      setState(() {
+        _errorTextNIK = 'Minimum $_minLengthNIK characters required';
+      });
+    } else {
+      setState(() {
+        _errorTextNIK = null;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -388,7 +405,15 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
                                         UpperCaseTextFormatter(), // Custom formatter to force uppercase
                                       ],
                                       keyboardType: TextInputType.number,
+                                      onChanged: _validateText,
                                       decoration: InputDecoration(
+                                        errorText: _errorTextNIK,
+                                        counterText: "${nikController.text.length}/$_maxLength",
+                                        counterStyle: GoogleFonts.openSans(
+                                          fontSize: 10.sp,
+                                          fontWeight: FontWeight.w400,
+                                          color: const Color(0xff1183FF),
+                                        ),
                                         label: Text(
                                           "NIK",
                                           style: GoogleFonts.openSans(
@@ -783,7 +808,7 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
                                       ],
                                       decoration: InputDecoration(
                                         label: Text(
-                                          "Kota",
+                                          "Kota/Kabupaten",
                                           style: GoogleFonts.openSans(
                                             fontSize: 14.sp,
                                             fontWeight: FontWeight.w400,

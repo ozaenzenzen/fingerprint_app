@@ -100,22 +100,25 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
                         width: MediaQuery.of(context).size.width,
                         onPressed: () {
                           registerController.isLoading.value = false;
-                          Get.to(
-                            () => ValidateDataIdScreen(
-                              dataOCR: widget.dataOCR,
-                            ),
-                            binding: RegisterBinding(),
-                          );
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) {
-                          //       return ValidateDataIdScreen(
-                          //         dataOCR: widget.dataOCR,
-                          //       );
-                          //     },
-                          //   ),
-                          // );
+                          if (widget.dataOCR.imageCard == null || widget.dataOCR.imageFromCard == null || widget.dataOCR.ktpData == null) {
+                            AppDialogActionCS.showFailedPopup(
+                              context: context,
+                              title: "Terjadi kesalahan",
+                              description: "Silakan ulangi proses kembali",
+                              mainButtonAction: () {
+                                Get.back();
+                              },
+                              buttonTitle: "Kembali",
+                              mainButtonColor: const Color(0xff1183FF),
+                            );
+                          } else {
+                            Get.to(
+                              () => ValidateDataIdScreen(
+                                dataOCR: widget.dataOCR,
+                              ),
+                              binding: RegisterBinding(),
+                            );
+                          }
                         },
                       ),
                     ],

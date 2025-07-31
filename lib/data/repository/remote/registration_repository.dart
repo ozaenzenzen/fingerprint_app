@@ -93,15 +93,12 @@ class RegistrationRepository {
         request: requestDataEdited,
         method: MethodRequestCS.post,
         useFormData: true,
-        // header: {
-        //   "Authorization": "Bearer ${InitConfig.accessToken}",
-        // },
         header: {
           "Authorization": "Bearer ${InitConfig.accessToken}",
           "Content-Type": "multipart/form-data",
         },
       );
-      log("response.data: ${jsonEncode(response.data)}");
+      log("[ocrProcess] response.data: ${jsonEncode(response.data)}");
       if (response.data != null) {
         return OcrProcessResponseModel.fromJson(response.data);
       } else {
@@ -132,7 +129,7 @@ class RegistrationRepository {
           "Content-Type": "multipart/form-data",
         },
       );
-      log("response.data: ${jsonEncode(response.data)}");
+      log("[faceCompareProcess] response.data: ${jsonEncode(response.data)}");
       if (response.data != null) {
         return FaceCompareProcessResponseModel.fromJson(response.data);
       } else {
