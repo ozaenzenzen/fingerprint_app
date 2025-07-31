@@ -48,23 +48,6 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
 
   final RegisterController controller = Get.find<RegisterController>();
 
-  final int _minLengthNIK = 16;
-  final int _maxLength = 16;
-
-  String? _errorTextNIK;
-
-  void _validateText(String text) {
-    if (text.length < _minLengthNIK) {
-      setState(() {
-        _errorTextNIK = 'Minimum $_minLengthNIK characters required';
-      });
-    } else {
-      setState(() {
-        _errorTextNIK = null;
-      });
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -405,10 +388,10 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
                                         UpperCaseTextFormatter(), // Custom formatter to force uppercase
                                       ],
                                       keyboardType: TextInputType.number,
-                                      onChanged: _validateText,
+                                      onChanged: controller.validateTextNIK,
                                       decoration: InputDecoration(
-                                        errorText: _errorTextNIK,
-                                        counterText: "${nikController.text.length}/$_maxLength",
+                                        errorText: controller.errorTextNIK.value,
+                                        counterText: "${nikController.text.length}/${controller.maxLengthNIK}",
                                         counterStyle: GoogleFonts.openSans(
                                           fontSize: 10.sp,
                                           fontWeight: FontWeight.w400,
@@ -659,71 +642,91 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
                                     SizedBox(height: 22.h),
                                     Row(
                                       children: [
-                                        Expanded(
-                                          child: TextField(
-                                            controller: rtController,
-                                            keyboardType: TextInputType.number,
-                                            decoration: InputDecoration(
-                                              label: Text(
-                                                "RT",
-                                                style: GoogleFonts.openSans(
-                                                  fontSize: 14.sp,
+                                        Obx(() {
+                                          return Expanded(
+                                            child: TextField(
+                                              controller: rtController,
+                                              keyboardType: TextInputType.number,
+                                              onChanged: controller.validateTextRT,
+                                              decoration: InputDecoration(
+                                                errorText: controller.errorTextRT.value,
+                                                counterText: "${rtController.text.length}/${controller.maxLengthRT}",
+                                                counterStyle: GoogleFonts.openSans(
+                                                  fontSize: 10.sp,
                                                   fontWeight: FontWeight.w400,
                                                   color: const Color(0xff1183FF),
                                                 ),
-                                              ),
-                                              floatingLabelBehavior: FloatingLabelBehavior.always,
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(12.h),
-                                              ),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(12.h),
-                                                borderSide: BorderSide(
-                                                  color: const Color(0xff1183FF),
+                                                label: Text(
+                                                  "RT",
+                                                  style: GoogleFonts.openSans(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: const Color(0xff1183FF),
+                                                  ),
                                                 ),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(12.h),
-                                                borderSide: BorderSide(
-                                                  color: const Color(0xff1183FF),
+                                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                                border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(12.h),
+                                                ),
+                                                enabledBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(12.h),
+                                                  borderSide: BorderSide(
+                                                    color: const Color(0xff1183FF),
+                                                  ),
+                                                ),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(12.h),
+                                                  borderSide: BorderSide(
+                                                    color: const Color(0xff1183FF),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ),
+                                          );
+                                        }),
                                         SizedBox(width: 8.w),
-                                        Expanded(
-                                          child: TextField(
-                                            controller: rwController,
-                                            keyboardType: TextInputType.number,
-                                            decoration: InputDecoration(
-                                              label: Text(
-                                                "RW",
-                                                style: GoogleFonts.openSans(
-                                                  fontSize: 14.sp,
+                                        Obx(() {
+                                          return Expanded(
+                                            child: TextField(
+                                              controller: rwController,
+                                              keyboardType: TextInputType.number,
+                                              onChanged: controller.validateTextRW,
+                                              decoration: InputDecoration(
+                                                errorText: controller.errorTextRW.value,
+                                                counterText: "${rwController.text.length}/${controller.maxLengthRW}",
+                                                counterStyle: GoogleFonts.openSans(
+                                                  fontSize: 10.sp,
                                                   fontWeight: FontWeight.w400,
                                                   color: const Color(0xff1183FF),
                                                 ),
-                                              ),
-                                              floatingLabelBehavior: FloatingLabelBehavior.always,
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(12.h),
-                                              ),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(12.h),
-                                                borderSide: BorderSide(
-                                                  color: const Color(0xff1183FF),
+                                                label: Text(
+                                                  "RW",
+                                                  style: GoogleFonts.openSans(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: const Color(0xff1183FF),
+                                                  ),
                                                 ),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.circular(12.h),
-                                                borderSide: BorderSide(
-                                                  color: const Color(0xff1183FF),
+                                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                                border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(12.h),
+                                                ),
+                                                enabledBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(12.h),
+                                                  borderSide: BorderSide(
+                                                    color: const Color(0xff1183FF),
+                                                  ),
+                                                ),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.circular(12.h),
+                                                  borderSide: BorderSide(
+                                                    color: const Color(0xff1183FF),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ),
+                                          );
+                                        }),
                                       ],
                                     ),
                                     SizedBox(height: 22.h),

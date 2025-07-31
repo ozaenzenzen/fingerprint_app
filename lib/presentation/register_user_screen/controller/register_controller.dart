@@ -184,4 +184,37 @@ class RegisterController extends GetxController {
       onFailedCallback.call("${e.toString()} #0004");
     }
   }
+
+  final int minLengthNIK = 16;
+  final int maxLengthNIK = 16;
+  Rxn<String> errorTextNIK = Rxn<String>();
+  void validateTextNIK(String text) {
+    if (text.length < minLengthNIK) {
+      errorTextNIK.value = 'Minimum $minLengthNIK characters required';
+    } else {
+      errorTextNIK.value = null;
+    }
+  }
+
+  final int minLengthRT = 3;
+  final int maxLengthRT = 3;
+  Rxn<String> errorTextRT = Rxn<String>();
+  void validateTextRT(String text) {
+    if (text.length < minLengthRT) {
+      errorTextRT.value = 'Minimum $minLengthRT characters required';
+    } else {
+      errorTextRT.value = null;
+    }
+  }
+
+  final int minLengthRW = 3;
+  final int maxLengthRW = 3;
+  Rxn<String> errorTextRW = Rxn<String>();
+  void validateTextRW(String text) {
+    if (text.length < minLengthRW) {
+      errorTextRW.value = 'Minimum $minLengthRW characters required';
+    } else {
+      errorTextRW.value = null;
+    }
+  }
 }
