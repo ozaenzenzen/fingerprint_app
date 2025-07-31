@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:camera/camera.dart';
 import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/id_scanning/result_camera_scan_id_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/support/camera_ocr_data_model.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
 import 'package:fingerprint_app/support/ocr_handler.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:saas_mlkit/saas_mlkit.dart';
 
 class CameraScanIdScreen extends StatefulWidget {
@@ -118,20 +120,29 @@ class _CameraScanIdScreenState extends State<CameraScanIdScreen> {
                     // debugPrint('data KtpocrData ${data?.toJson()}');
                     widget.callback?.call(handler!.toJson().toString());
                     // Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          AppLoggerCS.debugLog("dataHolder: ${jsonEncode(dataHolder)}");
-                          return ResultCameraScanIdScreen(
-                            dataOCR: dataHolder,
-                            retryCaptureCallback: () {
-                              cameraController?.resumePreview();
-                            },
-                          );
+                    Get.to(
+                      () => ResultCameraScanIdScreen(
+                        dataOCR: dataHolder,
+                        retryCaptureCallback: () {
+                          cameraController?.resumePreview();
                         },
                       ),
+                      binding: RegisterBinding(),
                     );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) {
+                    //       AppLoggerCS.debugLog("dataHolder: ${jsonEncode(dataHolder)}");
+                    //       return ResultCameraScanIdScreen(
+                    //         dataOCR: dataHolder,
+                    //         retryCaptureCallback: () {
+                    //           cameraController?.resumePreview();
+                    //         },
+                    //       );
+                    //     },
+                    //   ),
+                    // );
                     //
 
                     // widget.callback?.call(recognizedText.text);
@@ -200,7 +211,7 @@ class _CameraScanIdScreenState extends State<CameraScanIdScreen> {
                     height: 40.h,
                     alignment: Alignment.center,
                     child: Text(
-                      "Detail Data",
+                      "Scan KTP",
                       style: GoogleFonts.lato(
                         color: Colors.white,
                         fontSize: 16.sp,

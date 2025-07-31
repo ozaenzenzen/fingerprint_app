@@ -1,10 +1,17 @@
+import 'dart:convert';
+
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fam_coding_supply/logic/app_bottomsheet_utils.dart';
+import 'package:fingerprint_app/domain/ocr_data_holder_model.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/controller/register_controller.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/face_scanning/info_scan_face_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/support/camera_ocr_data_model.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
+import 'package:fingerprint_app/support/app_input_formatter.dart';
 import 'package:fingerprint_app/support/widget/main_button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ValidateDataIdScreen extends StatefulWidget {
   final CameraOcrDataModel dataOCR;
@@ -22,16 +29,23 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
   TextEditingController addressController = TextEditingController();
   TextEditingController nikController = TextEditingController();
   TextEditingController namaController = TextEditingController();
-  TextEditingController ttlController = TextEditingController();
+  TextEditingController tempatLahirController = TextEditingController();
+  TextEditingController tanggalLahirController = TextEditingController();
   TextEditingController jenisKelaminController = TextEditingController();
   TextEditingController golonganDarahController = TextEditingController();
-  TextEditingController rtRwController = TextEditingController();
+  TextEditingController rtController = TextEditingController();
+  TextEditingController rwController = TextEditingController();
   TextEditingController kelurahanDesaController = TextEditingController();
   TextEditingController kecamatanController = TextEditingController();
+  TextEditingController kotaController = TextEditingController();
+  TextEditingController provinsiController = TextEditingController();
   TextEditingController agamaController = TextEditingController();
+  TextEditingController maritalStatusController = TextEditingController();
   TextEditingController pekerjaanController = TextEditingController();
   TextEditingController kewarganegaraanController = TextEditingController();
   TextEditingController berlakuHinggaController = TextEditingController();
+
+  final RegisterController controller = Get.find<RegisterController>();
 
   @override
   void initState() {
@@ -39,16 +53,68 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
     addressController.text = "${widget.dataOCR.ktpData?.address}";
     nikController.text = "${widget.dataOCR.ktpData?.nik}";
     namaController.text = "${widget.dataOCR.ktpData?.name}";
-    ttlController.text = "${widget.dataOCR.ktpData?.birthDate}, ${widget.dataOCR.ktpData?.birthPlace}";
+    // ttlController.text = "${widget.dataOCR.ktpData?.birthDate}, ${widget.dataOCR.ktpData?.birthPlace}";
+    tempatLahirController.text = "${widget.dataOCR.ktpData?.birthPlace}";
+    tanggalLahirController.text = "${widget.dataOCR.ktpData?.birthDate}";
     jenisKelaminController.text = "${widget.dataOCR.ktpData?.gender}";
     golonganDarahController.text = "${widget.dataOCR.ktpData?.bloodType}";
-    rtRwController.text = "${widget.dataOCR.ktpData?.rt}/${widget.dataOCR.ktpData?.rw}";
+    // rtRwController.text = "${widget.dataOCR.ktpData?.rt}/${widget.dataOCR.ktpData?.rw}";
+    rtController.text = "${widget.dataOCR.ktpData?.rt}";
+    rwController.text = "${widget.dataOCR.ktpData?.rw}";
     kelurahanDesaController.text = "${widget.dataOCR.ktpData?.subDistrict}";
     kecamatanController.text = "${widget.dataOCR.ktpData?.district}";
+    kotaController.text = "${widget.dataOCR.ktpData?.city}";
+    provinsiController.text = "${widget.dataOCR.ktpData?.province}";
     agamaController.text = "${widget.dataOCR.ktpData?.religion}";
+    maritalStatusController.text = "${widget.dataOCR.ktpData?.maritalStatus}";
     pekerjaanController.text = "${widget.dataOCR.ktpData?.profession}";
     kewarganegaraanController.text = "${widget.dataOCR.ktpData?.nationality}";
     berlakuHinggaController.text = "${widget.dataOCR.ktpData?.expired}";
+  }
+
+  void submitHandler() async {
+    controller.ocrHolder.value = OcrDataHolderModel(
+      nama: namaController.text,
+      nik: nikController.text,
+      tempatLahir: tempatLahirController.text,
+      tanggalLahir: tanggalLahirController.text,
+      jenisKelamin: jenisKelaminController.text,
+      golonganDarah: golonganDarahController.text,
+      address: addressController.text,
+      rt: rtController.text,
+      rw: rwController.text,
+      kelurahanDesa: kelurahanDesaController.text,
+      kecamatan: kecamatanController.text,
+      kota: kotaController.text,
+      provinsi: provinsiController.text,
+      agama: agamaController.text,
+      maritalStatus: maritalStatusController.text,
+      pekerjaan: pekerjaanController.text,
+      kewarganegaraan: kewarganegaraanController.text,
+      berlakuHingga: berlakuHinggaController.text,
+    );
+    // await controller.ocrProcess(
+    //   faceFromKtp: controller.faceFromKtp.value!,
+    //   reqBody: controller.ocrHolder.value!.toJson(),
+    //   onSuccess: (result) {
+    //     Get.to(
+    //       () => InfoScanFaceScreen(),
+    //       binding: RegisterBinding(),
+    //     );
+    //   },
+    //   onFailed: (errorMessage) {
+    //     AppDialogActionCS.showFailedPopup(
+    //       context: context,
+    //       title: "Terjadi kesalahan",
+    //       description: errorMessage,
+    //       mainButtonColor: const Color(0xff1183FF),
+    //       buttonTitle: "Kembali",
+    //       mainButtonAction: () {
+    //         Get.back();
+    //       },
+    //     );
+    //   },
+    // );
   }
 
   @override
@@ -71,55 +137,59 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Checkbox(
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      value: true,
-                      onChanged: (value) {
-                        AppBottomSheetUtilsCS().showAppBottomSheetV2(
-                          // withClose: true,
-                          context,
-                          radius: 12.h,
-                          withStrip: true,
-                          title: "Kebijakan Privasi",
-                          actions: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16.h,
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Icon(
-                                  Icons.close,
-                                  color: const Color(0xff1183FF),
+                    Obx(() {
+                      return Checkbox(
+                        activeColor: const Color(0xff1183FF),
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        value: controller.isPrivacyAgreement.value,
+                        onChanged: (value) {
+                          controller.isPrivacyAgreement.value = !controller.isPrivacyAgreement.value;
+                          AppBottomSheetUtilsCS().showAppBottomSheetV2(
+                            // withClose: true,
+                            context,
+                            radius: 12.h,
+                            withStrip: true,
+                            title: "Kebijakan Privasi",
+                            actions: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 16.h,
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Icon(
+                                    Icons.close,
+                                    color: const Color(0xff1183FF),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                          content: Padding(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 16.w,
-                              vertical: 12.w,
-                            ),
-                            child: Column(
-                              children: [
-                                Text(
-                                    """Dengan melanjutkan, Anda menyetujui bahwa aplikasi ini dapat menyimpan dan mengelola data pribadi Anda sesuai dengan Kebijakan Privasi kami. Data yang disimpan meliputi, namun tidak terbatas pada:
+                            ],
+                            content: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16.w,
+                                vertical: 12.w,
+                              ),
+                              child: Column(
+                                children: [
+                                  Text(
+                                      """Dengan melanjutkan, Anda menyetujui bahwa aplikasi ini dapat menyimpan dan mengelola data pribadi Anda sesuai dengan Kebijakan Privasi kami. Data yang disimpan meliputi, namun tidak terbatas pada:
 - NIK
 - Nama lengkap
 - Alamat
-                          
+                              
 Kami menjamin bahwa data Anda akan dijaga kerahasiaannya dan tidak akan dibagikan kepada pihak ketiga tanpa izin Anda.
-
+                        
 Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan dan menggunakan data Anda sesuai dengan ketentuan di atas."""),
-                                SizedBox(height: kToolbarHeight + 16.h),
-                              ],
+                                  SizedBox(height: kToolbarHeight + 16.h),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
+                          );
+                        },
+                      );
+                    }),
                     SizedBox(width: 8.w),
                     Text(
                       "Saya menyetujui Kebijakan Privasi",
@@ -135,14 +205,49 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                   title: "Simpan",
                   width: MediaQuery.of(context).size.width,
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return InfoScanFaceScreen();
+                    if (!controller.isPrivacyAgreement.value) {
+                      AppDialogActionCS.showFailedPopup(
+                        context: context,
+                        title: "Terjadi kesalahan",
+                        description: "Anda belum menyetujui kebijakan privasi",
+                        mainButtonAction: () {
+                          Get.back();
                         },
-                      ),
-                    );
+                        buttonTitle: "Kembali",
+                        mainButtonColor: const Color(0xff1183FF),
+                      );
+                    } else {
+                      AppDialogActionCS.showWarningPopup(
+                        context: context,
+                        title: "Warning",
+                        description: "Apakah Anda yakin semua data sudah benar?",
+                        isHorizontal: false,
+                        mainButtonAction: () {
+                          Get.back();
+                          submitHandler();
+                          Get.to(
+                            () => InfoScanFaceScreen(),
+                            binding: RegisterBinding(),
+                          );
+                        },
+                        mainButtonTitle: "Ya",
+                        mainButtonColor: const Color(0xff1183FF),
+                        secondaryButtonAction: () {
+                          Get.back();
+                        },
+                        secondaryButtonTitle: "Kembali",
+                        secondaryButtonColor: const Color(0xff5A6684),
+                      );
+
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) {
+                      //       return InfoScanFaceScreen();
+                      //     },
+                      //   ),
+                      // );
+                    }
                   },
                 ),
               ],
@@ -203,12 +308,43 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                   ),
                 ),
                 SizedBox(height: 16.h),
-                Container(
-                  color: Colors.red,
-                  child: Image.asset(
-                    AppAssets.imageKtp,
-                    fit: BoxFit.cover,
-                    height: 174.h,
+                Flexible(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.w),
+                    child: PageView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        Container(
+                          color: Colors.red,
+                          child: widget.dataOCR.imageCard != null
+                              ? Image.memory(
+                                  base64Decode(widget.dataOCR.imageCard!),
+                                  fit: BoxFit.cover,
+                                  height: 174.h,
+                                )
+                              : Image.asset(
+                                  AppAssets.imageKtp,
+                                  fit: BoxFit.cover,
+                                  height: 174.h,
+                                ),
+                        ),
+                        Container(
+                          color: Colors.red,
+                          child: widget.dataOCR.imageCard != null
+                              ? Image.memory(
+                                  base64Decode(widget.dataOCR.imageFromCard!),
+                                  fit: BoxFit.cover,
+                                  height: 100.h,
+                                  width: 100.h,
+                                )
+                              : Image.asset(
+                                  AppAssets.imageKtp,
+                                  fit: BoxFit.cover,
+                                  height: 100.h,
+                                ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(height: 24.h),
@@ -245,6 +381,10 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                 SizedBox(height: 18.h),
                                 TextField(
                                   controller: nikController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
+                                  keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
                                     label: Text(
                                       "NIK",
@@ -275,6 +415,9 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                 SizedBox(height: 22.h),
                                 TextField(
                                   controller: namaController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(),
+                                  ],
                                   decoration: InputDecoration(
                                     label: Text(
                                       "Nama",
@@ -304,10 +447,56 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                 ),
                                 SizedBox(height: 22.h),
                                 TextField(
-                                  controller: ttlController,
+                                  controller: tempatLahirController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
                                   decoration: InputDecoration(
                                     label: Text(
-                                      "Tempat Tanggal Lahir",
+                                      "Tempat Lahir",
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 22.h),
+                                TextField(
+                                  controller: tanggalLahirController,
+                                  readOnly: true,
+                                  onTap: () async {
+                                    DateTime? tanggalLahirChosen = await showDatePicker(
+                                      context: context,
+                                      firstDate: DateTime(1900),
+                                      lastDate: DateTime.now(),
+                                      currentDate: controller.tanggalLahirChosen.value,
+                                    );
+                                    if (tanggalLahirChosen != null) {
+                                      tanggalLahirController.text = DateFormat("yyyy-MM-dd").format(tanggalLahirChosen);
+                                      controller.tanggalLahirChosen.value = tanggalLahirChosen;
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                    label: Text(
+                                      "Tanggal Lahir",
                                       style: GoogleFonts.openSans(
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.w400,
@@ -338,6 +527,9 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                     Expanded(
                                       child: TextField(
                                         controller: jenisKelaminController,
+                                        inputFormatters: [
+                                          UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                        ],
                                         decoration: InputDecoration(
                                           label: Text(
                                             "Jenis Kelamin",
@@ -370,6 +562,9 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                     Expanded(
                                       child: TextField(
                                         controller: golonganDarahController,
+                                        inputFormatters: [
+                                          UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                        ],
                                         decoration: InputDecoration(
                                           label: Text(
                                             "Golongan Darah",
@@ -403,6 +598,9 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                 SizedBox(height: 22.h),
                                 TextField(
                                   controller: addressController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
                                   decoration: InputDecoration(
                                     label: Text(
                                       "Alamat",
@@ -435,10 +633,11 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                   children: [
                                     Expanded(
                                       child: TextField(
-                                        controller: rtRwController,
+                                        controller: rtController,
+                                        keyboardType: TextInputType.number,
                                         decoration: InputDecoration(
                                           label: Text(
-                                            "RT/RW",
+                                            "RT",
                                             style: GoogleFonts.openSans(
                                               fontSize: 14.sp,
                                               fontWeight: FontWeight.w400,
@@ -467,7 +666,47 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                     SizedBox(width: 8.w),
                                     Expanded(
                                       child: TextField(
+                                        controller: rwController,
+                                        keyboardType: TextInputType.number,
+                                        decoration: InputDecoration(
+                                          label: Text(
+                                            "RW",
+                                            style: GoogleFonts.openSans(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: const Color(0xff1183FF),
+                                            ),
+                                          ),
+                                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(12.h),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(12.h),
+                                            borderSide: BorderSide(
+                                              color: const Color(0xff1183FF),
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(12.h),
+                                            borderSide: BorderSide(
+                                              color: const Color(0xff1183FF),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 22.h),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: TextField(
                                         controller: kelurahanDesaController,
+                                        inputFormatters: [
+                                          UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                        ],
                                         decoration: InputDecoration(
                                           label: Text(
                                             "Kel/Desa",
@@ -500,6 +739,9 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                     Expanded(
                                       child: TextField(
                                         controller: kecamatanController,
+                                        inputFormatters: [
+                                          UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                        ],
                                         decoration: InputDecoration(
                                           label: Text(
                                             "Kecamatan",
@@ -532,7 +774,76 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                 ),
                                 SizedBox(height: 22.h),
                                 TextField(
+                                  controller: kotaController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
+                                  decoration: InputDecoration(
+                                    label: Text(
+                                      "Kota",
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 22.h),
+                                TextField(
+                                  controller: provinsiController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
+                                  decoration: InputDecoration(
+                                    label: Text(
+                                      "Provinsi",
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 22.h),
+                                TextField(
                                   controller: agamaController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
                                   decoration: InputDecoration(
                                     label: Text(
                                       "Agama",
@@ -562,7 +873,40 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                 ),
                                 SizedBox(height: 22.h),
                                 TextField(
+                                  controller: maritalStatusController,
+                                  decoration: InputDecoration(
+                                    label: Text(
+                                      "Status Perkawinan",
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 22.h),
+                                TextField(
                                   controller: pekerjaanController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
                                   decoration: InputDecoration(
                                     label: Text(
                                       "Pekerjaan",
@@ -593,6 +937,9 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                 SizedBox(height: 22.h),
                                 TextField(
                                   controller: kewarganegaraanController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
                                   decoration: InputDecoration(
                                     label: Text(
                                       "Kewarganegaraan",
@@ -623,6 +970,9 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                 SizedBox(height: 22.h),
                                 TextField(
                                   controller: berlakuHinggaController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
                                   decoration: InputDecoration(
                                     label: Text(
                                       "Berlaku Hingga",

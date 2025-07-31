@@ -1,8 +1,10 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/finger_scanning/scan_finger_screen.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
 import 'package:fingerprint_app/support/widget/main_button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class InfoScanFingerScreen extends StatefulWidget {
   const InfoScanFingerScreen({super.key});
@@ -173,20 +175,24 @@ class _InfoScanFingerScreenState extends State<InfoScanFingerScreen> {
                         title: "Go to Scan",
                         width: MediaQuery.of(context).size.width,
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return ScanFingerScreen(
-                                    // callback: (textDetected) {},
-                                    // callbackImage: (image) {},
-                                    // callbackImageCard: (image) {},
-                                    // callbackKTPMapping: (mapping) {},
-                                    // callbackSIMMapping: (mapping) {},
-                                    );
-                              },
-                            ),
+                          Get.to(
+                            () => ScanFingerScreen(),
+                            binding: RegisterBinding(),
                           );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) {
+                          //       return ScanFingerScreen(
+                          //           // callback: (textDetected) {},
+                          //           // callbackImage: (image) {},
+                          //           // callbackImageCard: (image) {},
+                          //           // callbackKTPMapping: (mapping) {},
+                          //           // callbackSIMMapping: (mapping) {},
+                          //           );
+                          //     },
+                          //   ),
+                          // );
                         },
                       ),
                     ],

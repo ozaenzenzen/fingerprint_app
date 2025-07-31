@@ -2,6 +2,7 @@ import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/presentation/detail_user_screen/detail_user_screen.dart';
 import 'package:fingerprint_app/presentation/login_screen/controller/login_controller.dart';
 import 'package:fingerprint_app/presentation/login_screen/login_screen.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/register_user_screen.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
 import 'package:flutter/material.dart';
@@ -139,14 +140,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(width: 12.w),
                         InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return RegisterUserScreen();
-                                },
-                              ),
+                            Get.to(
+                              () => RegisterUserScreen(),
+                              binding: RegisterBinding(),
                             );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) {
+                            //       return RegisterUserScreen();
+                            //     },
+                            //   ),
+                            // );
                           },
                           child: Container(
                             height: 40.h,
@@ -199,14 +204,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return DetailUserScreen();
-                                  },
-                                ),
-                              );
+                              Get.to(() => DetailUserScreen());
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) {
+                              //       return DetailUserScreen();
+                              //     },
+                              //   ),
+                              // );
                             },
                             child: Container(
                               // height: 62.h,

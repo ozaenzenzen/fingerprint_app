@@ -1,10 +1,15 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/controller/register_controller.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/finger_scanning/info_scan_finger_screen.dart';
+import 'package:fingerprint_app/support/app_datatype_converter.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:saas_mlkit/saas_mlkit.dart';
 
 class CameraScanFaceScreen extends StatefulWidget {
@@ -20,15 +25,18 @@ class CameraScanFaceScreen extends StatefulWidget {
 }
 
 class _CameraScanFaceScreenState extends State<CameraScanFaceScreen> {
+  final RegisterController registerController = Get.find<RegisterController>();
+
   String? captured;
-  void actionTakePicture(BuildContext context) async {
+  Future<void> actionTakePicture(BuildContext context) async {
+    // void actionTakePicture(BuildContext context) async {
     if (cameraController != null) {
       XFile? data = await SaasLivenessHelper().takePicture(
         cameraController!,
       );
 
       if (data != null) {
-        debugPrint('data captured $data');
+        log('data captured $data');
         XFile? imageCaptured;
         imageCaptured = data;
         File tempImage;
@@ -37,11 +45,13 @@ class _CameraScanFaceScreenState extends State<CameraScanFaceScreen> {
         );
         var bytes = await tempImage.readAsBytes();
         captured = base64Encode(bytes);
-        debugPrint('tempImage ${tempImage.path}');
+        log('tempImage ${tempImage.path}');
         widget.callback!.call(captured!);
+
+        registerController.faceLiveness.value = tempImage;
         // cameraController?.dispose();
         // ignore: use_build_context_synchronously
-        Navigator.pop(context);
+        // Navigator.pop(context);
       } else {
         //
       }
@@ -49,17 +59,26 @@ class _CameraScanFaceScreenState extends State<CameraScanFaceScreen> {
   }
 
   void actionTakePictureV2(BuildContext context) async {
-    print("here");
+    log("here");
     if (cameraController != null) {
       String? data = await SaasLivenessHelper().takePictureAsBase64(
         cameraController!,
       );
       if (data != null) {
         captured = data;
-        debugPrint('captured $captured');
-        widget.callback!.call(captured!);
+        // log('captured $captured');
+        widget.callback?.call(captured!);
+
+        // registerController.faceLiveness.value = await AppDatatypeConverter().convertBase64ToFile(
+        //   base64String: data,
+        //   fileName: "faceLiveness",
+        // );
         // ignore: use_build_context_synchronously
-        Navigator.pop(context);
+        // Get.off(
+        //   () => InfoScanFingerScreen(),
+        //   binding: RegisterBinding(),
+        // );
+        // Navigator.pop(context);
       } else {
         //
       }
@@ -87,55 +106,79 @@ class _CameraScanFaceScreenState extends State<CameraScanFaceScreen> {
                 },
                 child: const OvalClip(),
                 onOpenMouthDetected: (face) {
-                  setState(() {
-                    currentAction = 'onOpenMouthDetected';
-                  });
                   debugPrint("onOpenMouthDetected");
                 },
                 onNodDetected: (face) {
-                  setState(() {
-                    currentAction = 'onNodDetected';
-                  });
                   debugPrint("onNodDetected");
                 },
                 onBlinkDetected: (face) {
-                  setState(() {
-                    currentAction = 'onBlinkDetected';
-                  });
                   debugPrint("onBlinkDetected");
-                },
-                onShakeHeadDetected: (face) {
-                  setState(() {
-                    currentAction = 'onShakeHeadDetected';
-                  });
-                  debugPrint("onShakeHeadDetected");
                 },
                 onFaceDetected: (face) {
                   debugPrint("onFaceDetected");
                 },
                 onFaceLoss: () {
-                  setState(() {
-                    currentAction = 'onFaceLoss';
-                  });
                   debugPrint("onFaceLoss");
                 },
                 // onMultipleFaceDetected: () {
                 //   debugPrint("onMultipleFaceDetected");
                 // },
               ),
-              Center(
-                child: Container(
-                  color: Colors.black,
-                  child: Text(
-                    // "Flutter Test Liveness Camera",
-                    currentAction,
-                    style: GoogleFonts.mukta(
-                      color: Colors.white,
-                      fontSize: 30,
-                    ),
-                  ),
-                ),
-              ),
+              // SaasLivenessCamera(
+              //   onControllerCreated: (controller) {
+              //     cameraController = controller;
+              //   },
+              //   child: const OvalClip(),
+              //   onOpenMouthDetected: (face) {
+              //     setState(() {
+              //       currentAction = 'onOpenMouthDetected';
+              //     });
+              //     debugPrint("onOpenMouthDetected");
+              //   },
+              //   onNodDetected: (face) {
+              //     setState(() {
+              //       currentAction = 'onNodDetected';
+              //     });
+              //     debugPrint("onNodDetected");
+              //   },
+              //   onBlinkDetected: (face) {
+              //     setState(() {
+              //       currentAction = 'onBlinkDetected';
+              //     });
+              //     debugPrint("onBlinkDetected");
+              //   },
+              //   onShakeHeadDetected: (face) {
+              //     setState(() {
+              //       currentAction = 'onShakeHeadDetected';
+              //     });
+              //     debugPrint("onShakeHeadDetected");
+              //   },
+              //   onFaceDetected: (face) {
+              //     debugPrint("onFaceDetected");
+              //   },
+              //   onFaceLoss: () {
+              //     setState(() {
+              //       currentAction = 'onFaceLoss';
+              //     });
+              //     debugPrint("onFaceLoss");
+              //   },
+              //   // onMultipleFaceDetected: () {
+              //   //   debugPrint("onMultipleFaceDetected");
+              //   // },
+              // ),
+              // Center(
+              //   child: Container(
+              //     color: Colors.black,
+              //     child: Text(
+              //       // "Flutter Test Liveness Camera",
+              //       currentAction,
+              //       style: GoogleFonts.mukta(
+              //         color: Colors.white,
+              //         fontSize: 30,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
@@ -147,17 +190,22 @@ class _CameraScanFaceScreenState extends State<CameraScanFaceScreen> {
                         backgroundColor: Colors.black,
                       ),
                       onPressed: () {
-                        // actionTakePicture(context);
+                        actionTakePicture(context);
                         // actionTakePictureV2(context);
-                        cameraController?.stopImageStream();
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return InfoScanFingerScreen();
-                            },
-                          ),
-                        );
+                        // cameraController?.stopImageStream();
+                        // cameraController?.dispose();
+                        // Get.to(
+                        //   () => InfoScanFingerScreen(),
+                        //   binding: RegisterBinding(),
+                        // );
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) {
+                        //       return InfoScanFingerScreen();
+                        //     },
+                        //   ),
+                        // );
                       },
                       child: Text(
                         'Take Picture',
@@ -167,7 +215,7 @@ class _CameraScanFaceScreenState extends State<CameraScanFaceScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 100),
                   ],
                 ),
               ),
@@ -186,7 +234,7 @@ class _CameraScanFaceScreenState extends State<CameraScanFaceScreen> {
                     height: 40.h,
                     alignment: Alignment.center,
                     child: Text(
-                      "Face Recognition",
+                      "Capture Face",
                       style: GoogleFonts.lato(
                         color: Colors.white,
                         fontSize: 16.sp,

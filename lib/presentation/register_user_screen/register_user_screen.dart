@@ -1,7 +1,9 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/id_scanning/info_scan_id_screen.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class RegisterUserScreen extends StatefulWidget {
   const RegisterUserScreen({super.key});
@@ -149,12 +151,16 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) {
-                              return InfoScanIdScreen();
-                            }),
+                          Get.to(
+                            () => InfoScanIdScreen(),
+                            binding: RegisterBinding(),
                           );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(builder: (context) {
+                          //     return InfoScanIdScreen();
+                          //   }),
+                          // );
                         },
                         child: Text(
                           "Continue",

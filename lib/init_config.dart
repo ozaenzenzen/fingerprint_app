@@ -11,6 +11,8 @@ class InitConfig {
   // static AppInfoCS appInfoCS = AppInfoCS();
   // static LocalServiceHive localServiceHive = LocalServiceHive();
 
+  static String accessToken = "";
+
   static Future<void> init() async {
     AppLoggerCS.useLogger = true;
     appApiService.useLogger = true;

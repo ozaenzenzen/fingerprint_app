@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/controller/register_controller.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/finger_scanning/info_scan_finger_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/support/camera_ocr_data_model.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/id_scanning/validate_data_id_screen.dart';
 import 'package:fingerprint_app/support/app_datatype_converter.dart';
@@ -10,35 +11,66 @@ import 'package:fingerprint_app/support/widget/main_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ResultCameraScanIdScreen extends StatefulWidget {
-  final CameraOcrDataModel dataOCR;
-  // final Map<String, dynamic> dataOCR;
+class ResultCameraScanFaceScreen extends StatefulWidget {
+  final String faceLiveness;
   final void Function()? retryCaptureCallback;
 
-  const ResultCameraScanIdScreen({
+  const ResultCameraScanFaceScreen({
     super.key,
-    required this.dataOCR,
+    required this.faceLiveness,
     this.retryCaptureCallback,
   });
 
   @override
-  State<ResultCameraScanIdScreen> createState() => _ResultCameraScanIdScreenState();
+  State<ResultCameraScanFaceScreen> createState() => _ResultCameraScanFaceScreenState();
 }
 
-class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
+class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen> {
   final RegisterController registerController = Get.find<RegisterController>();
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (widget.dataOCR.imageFromCard != null) {
-        registerController.faceFromKtp.value = await AppDatatypeConverter().convertBase64ToFile(
-          base64String: widget.dataOCR.imageFromCard!,
-          fileName: "faceFromKtp",
-        );
-      }
-    });
+  void processHandler() async {
+    registerController.faceLiveness.value = await AppDatatypeConverter().convertBase64ToFile(
+      base64String: widget.faceLiveness,
+      fileName: "faceLiveness",
+    );
+    if (registerController.faceLiveness.value != null) {
+      await registerController.faceCompareProcess(
+        faceLiveness: registerController.faceLiveness.value!,
+        onSuccess: (result) {
+          Get.to(
+            () => InfoScanFingerScreen(),
+            binding: RegisterBinding(),
+          );
+        },
+        onFailed: (errorMessage) {
+          AppDialogActionCS.showFailedPopup(
+            context: context,
+            title: "Terjadi kesalahan",
+            description: errorMessage,
+            mainButtonAction: () {
+              Get.back();
+            },
+            buttonTitle: "Kembali",
+            mainButtonColor: const Color(0xff1183FF),
+          );
+        },
+      );
+      // Get.to(
+      //   () => InfoScanFingerScreen(),
+      //   binding: RegisterBinding(),
+      // );
+    } else {
+      AppDialogActionCS.showFailedPopup(
+        context: context,
+        title: "Terjadi kesalahan",
+        description: "Silakan mengulang proses lagi",
+        mainButtonAction: () {
+          Get.back();
+        },
+        buttonTitle: "Kembali",
+        mainButtonColor: const Color(0xff1183FF),
+      );
+    }
   }
 
   @override
@@ -64,16 +96,7 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
                   child: Column(
                     children: [
                       SizedBox(height: 124.h),
-                      if (widget.dataOCR.imageCard != null) Image.memory(base64Decode(widget.dataOCR.imageCard!)),
-                      if (widget.dataOCR.imageFromCard != null) Image.memory(base64Decode(widget.dataOCR.imageFromCard!)),
-                      if (widget.dataOCR.ktpData != null)
-                        Text(
-                          "ktpData: ${jsonEncode(widget.dataOCR.ktpData)}",
-                          style: GoogleFonts.inter(
-                            color: Colors.white,
-                            fontSize: 13.sp,
-                          ),
-                        ),
+                      Image.memory(base64Decode(widget.faceLiveness)),
                       SizedBox(height: 78.h),
                       Text(
                         "Pastikan hasil gambar terlihat jelas",
@@ -90,6 +113,7 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
                         width: MediaQuery.of(context).size.width,
                         onPressed: () {
                           Navigator.pop(context);
+                          registerController.faceLiveness.value = null;
                           widget.retryCaptureCallback?.call();
                         },
                       ),
@@ -98,23 +122,8 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
                         title: "Lanjutkan",
                         height: 48.h,
                         width: MediaQuery.of(context).size.width,
-                        onPressed: () {
-                          Get.to(
-                            () => ValidateDataIdScreen(
-                              dataOCR: widget.dataOCR,
-                            ),
-                            binding: RegisterBinding(),
-                          );
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) {
-                          //       return ValidateDataIdScreen(
-                          //         dataOCR: widget.dataOCR,
-                          //       );
-                          //     },
-                          //   ),
-                          // );
+                        onPressed: () async {
+                          processHandler();
                         },
                       ),
                     ],
@@ -133,7 +142,7 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
                       height: 40.h,
                       alignment: Alignment.center,
                       child: Text(
-                        "Scan KTP",
+                        "Capture Face",
                         style: GoogleFonts.lato(
                           color: Colors.white,
                           fontSize: 16.sp,

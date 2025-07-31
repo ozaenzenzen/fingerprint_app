@@ -70,6 +70,7 @@ class LoginController extends GetxController {
 
       if (response.statusCode == 200) {
         await localAccessRepository.setAccessToken(response.data!.accessToken!);
+        InitConfig.accessToken = response.data!.accessToken!;
         isLoadingLogin.value = false;
         onSuccess?.call();
         return;

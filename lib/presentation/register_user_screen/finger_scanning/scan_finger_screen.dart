@@ -3,6 +3,7 @@ import 'package:fingerprint_app/presentation/home_screeen/home_screen.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
 import 'package:fingerprint_app/support/widget/main_button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ScanFingerScreen extends StatefulWidget {
   const ScanFingerScreen({super.key});

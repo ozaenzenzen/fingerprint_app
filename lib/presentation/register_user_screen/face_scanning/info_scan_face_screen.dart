@@ -1,8 +1,14 @@
+import 'dart:developer';
+
 import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/face_scanning/camera_scan_face_screen.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/face_scanning/result_camera_scan_face_screen.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/finger_scanning/info_scan_finger_screen.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
 import 'package:fingerprint_app/support/widget/main_button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class InfoScanFaceScreen extends StatefulWidget {
   const InfoScanFaceScreen({super.key});
@@ -173,20 +179,35 @@ class _InfoScanFaceScreenState extends State<InfoScanFaceScreen> {
                         title: "Go to Scan",
                         width: MediaQuery.of(context).size.width,
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return CameraScanFaceScreen(
-                                    // callback: (textDetected) {},
-                                    // callbackImage: (image) {},
-                                    // callbackImageCard: (image) {},
-                                    // callbackKTPMapping: (mapping) {},
-                                    // callbackSIMMapping: (mapping) {},
-                                    );
+                          Get.to(
+                            () => CameraScanFaceScreen(
+                              callback: (dataImage) {
+                                log("callback here");
+                                Get.back();
+                                Get.to(
+                                  () => ResultCameraScanFaceScreen(
+                                    faceLiveness: dataImage,
+                                  ),
+                                  binding: RegisterBinding(),
+                                );
                               },
                             ),
+                            binding: RegisterBinding(),
                           );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) {
+                          //       return CameraScanFaceScreen(
+                          //           // callback: (textDetected) {},
+                          //           // callbackImage: (image) {},
+                          //           // callbackImageCard: (image) {},
+                          //           // callbackKTPMapping: (mapping) {},
+                          //           // callbackSIMMapping: (mapping) {},
+                          //           );
+                          //     },
+                          //   ),
+                          // );
                         },
                       ),
                     ],
