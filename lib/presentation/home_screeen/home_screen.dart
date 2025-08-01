@@ -1,9 +1,5 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
-import 'package:fingerprint_app/service/fingerprint_capture_service.dart';
 import 'package:fingerprint_app/presentation/detail_user_screen/detail_user_screen.dart';
-import 'package:fingerprint_app/presentation/fingerprint_capture_screen.dart';
-import 'package:fingerprint_app/presentation/fingerprint_demo_screen.dart';
-import 'package:fingerprint_app/presentation/fingerprint_reader_screen.dart';
 import 'package:fingerprint_app/presentation/login_screen/controller/login_controller.dart';
 import 'package:fingerprint_app/presentation/login_screen/login_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
@@ -57,70 +53,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          InkWell(
-                            onTap: () {
-                              Get.to(() => FingerprintDemoScreen());
-                              // Get.to(
-                              //   () => FingerprintCaptureWidget(
-                              //     deviceName: '\$02\$/dev/bus/usb/001/027',
-                              //   ),
-                              // );
-                            },
-                            child: Container(
-                              height: 32.h,
-                              width: 32.h,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white38,
-                              ),
-                              child: Icon(
-                                Icons.fingerprint,
-                                color: Colors.white,
-                              ),
-                              // child: Container(
-                              //   height: 24.h,
-                              //   width: 24.h,
-                              //   alignment: Alignment.center,
-                              //   child: Image.asset(
-                              //     AppAssets.iconAvatar,
-                              //     color: const Color(0xffffffff),
-                              //     height: 24.h,
-                              //     width: 24.h,
-                              //   ),
-                              // ),
-                            ),
-                          ),
-                          SizedBox(width: 8.w),
-                          InkWell(
-                            onTap: () {
-                              Get.to(
-                                () => FingerprintReaderWidget(),
-                              );
-                            },
-                            child: Container(
-                              height: 32.h,
-                              width: 32.h,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white38,
-                              ),
-                              child: Icon(
-                                Icons.fingerprint_sharp,
-                                color: Colors.white,
-                              ),
-                              // child: Container(
-                              //   height: 24.h,
-                              //   width: 24.h,
-                              //   alignment: Alignment.center,
-                              //   child: Image.asset(
-                              //     AppAssets.iconAvatar,
-                              //     color: const Color(0xffffffff),
-                              //     height: 24.h,
-                              //     width: 24.h,
-                              //   ),
-                              // ),
-                            ),
-                          ),
+                          // InkWell(
+                          //   onTap: () {
+                          //     Get.to(
+                          //       () => FingerprintTestScreen(),
+                          //       binding: RegisterBinding(),
+                          //     );
+                          //   },
+                          //   child: Container(
+                          //     height: 32.h,
+                          //     width: 32.h,
+                          //     decoration: BoxDecoration(
+                          //       shape: BoxShape.circle,
+                          //       color: Colors.white38,
+                          //     ),
+                          //     child: Icon(
+                          //       Icons.fingerprint,
+                          //       color: Colors.white,
+                          //     ),
+                          //   ),
+                          // ),
                           SizedBox(width: 8.w),
                           InkWell(
                             onTap: () async {
