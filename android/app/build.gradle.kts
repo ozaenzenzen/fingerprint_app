@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.fingerprint_app"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -43,4 +43,8 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar"))))
 }
