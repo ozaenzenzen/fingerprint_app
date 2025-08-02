@@ -1,8 +1,10 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:fingerprint_app/presentation/home_screeen/binding/home_binding.dart';
 import 'package:fingerprint_app/presentation/home_screeen/home_screen.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
 import 'package:fingerprint_app/support/widget/main_button_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ScanFingerScreen extends StatefulWidget {
   const ScanFingerScreen({super.key});
@@ -183,14 +185,9 @@ class _ScanFingerScreenState extends State<ScanFingerScreen> {
         MainButtonWidget(
           title: "Back to Home",
           onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return HomeScreen();
-                },
-              ),
-              (Route<dynamic> route) => false,
+            Get.offAll(
+              () => HomeScreen(),
+              binding: HomeBinding(),
             );
           },
         ),

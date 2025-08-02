@@ -1,5 +1,6 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/data/model/remote/access/request/login_request_model.dart';
+import 'package:fingerprint_app/presentation/home_screeen/binding/home_binding.dart';
 import 'package:fingerprint_app/presentation/home_screeen/home_screen.dart';
 import 'package:fingerprint_app/presentation/login_screen/controller/login_controller.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
@@ -201,7 +202,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               await loginController.login(
                                 req: reqData,
                                 onSuccess: () {
-                                  Get.off(() => HomeScreen());
+                                  Get.off(
+                                    () => HomeScreen(),
+                                    binding: HomeBinding(),
+                                  );
                                 },
                                 onFailed: (errorMessage) {
                                   AppDialogActionCS.showFailedPopup(

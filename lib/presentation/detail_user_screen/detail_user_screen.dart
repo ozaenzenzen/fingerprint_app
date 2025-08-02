@@ -1,15 +1,72 @@
+import 'dart:convert';
+
 import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:fingerprint_app/data/model/remote/registration/response/get_registration_by_id_response_model.dart';
+import 'package:fingerprint_app/presentation/home_screeen/controller/home_controller.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
+import 'package:fingerprint_app/support/app_input_formatter.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DetailUserScreen extends StatefulWidget {
-  const DetailUserScreen({super.key});
+  final DataGetRegistrationById data;
+
+  const DetailUserScreen({
+    super.key,
+    required this.data,
+  });
 
   @override
   State<DetailUserScreen> createState() => _DetailUserScreenState();
 }
 
 class _DetailUserScreenState extends State<DetailUserScreen> {
+  final HomeController homeController = Get.find<HomeController>();
+
+  TextEditingController addressController = TextEditingController();
+  TextEditingController nikController = TextEditingController();
+  TextEditingController namaController = TextEditingController();
+  TextEditingController tempatLahirController = TextEditingController();
+  TextEditingController tanggalLahirController = TextEditingController();
+  TextEditingController jenisKelaminController = TextEditingController();
+  TextEditingController golonganDarahController = TextEditingController();
+  TextEditingController rtController = TextEditingController();
+  TextEditingController rwController = TextEditingController();
+  TextEditingController kelurahanDesaController = TextEditingController();
+  TextEditingController kecamatanController = TextEditingController();
+  TextEditingController kotaController = TextEditingController();
+  TextEditingController provinsiController = TextEditingController();
+  TextEditingController agamaController = TextEditingController();
+  TextEditingController maritalStatusController = TextEditingController();
+  TextEditingController pekerjaanController = TextEditingController();
+  TextEditingController kewarganegaraanController = TextEditingController();
+  TextEditingController berlakuHinggaController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    addressController.text = "${widget.data.user?.address}";
+    nikController.text = "${widget.data.user?.nik}";
+    namaController.text = "${widget.data.user?.fullName}";
+    // ttlController.text = "${widget.dataOCR.ktpData?.birthDate}, ${widget.dataOCR.ktpData?.birthPlace}";
+    tempatLahirController.text = "${widget.data.user?.placeOfBirth}";
+    tanggalLahirController.text = widget.data.user?.dateOfBirth != null ? DateFormat("yyyy-dd-mm").format(widget.data.user!.dateOfBirth!) : "";
+    jenisKelaminController.text = (widget.data.user?.gender?.toLowerCase() == "perempuan") ? "Female" : "Male";
+    golonganDarahController.text = "${widget.data.user?.bloodType}";
+    // rtRwController.text = "${widget.dataOCR.ktpData?.rt}/${widget.dataOCR.ktpData?.rw}";
+    rtController.text = "${widget.data.user?.rt}";
+    rwController.text = "${widget.data.user?.rw}";
+    kelurahanDesaController.text = "${widget.data.user?.kelurahan}";
+    kecamatanController.text = "${widget.data.user?.kecamatan}";
+    kotaController.text = "${widget.data.user?.city}";
+    provinsiController.text = "${widget.data.user?.province}";
+    agamaController.text = "${widget.data.user?.religion}";
+    maritalStatusController.text = "${widget.data.user?.maritalStatus}";
+    pekerjaanController.text = "${widget.data.user?.occupation}";
+    kewarganegaraanController.text = "${widget.data.user?.nationality}";
+    berlakuHinggaController.text = "${widget.data.user?.validUntil}";
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -72,7 +129,7 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                 ),
                 SizedBox(height: 16.h),
                 Container(
-                  color: Colors.red,
+                  // color: Colors.red,
                   child: Image.asset(
                     AppAssets.imageKtp,
                     fit: BoxFit.cover,
@@ -227,6 +284,424 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                             color: const Color(0xff0B60BC),
                           ),
                         ),
+                        // Expanded(
+                        //   child: SingleChildScrollView(
+                        //     physics: ScrollPhysics(),
+                        //     child: Column(
+                        //       children: [
+                        //         SizedBox(height: 18.h),
+                        //         TextField(
+                        //           readOnly: true,
+                        //           decoration: InputDecoration(
+                        //             label: Text(
+                        //               "NIK",
+                        //               style: GoogleFonts.openSans(
+                        //                 fontSize: 14.sp,
+                        //                 fontWeight: FontWeight.w400,
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //             floatingLabelBehavior: FloatingLabelBehavior.always,
+                        //             border: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //             ),
+                        //             enabledBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //               borderSide: BorderSide(
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //             focusedBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //               borderSide: BorderSide(
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         SizedBox(height: 22.h),
+                        //         TextField(
+                        //           readOnly: true,
+                        //           decoration: InputDecoration(
+                        //             label: Text(
+                        //               "Nama",
+                        //               style: GoogleFonts.openSans(
+                        //                 fontSize: 14.sp,
+                        //                 fontWeight: FontWeight.w400,
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //             floatingLabelBehavior: FloatingLabelBehavior.always,
+                        //             border: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //             ),
+                        //             enabledBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //               borderSide: BorderSide(
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //             focusedBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //               borderSide: BorderSide(
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         SizedBox(height: 22.h),
+                        //         TextField(
+                        //           readOnly: true,
+                        //           decoration: InputDecoration(
+                        //             label: Text(
+                        //               "Tempat Tanggal Lahir",
+                        //               style: GoogleFonts.openSans(
+                        //                 fontSize: 14.sp,
+                        //                 fontWeight: FontWeight.w400,
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //             floatingLabelBehavior: FloatingLabelBehavior.always,
+                        //             border: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //             ),
+                        //             enabledBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //               borderSide: BorderSide(
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //             focusedBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //               borderSide: BorderSide(
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         SizedBox(height: 22.h),
+                        //         Row(
+                        //           children: [
+                        //             Expanded(
+                        //               child: TextField(
+                        //                 readOnly: true,
+                        //                 decoration: InputDecoration(
+                        //                   label: Text(
+                        //                     "Jenis Kelamin",
+                        //                     style: GoogleFonts.openSans(
+                        //                       fontSize: 14.sp,
+                        //                       fontWeight: FontWeight.w400,
+                        //                       color: const Color(0xff1183FF),
+                        //                     ),
+                        //                   ),
+                        //                   floatingLabelBehavior: FloatingLabelBehavior.always,
+                        //                   border: OutlineInputBorder(
+                        //                     borderRadius: BorderRadius.circular(12.h),
+                        //                   ),
+                        //                   enabledBorder: OutlineInputBorder(
+                        //                     borderRadius: BorderRadius.circular(12.h),
+                        //                     borderSide: BorderSide(
+                        //                       color: const Color(0xff1183FF),
+                        //                     ),
+                        //                   ),
+                        //                   focusedBorder: OutlineInputBorder(
+                        //                     borderRadius: BorderRadius.circular(12.h),
+                        //                     borderSide: BorderSide(
+                        //                       color: const Color(0xff1183FF),
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //             SizedBox(width: 8.w),
+                        //             Expanded(
+                        //               child: TextField(
+                        //                 readOnly: true,
+                        //                 decoration: InputDecoration(
+                        //                   label: Text(
+                        //                     "Golongan Darah",
+                        //                     style: GoogleFonts.openSans(
+                        //                       fontSize: 14.sp,
+                        //                       fontWeight: FontWeight.w400,
+                        //                       color: const Color(0xff1183FF),
+                        //                     ),
+                        //                   ),
+                        //                   floatingLabelBehavior: FloatingLabelBehavior.always,
+                        //                   border: OutlineInputBorder(
+                        //                     borderRadius: BorderRadius.circular(12.h),
+                        //                   ),
+                        //                   enabledBorder: OutlineInputBorder(
+                        //                     borderRadius: BorderRadius.circular(12.h),
+                        //                     borderSide: BorderSide(
+                        //                       color: const Color(0xff1183FF),
+                        //                     ),
+                        //                   ),
+                        //                   focusedBorder: OutlineInputBorder(
+                        //                     borderRadius: BorderRadius.circular(12.h),
+                        //                     borderSide: BorderSide(
+                        //                       color: const Color(0xff1183FF),
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //         SizedBox(height: 22.h),
+                        //         TextField(
+                        //           readOnly: true,
+                        //           decoration: InputDecoration(
+                        //             label: Text(
+                        //               "NIK",
+                        //               style: GoogleFonts.openSans(
+                        //                 fontSize: 14.sp,
+                        //                 fontWeight: FontWeight.w400,
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //             floatingLabelBehavior: FloatingLabelBehavior.always,
+                        //             border: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //             ),
+                        //             enabledBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //               borderSide: BorderSide(
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //             focusedBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //               borderSide: BorderSide(
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         SizedBox(height: 22.h),
+                        //         Row(
+                        //           children: [
+                        //             Expanded(
+                        //               child: TextField(
+                        //                 readOnly: true,
+                        //                 decoration: InputDecoration(
+                        //                   label: Text(
+                        //                     "RT/RW",
+                        //                     style: GoogleFonts.openSans(
+                        //                       fontSize: 14.sp,
+                        //                       fontWeight: FontWeight.w400,
+                        //                       color: const Color(0xff1183FF),
+                        //                     ),
+                        //                   ),
+                        //                   floatingLabelBehavior: FloatingLabelBehavior.always,
+                        //                   border: OutlineInputBorder(
+                        //                     borderRadius: BorderRadius.circular(12.h),
+                        //                   ),
+                        //                   enabledBorder: OutlineInputBorder(
+                        //                     borderRadius: BorderRadius.circular(12.h),
+                        //                     borderSide: BorderSide(
+                        //                       color: const Color(0xff1183FF),
+                        //                     ),
+                        //                   ),
+                        //                   focusedBorder: OutlineInputBorder(
+                        //                     borderRadius: BorderRadius.circular(12.h),
+                        //                     borderSide: BorderSide(
+                        //                       color: const Color(0xff1183FF),
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //             SizedBox(width: 8.w),
+                        //             Expanded(
+                        //               child: TextField(
+                        //                 readOnly: true,
+                        //                 decoration: InputDecoration(
+                        //                   label: Text(
+                        //                     "Kel/Desa",
+                        //                     style: GoogleFonts.openSans(
+                        //                       fontSize: 14.sp,
+                        //                       fontWeight: FontWeight.w400,
+                        //                       color: const Color(0xff1183FF),
+                        //                     ),
+                        //                   ),
+                        //                   floatingLabelBehavior: FloatingLabelBehavior.always,
+                        //                   border: OutlineInputBorder(
+                        //                     borderRadius: BorderRadius.circular(12.h),
+                        //                   ),
+                        //                   enabledBorder: OutlineInputBorder(
+                        //                     borderRadius: BorderRadius.circular(12.h),
+                        //                     borderSide: BorderSide(
+                        //                       color: const Color(0xff1183FF),
+                        //                     ),
+                        //                   ),
+                        //                   focusedBorder: OutlineInputBorder(
+                        //                     borderRadius: BorderRadius.circular(12.h),
+                        //                     borderSide: BorderSide(
+                        //                       color: const Color(0xff1183FF),
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //             SizedBox(width: 8.w),
+                        //             Expanded(
+                        //               child: TextField(
+                        //                 readOnly: true,
+                        //                 decoration: InputDecoration(
+                        //                   label: Text(
+                        //                     "Kecamatan",
+                        //                     style: GoogleFonts.openSans(
+                        //                       fontSize: 14.sp,
+                        //                       fontWeight: FontWeight.w400,
+                        //                       color: const Color(0xff1183FF),
+                        //                     ),
+                        //                   ),
+                        //                   floatingLabelBehavior: FloatingLabelBehavior.always,
+                        //                   border: OutlineInputBorder(
+                        //                     borderRadius: BorderRadius.circular(12.h),
+                        //                   ),
+                        //                   enabledBorder: OutlineInputBorder(
+                        //                     borderRadius: BorderRadius.circular(12.h),
+                        //                     borderSide: BorderSide(
+                        //                       color: const Color(0xff1183FF),
+                        //                     ),
+                        //                   ),
+                        //                   focusedBorder: OutlineInputBorder(
+                        //                     borderRadius: BorderRadius.circular(12.h),
+                        //                     borderSide: BorderSide(
+                        //                       color: const Color(0xff1183FF),
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //               ),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //         SizedBox(height: 22.h),
+                        //         TextField(
+                        //           readOnly: true,
+                        //           decoration: InputDecoration(
+                        //             label: Text(
+                        //               "Agama",
+                        //               style: GoogleFonts.openSans(
+                        //                 fontSize: 14.sp,
+                        //                 fontWeight: FontWeight.w400,
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //             floatingLabelBehavior: FloatingLabelBehavior.always,
+                        //             border: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //             ),
+                        //             enabledBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //               borderSide: BorderSide(
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //             focusedBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //               borderSide: BorderSide(
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         SizedBox(height: 22.h),
+                        //         TextField(
+                        //           readOnly: true,
+                        //           decoration: InputDecoration(
+                        //             label: Text(
+                        //               "Pekerjaan",
+                        //               style: GoogleFonts.openSans(
+                        //                 fontSize: 14.sp,
+                        //                 fontWeight: FontWeight.w400,
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //             floatingLabelBehavior: FloatingLabelBehavior.always,
+                        //             border: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //             ),
+                        //             enabledBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //               borderSide: BorderSide(
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //             focusedBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //               borderSide: BorderSide(
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         SizedBox(height: 22.h),
+                        //         TextField(
+                        //           readOnly: true,
+                        //           decoration: InputDecoration(
+                        //             label: Text(
+                        //               "Kewarganegaraan",
+                        //               style: GoogleFonts.openSans(
+                        //                 fontSize: 14.sp,
+                        //                 fontWeight: FontWeight.w400,
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //             floatingLabelBehavior: FloatingLabelBehavior.always,
+                        //             border: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //             ),
+                        //             enabledBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //               borderSide: BorderSide(
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //             focusedBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //               borderSide: BorderSide(
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         SizedBox(height: 22.h),
+                        //         TextField(
+                        //           readOnly: true,
+                        //           decoration: InputDecoration(
+                        //             label: Text(
+                        //               "Berlaku Hingga",
+                        //               style: GoogleFonts.openSans(
+                        //                 fontSize: 14.sp,
+                        //                 fontWeight: FontWeight.w400,
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //             floatingLabelBehavior: FloatingLabelBehavior.always,
+                        //             border: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //             ),
+                        //             enabledBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //               borderSide: BorderSide(
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //             focusedBorder: OutlineInputBorder(
+                        //               borderRadius: BorderRadius.circular(12.h),
+                        //               borderSide: BorderSide(
+                        //                 color: const Color(0xff1183FF),
+                        //               ),
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         SizedBox(height: 22.h),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                         Expanded(
                           child: SingleChildScrollView(
                             physics: ScrollPhysics(),
@@ -234,8 +709,21 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                               children: [
                                 SizedBox(height: 18.h),
                                 TextField(
+                                  controller: nikController,
                                   readOnly: true,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
+                                  keyboardType: TextInputType.number,
+                                  // onChanged: controller.validateTextNIK,
                                   decoration: InputDecoration(
+                                    // errorText: controller.errorTextNIK.value,
+                                    counterText: "${nikController.text.length}/${homeController.maxLengthNIK}",
+                                    counterStyle: GoogleFonts.openSans(
+                                      fontSize: 10.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: const Color(0xff1183FF),
+                                    ),
                                     label: Text(
                                       "NIK",
                                       style: GoogleFonts.openSans(
@@ -265,6 +753,10 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                                 SizedBox(height: 22.h),
                                 TextField(
                                   readOnly: true,
+                                  controller: namaController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(),
+                                  ],
                                   decoration: InputDecoration(
                                     label: Text(
                                       "Nama",
@@ -295,9 +787,56 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                                 SizedBox(height: 22.h),
                                 TextField(
                                   readOnly: true,
+                                  controller: tempatLahirController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
                                   decoration: InputDecoration(
                                     label: Text(
-                                      "Tempat Tanggal Lahir",
+                                      "Tempat Lahir",
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 22.h),
+                                TextField(
+                                  controller: tanggalLahirController,
+                                  readOnly: true,
+                                  // onTap: () async {
+                                  //   DateTime? tanggalLahirChosen = await showDatePicker(
+                                  //     context: context,
+                                  //     firstDate: DateTime(1900),
+                                  //     lastDate: DateTime.now(),
+                                  //     currentDate: controller.tanggalLahirChosen.value,
+                                  //   );
+                                  //   if (tanggalLahirChosen != null) {
+                                  //     tanggalLahirController.text = DateFormat("yyyy-MM-dd").format(tanggalLahirChosen);
+                                  //     controller.tanggalLahirChosen.value = tanggalLahirChosen;
+                                  //   }
+                                  // },
+                                  decoration: InputDecoration(
+                                    label: Text(
+                                      "Tanggal Lahir",
                                       style: GoogleFonts.openSans(
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.w400,
@@ -328,6 +867,10 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                                     Expanded(
                                       child: TextField(
                                         readOnly: true,
+                                        controller: jenisKelaminController,
+                                        inputFormatters: [
+                                          CaseTextFormatter(format: CaseFormat.camelCase), // Custom formatter to force uppercase
+                                        ],
                                         decoration: InputDecoration(
                                           label: Text(
                                             "Jenis Kelamin",
@@ -360,6 +903,10 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                                     Expanded(
                                       child: TextField(
                                         readOnly: true,
+                                        controller: golonganDarahController,
+                                        inputFormatters: [
+                                          UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                        ],
                                         decoration: InputDecoration(
                                           label: Text(
                                             "Golongan Darah",
@@ -393,9 +940,13 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                                 SizedBox(height: 22.h),
                                 TextField(
                                   readOnly: true,
+                                  controller: addressController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
                                   decoration: InputDecoration(
                                     label: Text(
-                                      "NIK",
+                                      "Alamat",
                                       style: GoogleFonts.openSans(
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.w400,
@@ -423,41 +974,105 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                                 SizedBox(height: 22.h),
                                 Row(
                                   children: [
-                                    Expanded(
-                                      child: TextField(
-                                        readOnly: true,
-                                        decoration: InputDecoration(
-                                          label: Text(
-                                            "RT/RW",
-                                            style: GoogleFonts.openSans(
-                                              fontSize: 14.sp,
+                                    Obx(() {
+                                      return Expanded(
+                                        child: TextField(
+                                          readOnly: true,
+                                          controller: rtController,
+                                          keyboardType: TextInputType.number,
+                                          onChanged: homeController.validateTextRT,
+                                          decoration: InputDecoration(
+                                            errorText: homeController.errorTextRT.value,
+                                            counterText: "${rtController.text.length}/${homeController.maxLengthRT}",
+                                            counterStyle: GoogleFonts.openSans(
+                                              fontSize: 10.sp,
                                               fontWeight: FontWeight.w400,
                                               color: const Color(0xff1183FF),
                                             ),
-                                          ),
-                                          floatingLabelBehavior: FloatingLabelBehavior.always,
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(12.h),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(12.h),
-                                            borderSide: BorderSide(
-                                              color: const Color(0xff1183FF),
+                                            label: Text(
+                                              "RT",
+                                              style: GoogleFonts.openSans(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w400,
+                                                color: const Color(0xff1183FF),
+                                              ),
                                             ),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(12.h),
-                                            borderSide: BorderSide(
-                                              color: const Color(0xff1183FF),
+                                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(12.h),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(12.h),
+                                              borderSide: BorderSide(
+                                                color: const Color(0xff1183FF),
+                                              ),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(12.h),
+                                              borderSide: BorderSide(
+                                                color: const Color(0xff1183FF),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ),
+                                      );
+                                    }),
                                     SizedBox(width: 8.w),
+                                    Obx(() {
+                                      return Expanded(
+                                        child: TextField(
+                                          readOnly: true,
+                                          controller: rwController,
+                                          keyboardType: TextInputType.number,
+                                          onChanged: homeController.validateTextRW,
+                                          decoration: InputDecoration(
+                                            errorText: homeController.errorTextRW.value,
+                                            counterText: "${rwController.text.length}/${homeController.maxLengthRW}",
+                                            counterStyle: GoogleFonts.openSans(
+                                              fontSize: 10.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: const Color(0xff1183FF),
+                                            ),
+                                            label: Text(
+                                              "RW",
+                                              style: GoogleFonts.openSans(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w400,
+                                                color: const Color(0xff1183FF),
+                                              ),
+                                            ),
+                                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(12.h),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(12.h),
+                                              borderSide: BorderSide(
+                                                color: const Color(0xff1183FF),
+                                              ),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(12.h),
+                                              borderSide: BorderSide(
+                                                color: const Color(0xff1183FF),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                  ],
+                                ),
+                                SizedBox(height: 22.h),
+                                Row(
+                                  children: [
                                     Expanded(
                                       child: TextField(
                                         readOnly: true,
+                                        controller: kelurahanDesaController,
+                                        inputFormatters: [
+                                          UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                        ],
                                         decoration: InputDecoration(
                                           label: Text(
                                             "Kel/Desa",
@@ -490,6 +1105,10 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                                     Expanded(
                                       child: TextField(
                                         readOnly: true,
+                                        controller: kecamatanController,
+                                        inputFormatters: [
+                                          UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                        ],
                                         decoration: InputDecoration(
                                           label: Text(
                                             "Kecamatan",
@@ -523,6 +1142,78 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                                 SizedBox(height: 22.h),
                                 TextField(
                                   readOnly: true,
+                                  controller: kotaController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
+                                  decoration: InputDecoration(
+                                    label: Text(
+                                      "Kota/Kabupaten",
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 22.h),
+                                TextField(
+                                  readOnly: true,
+                                  controller: provinsiController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
+                                  decoration: InputDecoration(
+                                    label: Text(
+                                      "Provinsi",
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 22.h),
+                                TextField(
+                                  readOnly: true,
+                                  controller: agamaController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
                                   decoration: InputDecoration(
                                     label: Text(
                                       "Agama",
@@ -553,6 +1244,44 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                                 SizedBox(height: 22.h),
                                 TextField(
                                   readOnly: true,
+                                  controller: maritalStatusController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
+                                  decoration: InputDecoration(
+                                    label: Text(
+                                      "Status Perkawinan",
+                                      style: GoogleFonts.openSans(
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.w400,
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12.h),
+                                      borderSide: BorderSide(
+                                        color: const Color(0xff1183FF),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 22.h),
+                                TextField(
+                                  readOnly: true,
+                                  controller: pekerjaanController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
                                   decoration: InputDecoration(
                                     label: Text(
                                       "Pekerjaan",
@@ -583,6 +1312,10 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                                 SizedBox(height: 22.h),
                                 TextField(
                                   readOnly: true,
+                                  controller: kewarganegaraanController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
                                   decoration: InputDecoration(
                                     label: Text(
                                       "Kewarganegaraan",
@@ -613,6 +1346,10 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                                 SizedBox(height: 22.h),
                                 TextField(
                                   readOnly: true,
+                                  controller: berlakuHinggaController,
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                  ],
                                   decoration: InputDecoration(
                                     label: Text(
                                       "Berlaku Hingga",

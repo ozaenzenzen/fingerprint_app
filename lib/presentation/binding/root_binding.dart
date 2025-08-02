@@ -2,7 +2,7 @@ import 'package:fingerprint_app/presentation/home_screeen/controller/home_contro
 import 'package:fingerprint_app/presentation/login_screen/controller/login_controller.dart';
 import 'package:get/get.dart';
 
-class HomeBinding extends Bindings {
+class RootBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => HomeController());

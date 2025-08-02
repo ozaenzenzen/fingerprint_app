@@ -1,16 +1,18 @@
 import 'dart:convert';
 
 import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:fingerprint_app/data/model/remote/registration/response/face_compare_process_response_model.dart';
+import 'package:fingerprint_app/presentation/home_screeen/binding/home_binding.dart';
+import 'package:fingerprint_app/presentation/home_screeen/home_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/controller/register_controller.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/finger_scanning/info_scan_finger_screen.dart';
-import 'package:fingerprint_app/presentation/register_user_screen/support/camera_ocr_data_model.dart';
-import 'package:fingerprint_app/presentation/register_user_screen/id_scanning/validate_data_id_screen.dart';
 import 'package:fingerprint_app/support/app_datatype_converter.dart';
 import 'package:fingerprint_app/support/widget/app_loading_overlay_widget.dart';
 import 'package:fingerprint_app/support/widget/main_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ResultCameraScanFaceScreen extends StatefulWidget {
   final String faceLiveness;
@@ -29,7 +31,9 @@ class ResultCameraScanFaceScreen extends StatefulWidget {
 class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen> {
   final RegisterController registerController = Get.find<RegisterController>();
 
-  Future<void> processHandler() async {
+  Future<void> processHandler({
+    void Function(FaceCompareProcessResponseModel result)? onSuccess,
+  }) async {
     registerController.faceLiveness.value = await AppDatatypeConverter().convertBase64ToFile(
       base64String: widget.faceLiveness,
       fileName: "faceLiveness",
@@ -38,10 +42,7 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
       await registerController.faceCompareProcess(
         faceLiveness: registerController.faceLiveness.value!,
         onSuccess: (result) {
-          Get.to(
-            () => InfoScanFingerScreen(),
-            binding: RegisterBinding(),
-          );
+          onSuccess?.call(result);
         },
         onFailed: (errorMessage) {
           AppDialogActionCS.showFailedPopup(
@@ -56,10 +57,6 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
           );
         },
       );
-      // Get.to(
-      //   () => InfoScanFingerScreen(),
-      //   binding: RegisterBinding(),
-      // );
     } else {
       AppDialogActionCS.showFailedPopup(
         context: context,
@@ -121,14 +118,38 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
                             },
                           ),
                           SizedBox(height: 16.h),
-                          MainButtonWidget(
-                            title: "Lanjutkan",
+                          MainButtonWidget.inverse(
+                            title: "Kembali ke Home",
                             height: 48.h,
                             width: MediaQuery.of(context).size.width,
                             onPressed: () async {
-                              await processHandler();
+                              await processHandler(
+                                onSuccess: (result) {
+                                  Get.offAll(
+                                    () => HomeScreen(),
+                                    binding: HomeBinding(),
+                                  );
+                                },
+                              );
                             },
                           ),
+                          SizedBox(height: 16.h),
+                          MainButtonWidget(
+                            title: "Lanjutkan ke Pindai Sidik Jari",
+                            height: 48.h,
+                            width: MediaQuery.of(context).size.width,
+                            onPressed: () async {
+                              await processHandler(
+                                onSuccess: (result) {
+                                  Get.to(
+                                    () => InfoScanFingerScreen(),
+                                    binding: RegisterBinding(),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                          SizedBox(height: 32.h),
                         ],
                       ),
                     ),

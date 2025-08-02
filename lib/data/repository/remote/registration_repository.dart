@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/face_compare_process_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/get_list_registration_response_model.dart';
+import 'package:fingerprint_app/data/model/remote/registration/response/get_registration_by_id_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/ocr_process_response_model.dart';
 import 'package:fingerprint_app/init_config.dart';
 import 'package:fingerprint_app/support/app_api_path.dart';
@@ -45,6 +46,7 @@ class RegistrationRepository {
           "Authorization": "Bearer ${InitConfig.accessToken}",
         },
       );
+      AppLoggerCS.debugLog("[getListRegistration] response.data: ${response.data}");
       if (response.data != null) {
         return GetListRegistrationResponseModel.fromJson(response.data);
       } else {
@@ -56,7 +58,7 @@ class RegistrationRepository {
     }
   }
 
-  Future<GetListRegistrationResponseModel?> getRegistrationById({
+  Future<GetRegistrationByIdResponseModel?> getRegistrationById({
     required String id,
   }) async {
     String path = "${AppApiPath.getRegistrationById}/$id";
@@ -69,7 +71,7 @@ class RegistrationRepository {
         },
       );
       if (response.data != null) {
-        return GetListRegistrationResponseModel.fromJson(response.data);
+        return GetRegistrationByIdResponseModel.fromJson(response.data);
       } else {
         return null;
       }

@@ -1,7 +1,7 @@
 class GetListRegistrationResponseModel {
   int? statusCode;
   String? message;
-  GetListRegistration? data;
+  DataGetListRegistration? data;
 
   GetListRegistrationResponseModel({
     this.statusCode,
@@ -12,7 +12,7 @@ class GetListRegistrationResponseModel {
   factory GetListRegistrationResponseModel.fromJson(Map<String, dynamic> json) => GetListRegistrationResponseModel(
         statusCode: json["statusCode"],
         message: json["message"],
-        data: json["data"] == null ? null : GetListRegistration.fromJson(json["data"]),
+        data: json["data"] == null ? null : DataGetListRegistration.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -22,40 +22,104 @@ class GetListRegistrationResponseModel {
       };
 }
 
-class GetListRegistration {
-  Pagination? pagination;
-  List<dynamic>? items;
+class DataGetListRegistration {
+  PaginationGetListRegistration? pagination;
+  List<ItemGetListRegistration>? items;
 
-  GetListRegistration({
+  DataGetListRegistration({
     this.pagination,
     this.items,
   });
 
-  factory GetListRegistration.fromJson(Map<String, dynamic> json) => GetListRegistration(
-        pagination: json["pagination"] == null ? null : Pagination.fromJson(json["pagination"]),
-        items: json["items"] == null ? [] : List<dynamic>.from(json["items"]!.map((x) => x)),
+  factory DataGetListRegistration.fromJson(Map<String, dynamic> json) => DataGetListRegistration(
+        pagination: json["pagination"] == null ? null : PaginationGetListRegistration.fromJson(json["pagination"]),
+        items: json["items"] == null ? [] : List<ItemGetListRegistration>.from(json["items"]!.map((x) => ItemGetListRegistration.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "pagination": pagination?.toJson(),
-        "items": items == null ? [] : List<dynamic>.from(items!.map((x) => x)),
+        "items": items == null ? [] : List<dynamic>.from(items!.map((x) => x.toJson())),
       };
 }
 
-class Pagination {
+class ItemGetListRegistration {
+  String? id;
+  DateTime? registeredAt;
+  SurveyorGetListRegistration? surveyor;
+  UserGetListRegistration? user;
+
+  ItemGetListRegistration({
+    this.id,
+    this.registeredAt,
+    this.surveyor,
+    this.user,
+  });
+
+  factory ItemGetListRegistration.fromJson(Map<String, dynamic> json) => ItemGetListRegistration(
+        id: json["id"],
+        registeredAt: json["registeredAt"] == null ? null : DateTime.parse(json["registeredAt"]),
+        surveyor: json["surveyor"] == null ? null : SurveyorGetListRegistration.fromJson(json["surveyor"]),
+        user: json["user"] == null ? null : UserGetListRegistration.fromJson(json["user"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "registeredAt": registeredAt?.toIso8601String(),
+        "surveyor": surveyor?.toJson(),
+        "user": user?.toJson(),
+      };
+}
+
+class SurveyorGetListRegistration {
+  String? fullName;
+
+  SurveyorGetListRegistration({
+    this.fullName,
+  });
+
+  factory SurveyorGetListRegistration.fromJson(Map<String, dynamic> json) => SurveyorGetListRegistration(
+        fullName: json["fullName"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "fullName": fullName,
+      };
+}
+
+class UserGetListRegistration {
+  String? nik;
+  String? fullName;
+
+  UserGetListRegistration({
+    this.nik,
+    this.fullName,
+  });
+
+  factory UserGetListRegistration.fromJson(Map<String, dynamic> json) => UserGetListRegistration(
+        nik: json["nik"],
+        fullName: json["fullName"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "nik": nik,
+        "fullName": fullName,
+      };
+}
+
+class PaginationGetListRegistration {
   int? page;
   dynamic next;
   dynamic prev;
   bool? hasMore;
 
-  Pagination({
+  PaginationGetListRegistration({
     this.page,
     this.next,
     this.prev,
     this.hasMore,
   });
 
-  factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
+  factory PaginationGetListRegistration.fromJson(Map<String, dynamic> json) => PaginationGetListRegistration(
         page: json["page"],
         next: json["next"],
         prev: json["prev"],

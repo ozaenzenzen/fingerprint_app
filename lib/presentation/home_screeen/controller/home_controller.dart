@@ -1,4 +1,6 @@
+import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/get_list_registration_response_model.dart';
+import 'package:fingerprint_app/data/model/remote/registration/response/get_registration_by_id_response_model.dart';
 import 'package:fingerprint_app/data/repository/local/local_access_repository.dart';
 import 'package:fingerprint_app/data/repository/remote/access_repository.dart';
 import 'package:fingerprint_app/data/repository/remote/registration_repository.dart';
@@ -13,12 +15,15 @@ class HomeController extends GetxController {
   RxBool isLoadingHome = false.obs;
 
   RxInt currentPage = 1.obs;
+  Rxn<GetListRegistrationResponseModel> responseRegistrationData = Rxn<GetListRegistrationResponseModel>();
+  RxList<ItemGetListRegistration> listRegistrationData = <ItemGetListRegistration>[].obs;
 
   Future<void> getListRegistration({
-    int? currentPage = 1,
-    void Function()? onSuccess,
+    // int? currentPage = 1,
+    void Function(GetListRegistrationResponseModel result)? onSuccess,
     void Function(String errorMessage)? onFailed,
   }) async {
+    AppLoggerCS.debugLog("[getListRegistration] called");
     isLoadingHome.value = true;
     onFailedCallback(String errorMessage) {
       isLoadingHome.value = false;
@@ -26,8 +31,10 @@ class HomeController extends GetxController {
     }
 
     try {
+      currentPage.value = 1;
+
       GetListRegistrationResponseModel? response = await registrationRepository.getListRegistration(
-        currentPage: currentPage,
+        currentPage: currentPage.value,
       );
       if (response == null) {
         onFailedCallback.call("response is null");
@@ -51,7 +58,11 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200) {
         isLoadingHome.value = false;
-        onSuccess?.call();
+        responseRegistrationData.value = response;
+        listRegistrationData.addAll(response.data!.items!);
+        listRegistrationData.value = removeDuplicatesById(listRegistrationData);
+
+        onSuccess?.call(response);
         return;
       }
     } catch (e) {
@@ -59,9 +70,53 @@ class HomeController extends GetxController {
     }
   }
 
+  Future<void> loadMoreListRegistration({
+    void Function()? onSuccess,
+    void Function(String errorMessage)? onFailed,
+  }) async {
+    AppLoggerCS.debugLog("loadMoreListRegistration");
+    onFailedCallback(String errorMessage) {
+      onFailed?.call(errorMessage);
+    }
+
+    try {
+      if (responseRegistrationData.value != null) {
+        if (responseRegistrationData.value?.data != null && responseRegistrationData.value!.data!.pagination!.hasMore!) {
+          currentPage++;
+
+          await getListRegistration(
+            onSuccess: (result) {
+              isLoadingHome.value = false;
+              onSuccess?.call();
+            },
+            onFailed: (errorMessage) {
+              isLoadingHome.value = false;
+              onFailedCallback.call("e: $errorMessage");
+            },
+          );
+        } else {
+          onSuccess?.call();
+        }
+      }
+    } catch (e) {
+      onFailedCallback.call("e: $e");
+    }
+  }
+
+  List<ItemGetListRegistration> removeDuplicatesById(List<ItemGetListRegistration> originalList) {
+    final seenIds = <String>{};
+    return originalList.where((item) {
+      final isNew = !seenIds.contains(item.id);
+      seenIds.add(item.id!);
+      return isNew;
+    }).toList();
+  }
+
+  Rx<GetRegistrationByIdResponseModel> responseDetailRegistration = GetRegistrationByIdResponseModel().obs;
+
   Future<void> getRegistrationById({
     required String id,
-    void Function()? onSuccess,
+    void Function(GetRegistrationByIdResponseModel result)? onSuccess,
     void Function(String errorMessage)? onFailed,
   }) async {
     isLoadingHome.value = true;
@@ -71,7 +126,7 @@ class HomeController extends GetxController {
     }
 
     try {
-      GetListRegistrationResponseModel? response = await registrationRepository.getRegistrationById(
+      GetRegistrationByIdResponseModel? response = await registrationRepository.getRegistrationById(
         id: id,
       );
       if (response == null) {
@@ -96,11 +151,45 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200) {
         isLoadingHome.value = false;
-        onSuccess?.call();
+        responseDetailRegistration.value = response;
+        onSuccess?.call(response);
         return;
       }
     } catch (e) {
       onFailedCallback.call("e: $e");
+    }
+  }
+
+  final int minLengthNIK = 16;
+  final int maxLengthNIK = 16;
+  Rxn<String> errorTextNIK = Rxn<String>();
+  void validateTextNIK(String text) {
+    if (text.length < minLengthNIK) {
+      errorTextNIK.value = 'Minimum $minLengthNIK characters required';
+    } else {
+      errorTextNIK.value = null;
+    }
+  }
+
+  final int minLengthRT = 3;
+  final int maxLengthRT = 3;
+  Rxn<String> errorTextRT = Rxn<String>();
+  void validateTextRT(String text) {
+    if (text.length < minLengthRT) {
+      errorTextRT.value = 'Minimum $minLengthRT characters required';
+    } else {
+      errorTextRT.value = null;
+    }
+  }
+
+  final int minLengthRW = 3;
+  final int maxLengthRW = 3;
+  Rxn<String> errorTextRW = Rxn<String>();
+  void validateTextRW(String text) {
+    if (text.length < minLengthRW) {
+      errorTextRW.value = 'Minimum $minLengthRW characters required';
+    } else {
+      errorTextRW.value = null;
     }
   }
 }

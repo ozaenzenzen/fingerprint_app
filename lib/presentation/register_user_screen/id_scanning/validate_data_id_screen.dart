@@ -318,7 +318,7 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
                           scrollDirection: Axis.horizontal,
                           children: [
                             Container(
-                              color: Colors.red,
+                              // color: Colors.red,
                               child: widget.dataOCR.imageCard != null
                                   ? Image.memory(
                                       base64Decode(widget.dataOCR.imageCard!),
@@ -332,7 +332,7 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
                                     ),
                             ),
                             Container(
-                              color: Colors.red,
+                              // color: Colors.red,
                               child: widget.dataOCR.imageCard != null
                                   ? Image.memory(
                                       base64Decode(widget.dataOCR.imageFromCard!),

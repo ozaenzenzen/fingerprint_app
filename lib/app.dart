@@ -1,6 +1,7 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/data/repository/local/local_access_repository.dart';
 import 'package:fingerprint_app/init_config.dart';
+import 'package:fingerprint_app/presentation/binding/root_binding.dart';
 import 'package:fingerprint_app/presentation/home_screeen/binding/home_binding.dart';
 import 'package:fingerprint_app/presentation/home_screeen/home_screen.dart';
 import 'package:fingerprint_app/presentation/login_screen/binding/login_binding.dart';
@@ -65,7 +66,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
-        initialBinding: isLogin ? HomeBinding() : LoginBinding(),
+        initialBinding: RootBinding(),
+        // initialBinding: isLogin ? HomeBinding() : LoginBinding(),
         home: isLogin ? const HomeScreen() : const LoginScreen(),
         // initialBinding: isLogin ? LoginBinding() : HomeBinding(),
         // home: isLogin ? const LoginScreen() : const HomeScreen(),
