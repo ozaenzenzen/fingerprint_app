@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Text(
-                          "Lorem ipsum",
+                          "E-Regis Dashboard",
                           style: GoogleFonts.lato(
                             fontWeight: FontWeight.w700,
                             fontSize: 23.sp,
