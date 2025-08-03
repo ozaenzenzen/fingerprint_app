@@ -65,15 +65,17 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
                     children: [
                       SizedBox(height: 124.h),
                       if (widget.dataOCR.imageCard != null) Image.memory(base64Decode(widget.dataOCR.imageCard!)),
-                      if (widget.dataOCR.imageFromCard != null) Image.memory(base64Decode(widget.dataOCR.imageFromCard!)),
-                      if (widget.dataOCR.ktpData != null)
-                        Text(
-                          "ktpData: ${jsonEncode(widget.dataOCR.ktpData)}",
-                          style: GoogleFonts.inter(
-                            color: Colors.white,
-                            fontSize: 13.sp,
-                          ),
-                        ),
+                      SizedBox(height: 8.h),
+                      // if (widget.dataOCR.imageFromCard != null) Image.memory(base64Decode(widget.dataOCR.imageFromCard!)),
+                      SizedBox(height: 8.h),
+                      // if (widget.dataOCR.ktpData != null)
+                      //   Text(
+                      //     "ktpData: ${jsonEncode(widget.dataOCR.ktpData)}",
+                      //     style: GoogleFonts.inter(
+                      //       color: Colors.white,
+                      //       fontSize: 13.sp,
+                      //     ),
+                      //   ),
                       SizedBox(height: 78.h),
                       Text(
                         "Pastikan hasil gambar terlihat jelas",
@@ -137,7 +139,7 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
                       height: 40.h,
                       alignment: Alignment.center,
                       child: Text(
-                        "Scan KTP",
+                        "Result Scan KTP",
                         style: GoogleFonts.lato(
                           color: Colors.white,
                           fontSize: 16.sp,

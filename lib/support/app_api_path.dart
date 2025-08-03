@@ -8,4 +8,5 @@ class AppApiPath {
   static const String getRegistrationById = "/api/v1.0/registrations";
   static const String ocrProcess = "/api/v1.0/registrations/ocr";
   static const String faceCompareProcess = "/api/v1.0/registrations/face-compare";
+  static const String verifyFace = "/api/v1.0/registrations";
 }

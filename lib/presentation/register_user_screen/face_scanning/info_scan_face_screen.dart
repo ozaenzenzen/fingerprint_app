@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/controller/register_controller.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/face_scanning/camera_scan_face_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/face_scanning/result_camera_scan_face_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/finger_scanning/info_scan_finger_screen.dart';
@@ -10,14 +11,29 @@ import 'package:fingerprint_app/support/widget/main_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+enum ScanFaceFlowType { registerFlow, continueFlow }
+
 class InfoScanFaceScreen extends StatefulWidget {
-  const InfoScanFaceScreen({super.key});
+  final ScanFaceFlowType scanFaceFlowType;
+
+  const InfoScanFaceScreen({
+    super.key,
+    required this.scanFaceFlowType,
+  });
 
   @override
   State<InfoScanFaceScreen> createState() => _InfoScanFaceScreenState();
 }
 
 class _InfoScanFaceScreenState extends State<InfoScanFaceScreen> {
+  final RegisterController registerController = Get.find<RegisterController>();
+
+  @override
+  void initState() {
+    super.initState();
+    registerController.currentScanFaceFlowType.value = widget.scanFaceFlowType;
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(

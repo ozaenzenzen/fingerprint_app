@@ -6,6 +6,7 @@ import 'package:fingerprint_app/presentation/home_screeen/binding/home_binding.d
 import 'package:fingerprint_app/presentation/home_screeen/home_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/controller/register_controller.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/face_scanning/info_scan_face_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/finger_scanning/info_scan_finger_screen.dart';
 import 'package:fingerprint_app/support/app_datatype_converter.dart';
 import 'package:fingerprint_app/support/widget/app_loading_overlay_widget.dart';
@@ -32,31 +33,53 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
   final RegisterController registerController = Get.find<RegisterController>();
 
   Future<void> processHandler({
-    void Function(FaceCompareProcessResponseModel result)? onSuccess,
+    void Function()? onSuccess,
   }) async {
     registerController.faceLiveness.value = await AppDatatypeConverter().convertBase64ToFile(
       base64String: widget.faceLiveness,
       fileName: "faceLiveness",
     );
     if (registerController.faceLiveness.value != null) {
-      await registerController.faceCompareProcess(
-        faceLiveness: registerController.faceLiveness.value!,
-        onSuccess: (result) {
-          onSuccess?.call(result);
-        },
-        onFailed: (errorMessage) {
-          AppDialogActionCS.showFailedPopup(
-            context: context,
-            title: "Terjadi kesalahan",
-            description: errorMessage,
-            mainButtonAction: () {
-              Get.back();
-            },
-            buttonTitle: "Kembali",
-            mainButtonColor: const Color(0xff1183FF),
-          );
-        },
-      );
+      if (registerController.currentScanFaceFlowType.value == ScanFaceFlowType.registerFlow) {
+        await registerController.faceCompareProcess(
+          faceLiveness: registerController.faceLiveness.value!,
+          onSuccess: (result) {
+            onSuccess?.call();
+          },
+          onFailed: (errorMessage) {
+            AppDialogActionCS.showFailedPopup(
+              context: context,
+              title: "Terjadi kesalahan",
+              description: errorMessage,
+              mainButtonAction: () {
+                Get.back();
+              },
+              buttonTitle: "Kembali",
+              mainButtonColor: const Color(0xff1183FF),
+            );
+          },
+        );
+      } else {
+        await registerController.verifyFace(
+          id: registerController.continueUserId.value,
+          faceLiveness: registerController.faceLiveness.value!,
+          onSuccess: (result) {
+            onSuccess?.call();
+          },
+          onFailed: (errorMessage) {
+            AppDialogActionCS.showFailedPopup(
+              context: context,
+              title: "Terjadi kesalahan",
+              description: errorMessage,
+              mainButtonAction: () {
+                Get.back();
+              },
+              buttonTitle: "Kembali",
+              mainButtonColor: const Color(0xff1183FF),
+            );
+          },
+        );
+      }
     } else {
       AppDialogActionCS.showFailedPopup(
         context: context,
@@ -124,7 +147,7 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
                             width: MediaQuery.of(context).size.width,
                             onPressed: () async {
                               await processHandler(
-                                onSuccess: (result) {
+                                onSuccess: () {
                                   Get.offAll(
                                     () => HomeScreen(),
                                     binding: HomeBinding(),
@@ -140,7 +163,7 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
                             width: MediaQuery.of(context).size.width,
                             onPressed: () async {
                               await processHandler(
-                                onSuccess: (result) {
+                                onSuccess: () {
                                   Get.to(
                                     () => InfoScanFingerScreen(),
                                     binding: RegisterBinding(),

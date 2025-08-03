@@ -2,7 +2,11 @@ import 'dart:convert';
 
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/get_registration_by_id_response_model.dart';
+import 'package:fingerprint_app/presentation/fingerprint_test_screen.dart';
 import 'package:fingerprint_app/presentation/home_screeen/controller/home_controller.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/controller/register_controller.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/face_scanning/info_scan_face_screen.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
 import 'package:fingerprint_app/support/app_input_formatter.dart';
 import 'package:flutter/material.dart';
@@ -160,7 +164,15 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                           children: [
                             InkWell(
                               onTap: () {
-                                //
+                                Get.back();
+                                final RegisterController registerController = Get.put(RegisterController());
+                                registerController.continueUserId.value = widget.data.id ?? "";
+                                Get.to(
+                                  () => InfoScanFaceScreen(
+                                    scanFaceFlowType: ScanFaceFlowType.continueFlow,
+                                  ),
+                                  binding: RegisterBinding(),
+                                );
                               },
                               child: Container(
                                 padding: EdgeInsets.symmetric(
@@ -197,7 +209,11 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                             SizedBox(height: 16.h),
                             InkWell(
                               onTap: () {
-                                //
+                                Get.back();
+                                Get.to(
+                                  () => FingerprintTestScreen(),
+                                  binding: RegisterBinding(),
+                                );
                               },
                               child: Container(
                                 padding: EdgeInsets.symmetric(

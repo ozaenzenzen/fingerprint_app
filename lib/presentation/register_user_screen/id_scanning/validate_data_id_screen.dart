@@ -99,7 +99,9 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
       reqBody: controller.ocrHolder.value!.toJson(),
       onSuccess: (result) {
         Get.to(
-          () => InfoScanFaceScreen(),
+          () => InfoScanFaceScreen(
+            scanFaceFlowType: ScanFaceFlowType.registerFlow,
+          ),
           binding: RegisterBinding(),
         );
       },

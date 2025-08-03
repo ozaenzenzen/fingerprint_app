@@ -6,6 +6,7 @@ import 'package:fingerprint_app/data/model/remote/registration/response/face_com
 import 'package:fingerprint_app/data/model/remote/registration/response/get_list_registration_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/get_registration_by_id_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/ocr_process_response_model.dart';
+import 'package:fingerprint_app/data/model/remote/registration/response/verify_face_response_model.dart';
 import 'package:fingerprint_app/init_config.dart';
 import 'package:fingerprint_app/support/app_api_path.dart';
 import 'package:dio/dio.dart' as dio;
@@ -139,6 +140,38 @@ class RegistrationRepository {
       }
     } catch (errorMessage) {
       AppLoggerCS.debugLog("[RegistrationRepository][faceCompareProcess] errorMessage $errorMessage");
+      return null;
+    }
+  }
+
+  Future<VerifyFaceResponseModel?> verifyFace({
+    required String id,
+    required dio.MultipartFile image,
+  }) async {
+    Map<String, dynamic> requestDataEdited = {
+      'image': image,
+    };
+
+    String path = "${AppApiPath.verifyFace}/$id/verify-face";
+    try {
+      final response = await appApiService.call(
+        path,
+        request: requestDataEdited,
+        method: MethodRequestCS.post,
+        useFormData: true,
+        header: {
+          "Authorization": "Bearer ${InitConfig.accessToken}",
+          "Content-Type": "multipart/form-data",
+        },
+      );
+      log("[verifyFace] response.data: ${jsonEncode(response.data)}");
+      if (response.data != null) {
+        return VerifyFaceResponseModel.fromJson(response.data);
+      } else {
+        return null;
+      }
+    } catch (errorMessage) {
+      AppLoggerCS.debugLog("[RegistrationRepository][verifyFace] errorMessage $errorMessage");
       return null;
     }
   }
