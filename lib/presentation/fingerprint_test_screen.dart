@@ -276,10 +276,25 @@ class _FingerprintTestScreenState extends State<FingerprintTestScreen> {
                                       width: MediaQuery.of(context).size.width,
                                       onPressed: () {
                                         if (_currentImage != null) {
-                                          registerController.fingerprintData.value = _currentImage;
-                                          Get.to(
-                                            () => ScanFingerScreen(),
-                                            binding: RegisterBinding(),
+                                          AppDialogActionCS.showWarningPopup(
+                                            context: context,
+                                            title: "Warning",
+                                            description: "Apakah Anda sudah yakin dengan data ini?",
+                                            mainButtonTitle: "Ya",
+                                            mainButtonAction: () {
+                                              Get.back();
+                                              registerController.fingerprintData.value = _currentImage;
+                                              Get.to(
+                                                () => ScanFingerScreen(),
+                                                binding: RegisterBinding(),
+                                              );
+                                            },
+                                            isHorizontal: false,
+                                            secondaryButtonColor: Colors.grey,
+                                            secondaryButtonTitle: "Tidak",
+                                            secondaryButtonAction: () {
+                                              Get.back();
+                                            },
                                           );
                                         } else {
                                           AppDialogActionCS.showFailedPopup(
