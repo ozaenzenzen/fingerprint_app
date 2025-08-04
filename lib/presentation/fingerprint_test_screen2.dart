@@ -1,9 +1,5 @@
-import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:fam_coding_supply/fam_coding_supply.dart';
-import 'package:fam_coding_supply/logic/app_permission_handler.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/controller/register_controller.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/finger_scanning/scan_finger_screen.dart';
@@ -12,40 +8,25 @@ import 'package:fingerprint_app/support/widget/app_glassmorphism_card_widget.dar
 import 'package:fingerprint_app/support/widget/app_glassmorphism_expansion_tile_widget.dart';
 import 'package:fingerprint_app/support/widget/main_button_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:gallery_saver_plus/gallery_saver.dart';
 import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
 
-enum DeviceAvailability {
-  idle,
-  needPermissionCamera,
-  // permissionCameraDone,
-  needPermissionHardware,
-  // permissionHardwareDone,
-  deviceReady,
-}
-
-class FingerprintTestScreen extends StatefulWidget {
-  const FingerprintTestScreen({super.key});
+class FingerprintTestScreen2 extends StatefulWidget {
+  const FingerprintTestScreen2({super.key});
 
   @override
-  State<FingerprintTestScreen> createState() => _FingerprintTestScreenState();
+  State<FingerprintTestScreen2> createState() => _FingerprintTestScreen2State();
 }
 
-class _FingerprintTestScreenState extends State<FingerprintTestScreen> {
+class _FingerprintTestScreen2State extends State<FingerprintTestScreen2> {
   final RegisterController registerController = Get.find<RegisterController>();
   final FingerprintService _fingerprintService = FingerprintService();
 
-  FingerprintAvailabilityNewModel? _availability;
-  // FingerprintAvailability? _availability;
-  FingerprintPermission? _permission;
+  FingerprintAvailability? _availability;
   FingerprintDeviceInfo? _deviceInfo;
   FingerprintImage? _currentImage;
   Uint8List? _displayImage;
   String _status = 'Not initialized';
   bool _isStreaming = false;
-  bool _permissionGranted = false;
-  // DeviceAvailability _deviceAvailability = DeviceAvailability.idle;
 
   @override
   void initState() {
@@ -53,92 +34,24 @@ class _FingerprintTestScreenState extends State<FingerprintTestScreen> {
     // _setupListeners();
   }
 
-  Future<void> _requestPermission() async {
-    if (_availability?.available != true) {
-      _showSnackBar('Check availability first', isError: true);
-      return;
-    }
-
-    setState(() => _status = 'Requesting permission...');
+  Future<void> _checkAvailability() async {
+    setState(() => _status = 'Checking availability...');
 
     try {
-      final permission = await _fingerprintService.requestPermission();
+      final availability = await _fingerprintService.checkAvailability();
       setState(() {
-        _permission = permission;
-        _permissionGranted = permission.granted && permission.deviceReady;
-        _status = permission.message;
+        _availability = availability;
+        _status = availability.message;
       });
 
-      if (permission.granted && permission.deviceReady) {
-        _showSnackBar('Permission granted and device ready!');
+      if (availability.available) {
+        _showSnackBar('Device ready: ${availability.deviceName}');
         await _getDeviceInfo();
-      } else if (permission.granted) {
-        _showSnackBar('Permission granted but device not ready', isError: true);
       } else {
-        _showSnackBar('Permission denied', isError: true);
+        _showSnackBar(availability.message, isError: true);
       }
     } catch (e) {
-      setState(() => _status = 'Permission error: $e');
-      _showSnackBar('$e', isError: true);
-    }
-  }
-
-  Future<void> _checkAvailability() async {
-    setState(() {
-      _status = 'Checking availability...';
-      // _deviceAvailability = DeviceAvailability.needPermissionCamera;
-    });
-
-    try {
-      bool result = await AppPermissionHandler.handlePermission(
-        permission: Permission.camera,
-        onPermanentlyDenied: () async {
-          await AppPermissionHandler.openAppSettings();
-        },
-        onDenied: () async {
-          AppDialogActionCS.showFailedPopup(
-            context: context,
-            title: "Terjadi kesalahan",
-            description: "Anda harus membuka izin menggunakan kamera",
-            buttonTitle: "Mengerti",
-            mainButtonAction: () {
-              Get.back();
-            },
-          );
-        },
-        onGranted: () async {
-          final availability = await _fingerprintService.checkAvailabilityNew();
-          log("availability: ${jsonEncode(availability)}");
-          setState(() {
-            _availability = availability;
-            _status = availability.message;
-            _permissionGranted = false; // Reset permission status
-          });
-
-          if (availability.available) {
-            _showSnackBar('${availability.readersCount} device(s) found: ${availability.deviceName}');
-          } else {
-            _showSnackBar(availability.message, isError: true);
-          }
-          // final availability = await _fingerprintService.checkAvailability();
-          // log("availability: $availability");
-          // setState(() {
-          //   _availability = availability;
-          //   _status = availability.message;
-          // });
-
-          // if (availability.available) {
-          //   _showSnackBar('Device ready: ${availability.deviceName}');
-          //   await _getDeviceInfo();
-          // } else {
-          //   _showSnackBar(availability.message, isError: true);
-          // }
-        },
-      );
-    } catch (e) {
-      setState(() {
-        _status = 'Error: $e';
-      });
+      setState(() => _status = 'Error: $e');
       _showSnackBar('$e', isError: true);
     }
   }
@@ -166,10 +79,6 @@ class _FingerprintTestScreenState extends State<FingerprintTestScreen> {
         _currentImage = image;
         _displayImage = image.imageBytes;
         _status = '${image.quality} (NFIQ: ${image.nfiqScore ?? 'N/A'})';
-        // if (_displayImage != null) {
-        //   _saveImageToGallery(_displayImage!);
-        //   // _saveImage(_displayImage!);
-        // }
       });
 
       if (image.isGoodQuality) {
@@ -191,78 +100,6 @@ class _FingerprintTestScreenState extends State<FingerprintTestScreen> {
         duration: Duration(seconds: 3),
       ),
     );
-  }
-
-  // Function to save Uint8List to a file
-  Future<void> _saveImage(Uint8List imageBytes) async {
-    try {
-      // Get the directory for saving the image
-      final directory = await getApplicationDocumentsDirectory();
-      final String path = directory.path;
-      final String fileName = 'image_${DateTime.now().millisecondsSinceEpoch}.png';
-      final String fullPath = '$path/$fileName';
-
-      // Write the Uint8List to a file
-      final File imageFile = File(fullPath);
-      await imageFile.writeAsBytes(imageBytes);
-
-      // Show success message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Image saved to $fullPath')),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to save image: $e')),
-      );
-    }
-  }
-
-  // Save Uint8List to Gallery
-  Future<void> _saveImageToGallery(Uint8List imageBytes) async {
-    try {
-      // Step 1: Save the image to a temporary file
-      final tempDir = await getTemporaryDirectory();
-      final String tempPath = '${tempDir.path}/temp_image_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      final File tempFile = File(tempPath);
-      await tempFile.writeAsBytes(imageBytes);
-
-      // Step 2: Save to Gallery using gallery_saver
-      final bool? success = await GallerySaver.saveImage(
-        tempPath,
-        // albumName: 'MyAppImages',
-      );
-
-      if (success == true) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Image saved to Gallery')),
-        );
-      } else {
-        throw Exception('Failed to save to Gallery');
-      }
-
-      // Step 3: Clean up the temporary file
-      await tempFile.delete();
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to save image: $e')),
-      );
-    }
-  }
-
-  String titleButtonAvailability = "Check Availability";
-
-  void onPressedButtonAvailability() {
-    if (_availability != null) {
-      if (!_availability!.available && !_permissionGranted) {
-        _checkAvailability.call();
-      } else if (_availability!.available && !_permissionGranted) {
-        _requestPermission.call();
-      } else {
-        _checkAvailability.call();
-      }
-    } else {
-      _checkAvailability.call();
-    }
   }
 
   @override
@@ -346,15 +183,14 @@ class _FingerprintTestScreenState extends State<FingerprintTestScreen> {
                     children: [
                       Expanded(
                         child: MainButtonWidget(
-                          onPressed: (_availability != null && _availability!.available && !_permissionGranted) ? _requestPermission : _checkAvailability,
-                          title: (_availability != null && _availability!.available && !_permissionGranted) ? "Request Permission" : "Check Availability",
-                          // title: "Check Availability",
+                          onPressed: _checkAvailability,
+                          title: "Check Availability",
                         ),
                       ),
                       SizedBox(width: 12.w),
                       Expanded(
                         child: MainButtonWidget(
-                          onPressed: _availability?.available == true && _permissionGranted && !_isStreaming ? _captureImage : null,
+                          onPressed: _availability?.available == true && !_isStreaming ? _captureImage : null,
                           title: "Capture Image",
                         ),
                       ),

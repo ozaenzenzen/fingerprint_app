@@ -51,6 +51,7 @@ class MainButtonWidget extends StatelessWidget {
             // color: Colors.white,
             // color: const Color(0xff999999),
           ),
+          textAlign: TextAlign.center,
         ),
       ),
     );

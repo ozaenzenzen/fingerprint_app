@@ -436,12 +436,130 @@ class FingerprintPlugin(private val context: Context, flutterEngine: FlutterEngi
     override fun onMethodCall(call: MethodCall, result: Result) {
         when (call.method) {
             "checkAvailability" -> checkAvailability(result)
+            "checkAvailabilityNew" -> checkAvailabilityNew(result)
+            "requestPermission" -> requestPermission(result)
             "startStream" -> startStream(result)
             "stopStream" -> stopStream(result)
             "captureImage" -> captureImage(result)
             "getDeviceInfo" -> getDeviceInfo(result)
             "enablePAD" -> enablePAD(call.argument<Boolean>("enable") ?: false, result)
             else -> result.notImplemented()
+        }
+    }
+
+    private fun checkAvailabilityNew(result: Result) {
+        scope.launch {
+            try {
+                val readers = withContext(Dispatchers.IO) {
+                    UareUGlobal.GetReaderCollection(context).apply { GetReaders() }
+                }
+
+                if (readers.size == 0) {
+                    result.success(mapOf(
+                        "available" to false,
+                        "readersCount" to 0,
+                        "message" to "No fingerprint readers found"
+                    ))
+                    return@launch
+                }
+
+                // Auto-select first available reader but don't request permissions yet
+                val selectedReader = readers[0]
+                deviceName = selectedReader.GetDescription().name
+                reader = selectedReader
+
+                // Get basic device info without opening the reader
+                val description = selectedReader.GetDescription()
+
+                result.success(mapOf(
+                    "available" to true,
+                    "readersCount" to readers.size,
+                    "deviceName" to deviceName,
+                    "deviceInfo" to mapOf(
+                        "name" to description.name,
+                        "serialNumber" to description.serial_number,
+                        "vendorId" to description.id.vendor_id,
+                        "productId" to description.id.product_id,
+                        "vendorName" to description.id.vendor_name,
+                        "productName" to description.id.product_name
+                    ),
+                    "permissionRequired" to true,
+                    "message" to "Fingerprint reader found - permission required"
+                ))
+
+            } catch (e: Exception) {
+                result.error("AVAILABILITY_ERROR", e.message, null)
+            }
+        }
+    }
+
+    private fun requestPermission(result: Result) {
+        if (reader == null) {
+            result.error("NO_READER", "No reader available. Call checkAvailability first.", null)
+            return
+        }
+
+        scope.launch {
+            try {
+                // Request USB permissions
+                requestUsbPermission(reader!!) { granted ->
+                    if (granted) {
+                        // Test if we can actually open the reader
+                        scope.launch {
+                            try {
+                                val canOpen = withContext(Dispatchers.IO) {
+                                    reader?.let { reader ->
+                                        try {
+                                            reader.Open(Reader.Priority.COOPERATIVE)
+                                            val capabilities = reader.GetCapabilities()
+                                            reader.Close()
+
+                                            mapOf(
+                                                "canCapture" to capabilities.can_capture,
+                                                "canStream" to capabilities.can_stream,
+                                                "resolutions" to capabilities.resolutions.toList(),
+                                                "pivCompliant" to capabilities.piv_compliant
+                                            )
+                                        } catch (e: Exception) {
+                                            null
+                                        }
+                                    }
+                                }
+
+                                if (canOpen != null) {
+                                    result.success(mapOf(
+                                        "granted" to true,
+                                        "deviceReady" to true,
+                                        "capabilities" to canOpen,
+                                        "message" to "Permission granted and device ready"
+                                    ))
+                                } else {
+                                    result.success(mapOf(
+                                        "granted" to true,
+                                        "deviceReady" to false,
+                                        "message" to "Permission granted but device not accessible"
+                                    ))
+                                }
+                            } catch (e: Exception) {
+                                result.success(mapOf(
+                                    "granted" to true,
+                                    "deviceReady" to false,
+                                    "message" to "Permission granted but device test failed: ${e.message}"
+                                ))
+                            }
+                        }
+                    } else {
+                        result.success(mapOf(
+                            "granted" to false,
+                            "deviceReady" to false,
+                            "message" to "USB permission denied by user"
+                        ))
+                    }
+                }
+
+            } catch (e: Exception) {
+                result.error("PERMISSION_ERROR", e.message, null)
+            }
         }
     }
 

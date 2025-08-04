@@ -37,6 +37,54 @@ class FingerprintService {
     });
   }
 
+  /// Check if fingerprint reader is available (without requesting permissions)
+  Future<FingerprintAvailabilityNewModel> checkAvailabilityNew() async {
+    try {
+      final result = await _channel.invokeMethod('checkAvailabilityNew');
+      final data = Map<String, dynamic>.from(result);
+
+      return FingerprintAvailabilityNewModel(
+        available: data['available'] ?? false,
+        readersCount: data['readersCount'] ?? 0,
+        deviceName: data['deviceName'],
+        deviceInfo: data['deviceInfo'] != null ? Map<String, dynamic>.from(data['deviceInfo']) : null,
+        permissionRequired: data['permissionRequired'] ?? false,
+        message: data['message'] ?? '',
+      );
+    } on PlatformException catch (e) {
+      return FingerprintAvailabilityNewModel(
+        available: false,
+        readersCount: 0,
+        permissionRequired: false,
+        message: e.message ?? 'Unknown error',
+      );
+    }
+  }
+
+  /// Request USB permission for the fingerprint reader
+  Future<FingerprintPermission> requestPermission() async {
+    try {
+      final result = await _channel.invokeMethod('requestPermission');
+      final data = Map<String, dynamic>.from(result);
+
+      final permission = FingerprintPermission(
+        granted: data['granted'] ?? false,
+        deviceReady: data['deviceReady'] ?? false,
+        capabilities: data['capabilities'] != null ? Map<String, dynamic>.from(data['capabilities']) : null,
+        message: data['message'] ?? '',
+      );
+
+      _isInitialized = permission.granted && permission.deviceReady;
+      return permission;
+    } on PlatformException catch (e) {
+      return FingerprintPermission(
+        granted: false,
+        deviceReady: false,
+        message: e.message ?? 'Permission request failed',
+      );
+    }
+  }
+
   /// Check if fingerprint reader is available and ready
   Future<FingerprintAvailability> checkAvailability() async {
     try {
@@ -167,6 +215,88 @@ class FingerprintAvailability {
 
   @override
   String toString() => 'FingerprintAvailability(available: $available, deviceName: $deviceName, message: $message)';
+}
+
+/// Fingerprint availability result
+class FingerprintAvailabilityNewModel {
+  final bool available;
+  final int readersCount;
+  final String? deviceName;
+  final Map<String, dynamic>? deviceInfo;
+  final bool permissionRequired;
+  final String message;
+
+  FingerprintAvailabilityNewModel({
+    required this.available,
+    required this.readersCount,
+    this.deviceName,
+    this.deviceInfo,
+    required this.permissionRequired,
+    required this.message,
+  });
+
+  // Convert the object to a JSON map
+  Map<String, dynamic> toJson() {
+    return {
+      'available': available,
+      'readersCount': readersCount,
+      'deviceName': deviceName,
+      'deviceInfo': deviceInfo,
+      'permissionRequired': permissionRequired,
+      'message': message,
+    };
+  }
+
+  // Create an object from a JSON map
+  factory FingerprintAvailabilityNewModel.fromJson(Map<String, dynamic> json) {
+    return FingerprintAvailabilityNewModel(
+      available: json['available'] as bool,
+      readersCount: json['readersCount'] as int,
+      deviceName: json['deviceName'] as String?,
+      deviceInfo: json['deviceInfo'] != null ? Map<String, dynamic>.from(json['deviceInfo'] as Map) : null,
+      permissionRequired: json['permissionRequired'] as bool,
+      message: json['message'] as String,
+    );
+  }
+
+  @override
+  String toString() => 'FingerprintAvailability(available: $available, deviceName: $deviceName, message: $message)';
+}
+
+/// Fingerprint permission result
+class FingerprintPermission {
+  final bool granted;
+  final bool deviceReady;
+  final Map<String, dynamic>? capabilities;
+  final String message;
+
+  FingerprintPermission({
+    required this.granted,
+    required this.deviceReady,
+    this.capabilities,
+    required this.message,
+  });
+
+  @override
+  String toString() => 'FingerprintPermission(granted: $granted, deviceReady: $deviceReady)';
+}
+
+/// Combined setup result
+class FingerprintSetupResult {
+  final bool success;
+  final FingerprintAvailability availability;
+  final FingerprintPermission? permission;
+  final String message;
+
+  FingerprintSetupResult({
+    required this.success,
+    required this.availability,
+    this.permission,
+    required this.message,
+  });
+
+  @override
+  String toString() => 'FingerprintSetupResult(success: $success, message: $message)';
 }
 
 /// Fingerprint image data with quality metrics

@@ -41,6 +41,7 @@ dependencies:
   get: ^4.7.2
   http_parser: ^4.1.2
   pull_to_refresh: ^2.0.0
+  gallery_saver_plus: ^3.2.8
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/presentation/detail_user_screen/detail_user_screen.dart';
+import 'package:fingerprint_app/presentation/fingerprint_test_screen.dart';
 import 'package:fingerprint_app/presentation/home_screeen/binding/home_binding.dart';
 import 'package:fingerprint_app/presentation/home_screeen/controller/home_controller.dart';
 import 'package:fingerprint_app/presentation/login_screen/controller/login_controller.dart';
@@ -85,26 +86,26 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              // InkWell(
-                              //   onTap: () {
-                              //     Get.to(
-                              //       () => FingerprintTestScreen(),
-                              //       binding: RegisterBinding(),
-                              //     );
-                              //   },
-                              //   child: Container(
-                              //     height: 32.h,
-                              //     width: 32.h,
-                              //     decoration: BoxDecoration(
-                              //       shape: BoxShape.circle,
-                              //       color: Colors.white38,
-                              //     ),
-                              //     child: Icon(
-                              //       Icons.fingerprint,
-                              //       color: Colors.white,
-                              //     ),
-                              //   ),
-                              // ),
+                              InkWell(
+                                onTap: () {
+                                  Get.to(
+                                    () => FingerprintTestScreen(),
+                                    binding: RegisterBinding(),
+                                  );
+                                },
+                                child: Container(
+                                  height: 32.h,
+                                  width: 32.h,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white38,
+                                  ),
+                                  child: Icon(
+                                    Icons.fingerprint,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
                               SizedBox(width: 8.w),
                               InkWell(
                                 onTap: () async {
