@@ -1,5 +1,7 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/presentation/fingerprint_test_screen.dart';
+import 'package:fingerprint_app/presentation/home_screeen/binding/home_binding.dart';
+import 'package:fingerprint_app/presentation/home_screeen/home_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
 import 'package:fingerprint_app/support/widget/main_button_widget.dart';
@@ -173,15 +175,34 @@ class _InfoScanFingerScreenState extends State<InfoScanFingerScreen> {
                           ],
                         ),
                         SizedBox(height: 24.h),
-                        MainButtonWidget(
-                          title: "Go to Scan",
-                          width: MediaQuery.of(context).size.width,
-                          onPressed: () {
-                            Get.to(
-                              () => FingerprintTestScreen(),
-                              binding: RegisterBinding(),
-                            );
-                          },
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: MainButtonWidget(
+                                title: "Go to Scan",
+                                width: MediaQuery.of(context).size.width,
+                                onPressed: () {
+                                  Get.to(
+                                    () => FingerprintTestScreen.registerFlow(),
+                                    binding: RegisterBinding(),
+                                  );
+                                },
+                              ),
+                            ),
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: MainButtonWidget.grey(
+                                title: "Back to Home",
+                                onPressed: () {
+                                  Get.offAll(
+                                    () => HomeScreen(),
+                                    binding: HomeBinding(),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

@@ -7,6 +7,8 @@ import 'package:fingerprint_app/data/model/remote/registration/response/get_list
 import 'package:fingerprint_app/data/model/remote/registration/response/get_registration_by_id_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/ocr_process_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/verify_face_response_model.dart';
+import 'package:fingerprint_app/data/model/remote/registration/response/fingerprint_process_response_model.dart';
+import 'package:fingerprint_app/data/model/remote/registration/response/verify_fingerprint_response_model.dart';
 import 'package:fingerprint_app/init_config.dart';
 import 'package:fingerprint_app/support/app_api_path.dart';
 import 'package:dio/dio.dart' as dio;
@@ -144,6 +146,37 @@ class RegistrationRepository {
     }
   }
 
+  Future<FingerprintProcessResponseModel?> fingerprintProcess({
+    required dio.MultipartFile image,
+    required Map<String, dynamic> requestData,
+  }) async {
+    Map<String, dynamic> requestDataEdited = requestData;
+    requestDataEdited.addAll({'image': image});
+
+    String path = AppApiPath.fingerprintProcess;
+    try {
+      final response = await appApiService.call(
+        path,
+        request: requestDataEdited,
+        method: MethodRequestCS.post,
+        useFormData: true,
+        header: {
+          "Authorization": "Bearer ${InitConfig.accessToken}",
+          "Content-Type": "multipart/form-data",
+        },
+      );
+      log("[fingerprintProcess] response.data: ${jsonEncode(response.data)}");
+      if (response.data != null) {
+        return FingerprintProcessResponseModel.fromJson(response.data);
+      } else {
+        return null;
+      }
+    } catch (errorMessage) {
+      AppLoggerCS.debugLog("[RegistrationRepository][fingerprintProcess] errorMessage $errorMessage");
+      return null;
+    }
+  }
+
   Future<VerifyFaceResponseModel?> verifyFace({
     required String id,
     required dio.MultipartFile image,
@@ -172,6 +205,38 @@ class RegistrationRepository {
       }
     } catch (errorMessage) {
       AppLoggerCS.debugLog("[RegistrationRepository][verifyFace] errorMessage $errorMessage");
+      return null;
+    }
+  }
+
+  Future<VerifyFingerprintResponseModel?> verifyFingerprint({
+    required String id,
+    required dio.MultipartFile image,
+  }) async {
+    Map<String, dynamic> requestDataEdited = {
+      'image': image,
+    };
+
+    String path = "${AppApiPath.verifyFingeprint}/$id/verify-fingerprint";
+    try {
+      final response = await appApiService.call(
+        path,
+        request: requestDataEdited,
+        method: MethodRequestCS.post,
+        useFormData: true,
+        header: {
+          "Authorization": "Bearer ${InitConfig.accessToken}",
+          "Content-Type": "multipart/form-data",
+        },
+      );
+      log("[verifyFingerprint] response.data: ${jsonEncode(response.data)}");
+      if (response.data != null) {
+        return VerifyFingerprintResponseModel.fromJson(response.data);
+      } else {
+        return null;
+      }
+    } catch (errorMessage) {
+      AppLoggerCS.debugLog("[RegistrationRepository][verifyFingerprint] errorMessage $errorMessage");
       return null;
     }
   }

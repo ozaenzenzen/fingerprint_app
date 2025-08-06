@@ -6,14 +6,14 @@ import 'package:fingerprint_app/support/widget/main_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ScanFingerScreen extends StatefulWidget {
-  const ScanFingerScreen({super.key});
+class FinishScanFingerScreen extends StatefulWidget {
+  const FinishScanFingerScreen({super.key});
 
   @override
-  State<ScanFingerScreen> createState() => _ScanFingerScreenState();
+  State<FinishScanFingerScreen> createState() => _FinishScanFingerScreenState();
 }
 
-class _ScanFingerScreenState extends State<ScanFingerScreen> {
+class _FinishScanFingerScreenState extends State<FinishScanFingerScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(

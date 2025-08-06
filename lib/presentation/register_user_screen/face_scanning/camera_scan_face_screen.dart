@@ -4,10 +4,8 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:fam_coding_supply/fam_coding_supply.dart';
-import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/controller/register_controller.dart';
-import 'package:fingerprint_app/presentation/register_user_screen/finger_scanning/info_scan_finger_screen.dart';
-import 'package:fingerprint_app/support/app_datatype_converter.dart';
+import 'package:fingerprint_app/support/widget/main_button_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saas_mlkit/saas_mlkit.dart';
@@ -185,36 +183,42 @@ class _CameraScanFaceScreenState extends State<CameraScanFaceScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                      ),
+                    MainButtonWidget(
+                      title: "Take Picture",
                       onPressed: () {
                         actionTakePicture(context);
-                        // actionTakePictureV2(context);
-                        // cameraController?.stopImageStream();
-                        // cameraController?.dispose();
-                        // Get.to(
-                        //   () => InfoScanFingerScreen(),
-                        //   binding: RegisterBinding(),
-                        // );
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) {
-                        //       return InfoScanFingerScreen();
-                        //     },
-                        //   ),
-                        // );
                       },
-                      child: Text(
-                        'Take Picture',
-                        style: GoogleFonts.mukta(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
                     ),
+                    // ElevatedButton(
+                    //   style: ElevatedButton.styleFrom(
+                    //     backgroundColor: Colors.black,
+                    //   ),
+                    //   onPressed: () {
+                    //     actionTakePicture(context);
+                    //     // actionTakePictureV2(context);
+                    //     // cameraController?.stopImageStream();
+                    //     // cameraController?.dispose();
+                    //     // Get.to(
+                    //     //   () => InfoScanFingerScreen(),
+                    //     //   binding: RegisterBinding(),
+                    //     // );
+                    //     // Navigator.pushReplacement(
+                    //     //   context,
+                    //     //   MaterialPageRoute(
+                    //     //     builder: (context) {
+                    //     //       return InfoScanFingerScreen();
+                    //     //     },
+                    //     //   ),
+                    //     // );
+                    //   },
+                    //   child: Text(
+                    //     'Take Picture',
+                    //     style: GoogleFonts.mukta(
+                    //       color: Colors.white,
+                    //       fontSize: 16,
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(height: 100),
                   ],
                 ),

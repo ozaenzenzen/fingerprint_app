@@ -1,11 +1,12 @@
 import 'dart:developer';
 
 import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:fingerprint_app/presentation/home_screeen/binding/home_binding.dart';
+import 'package:fingerprint_app/presentation/home_screeen/home_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/controller/register_controller.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/face_scanning/camera_scan_face_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/face_scanning/result_camera_scan_face_screen.dart';
-import 'package:fingerprint_app/presentation/register_user_screen/finger_scanning/info_scan_finger_screen.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
 import 'package:fingerprint_app/support/widget/main_button_widget.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +17,17 @@ enum ScanFaceFlowType { registerFlow, continueFlow }
 class InfoScanFaceScreen extends StatefulWidget {
   final ScanFaceFlowType scanFaceFlowType;
 
-  const InfoScanFaceScreen({
+  // const InfoScanFaceScreen({
+  //   super.key,
+  //   required this.scanFaceFlowType,
+  // });
+  const InfoScanFaceScreen.continueFlow({
     super.key,
-    required this.scanFaceFlowType,
-  });
+  }) : scanFaceFlowType = ScanFaceFlowType.continueFlow;
+
+  const InfoScanFaceScreen.registerFlow({
+    super.key,
+  }) : scanFaceFlowType = ScanFaceFlowType.registerFlow;
 
   @override
   State<InfoScanFaceScreen> createState() => _InfoScanFaceScreenState();
@@ -37,7 +45,7 @@ class _InfoScanFaceScreenState extends State<InfoScanFaceScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false,
+      canPop: widget.scanFaceFlowType == ScanFaceFlowType.continueFlow ? true : false,
       child: Scaffold(
         body: Container(
           child: Stack(
@@ -193,40 +201,44 @@ class _InfoScanFaceScreenState extends State<InfoScanFaceScreen> {
                           ],
                         ),
                         SizedBox(height: 24.h),
-                        MainButtonWidget(
-                          title: "Go to Scan",
-                          width: MediaQuery.of(context).size.width,
-                          onPressed: () {
-                            Get.to(
-                              () => CameraScanFaceScreen(
-                                callback: (dataImage) {
-                                  log("callback here");
-                                  Get.back();
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: MainButtonWidget(
+                                title: "Go to Scan",
+                                onPressed: () {
                                   Get.to(
-                                    () => ResultCameraScanFaceScreen(
-                                      faceLiveness: dataImage,
+                                    () => CameraScanFaceScreen(
+                                      callback: (dataImage) {
+                                        log("callback here");
+                                        Get.back();
+                                        Get.to(
+                                          () => ResultCameraScanFaceScreen(
+                                            faceLiveness: dataImage,
+                                          ),
+                                          binding: RegisterBinding(),
+                                        );
+                                      },
                                     ),
                                     binding: RegisterBinding(),
                                   );
                                 },
                               ),
-                              binding: RegisterBinding(),
-                            );
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //     builder: (context) {
-                            //       return CameraScanFaceScreen(
-                            //           // callback: (textDetected) {},
-                            //           // callbackImage: (image) {},
-                            //           // callbackImageCard: (image) {},
-                            //           // callbackKTPMapping: (mapping) {},
-                            //           // callbackSIMMapping: (mapping) {},
-                            //           );
-                            //     },
-                            //   ),
-                            // );
-                          },
+                            ),
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: MainButtonWidget.grey(
+                                title: "Back to Home",
+                                onPressed: () {
+                                  Get.offAll(
+                                    () => HomeScreen(),
+                                    binding: HomeBinding(),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -254,24 +266,25 @@ class _InfoScanFaceScreenState extends State<InfoScanFaceScreen> {
                       //     ),
                       //   ),
                       // ),
-                      // InkWell(
-                      //   onTap: () {
-                      //     Navigator.pop(context);
-                      //   },
-                      //   child: Container(
-                      //     padding: EdgeInsets.symmetric(
-                      //       horizontal: 16.w,
-                      //     ),
-                      //     // color: Colors.amber,
-                      //     height: 40.h,
-                      //     width: 40.h,
-                      //     child: Icon(
-                      //       Icons.arrow_back_ios,
-                      //       color: Colors.white,
-                      //       size: 20.h,
-                      //     ),
-                      //   ),
-                      // ),
+                      if (widget.scanFaceFlowType == ScanFaceFlowType.continueFlow)
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
+                            ),
+                            // color: Colors.amber,
+                            height: 40.h,
+                            width: 40.h,
+                            child: Icon(
+                              Icons.arrow_back_ios,
+                              color: Colors.white,
+                              size: 20.h,
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),

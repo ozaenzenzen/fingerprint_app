@@ -86,27 +86,27 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              InkWell(
-                                onTap: () {
-                                  Get.to(
-                                    () => FingerprintTestScreen(),
-                                    binding: RegisterBinding(),
-                                  );
-                                },
-                                child: Container(
-                                  height: 32.h,
-                                  width: 32.h,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white38,
-                                  ),
-                                  child: Icon(
-                                    Icons.fingerprint,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 8.w),
+                              // InkWell(
+                              //   onTap: () {
+                              //     Get.to(
+                              //       () => FingerprintTestScreen(),
+                              //       binding: RegisterBinding(),
+                              //     );
+                              //   },
+                              //   child: Container(
+                              //     height: 32.h,
+                              //     width: 32.h,
+                              //     decoration: BoxDecoration(
+                              //       shape: BoxShape.circle,
+                              //       color: Colors.white38,
+                              //     ),
+                              //     child: Icon(
+                              //       Icons.fingerprint,
+                              //       color: Colors.white,
+                              //     ),
+                              //   ),
+                              // ),
+                              // SizedBox(width: 8.w),
                               InkWell(
                                 onTap: () async {
                                   await loginController.logout(

@@ -27,6 +27,15 @@ class MainButtonWidget extends StatelessWidget {
   })  : textColor = const Color(0xff1183FF),
         backgroundColor = const Color(0xffffffff);
 
+  const MainButtonWidget.grey({
+    super.key,
+    required this.title,
+    this.onPressed,
+    this.height,
+    this.width,
+  })  : textColor = Colors.white,
+        backgroundColor = Colors.grey;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(

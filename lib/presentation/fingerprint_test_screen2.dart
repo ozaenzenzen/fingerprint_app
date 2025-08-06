@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/controller/register_controller.dart';
-import 'package:fingerprint_app/presentation/register_user_screen/finger_scanning/scan_finger_screen.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/finger_scanning/finish_scan_finger_screen.dart';
 import 'package:fingerprint_app/service/fingerprint_service.dart';
 import 'package:fingerprint_app/support/widget/app_glassmorphism_card_widget.dart';
 import 'package:fingerprint_app/support/widget/app_glassmorphism_expansion_tile_widget.dart';
@@ -285,7 +285,7 @@ class _FingerprintTestScreen2State extends State<FingerprintTestScreen2> {
                                               Get.back();
                                               registerController.fingerprintData.value = _currentImage;
                                               Get.to(
-                                                () => ScanFingerScreen(),
+                                                () => FinishScanFingerScreen(),
                                                 binding: RegisterBinding(),
                                               );
                                             },

@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fam_coding_supply/logic/app_bottomsheet_utils.dart';
 import 'package:fingerprint_app/domain/ocr_data_holder_model.dart';
+import 'package:fingerprint_app/presentation/home_screeen/binding/home_binding.dart';
+import 'package:fingerprint_app/presentation/home_screeen/home_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/controller/register_controller.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/face_scanning/info_scan_face_screen.dart';
@@ -99,9 +101,7 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
       reqBody: controller.ocrHolder.value!.toJson(),
       onSuccess: (result) {
         Get.to(
-          () => InfoScanFaceScreen(
-            scanFaceFlowType: ScanFaceFlowType.registerFlow,
-          ),
+          () => InfoScanFaceScreen.registerFlow(),
           binding: RegisterBinding(),
         );
       },
@@ -291,23 +291,63 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
                               ),
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16.w,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                  ),
+                                  // color: Colors.amber,
+                                  height: 40.h,
+                                  width: 40.h,
+                                  child: Icon(
+                                    Icons.arrow_back_ios,
+                                    color: Colors.white,
+                                    size: 20.h,
+                                  ),
+                                ),
                               ),
-                              // color: Colors.amber,
-                              height: 40.h,
-                              width: 40.h,
-                              child: Icon(
-                                Icons.arrow_back_ios,
-                                color: Colors.white,
-                                size: 20.h,
+                              InkWell(
+                                onTap: () {
+                                  AppDialogActionCS.showWarningPopup(
+                                    context: context,
+                                    title: "Warning",
+                                    description: "Proses Scan ID belum tersimpan. Apakah Anda yakin ingin ke halaman home?",
+                                    mainButtonTitle: "Ya",
+                                    mainButtonColor: const Color(0xff1183FF),
+                                    mainButtonAction: () {
+                                      Get.back();
+                                      Get.offAll(
+                                        () => HomeScreen(),
+                                        binding: HomeBinding(),
+                                      );
+                                    },
+                                    isHorizontal: false,
+                                    secondaryButtonColor: Colors.grey,
+                                    secondaryButtonTitle: "Tidak",
+                                    secondaryButtonAction: () {
+                                      Get.back();
+                                    },
+                                  );
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  // color: Colors.amber,
+                                  height: 40.h,
+                                  width: 40.h,
+                                  child: Icon(
+                                    Icons.home,
+                                    color: Colors.white,
+                                    size: 20.h,
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),

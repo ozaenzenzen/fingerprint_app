@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/get_registration_by_id_response_model.dart';
 import 'package:fingerprint_app/presentation/fingerprint_test_screen.dart';
@@ -132,7 +130,7 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                   ),
                 ),
                 SizedBox(height: 16.h),
-                Container(
+                SizedBox(
                   // color: Colors.red,
                   child: Image.asset(
                     AppAssets.imageKtp,
@@ -168,9 +166,7 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                                 final RegisterController registerController = Get.put(RegisterController());
                                 registerController.continueUserId.value = widget.data.id ?? "";
                                 Get.to(
-                                  () => InfoScanFaceScreen(
-                                    scanFaceFlowType: ScanFaceFlowType.continueFlow,
-                                  ),
+                                  () => InfoScanFaceScreen.continueFlow(),
                                   binding: RegisterBinding(),
                                 );
                               },
@@ -211,7 +207,7 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                               onTap: () {
                                 Get.back();
                                 Get.to(
-                                  () => FingerprintTestScreen(),
+                                  () => FingerprintTestScreen.continueFlow(),
                                   binding: RegisterBinding(),
                                 );
                               },

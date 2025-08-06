@@ -95,6 +95,34 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
                           widget.retryCaptureCallback?.call();
                         },
                       ),
+                      // SizedBox(height: 16.h),
+                      // MainButtonWidget.inverse(
+                      //   title: "Kembali ke Home",
+                      //   height: 48.h,
+                      //   width: MediaQuery.of(context).size.width,
+                      //   onPressed: () async {
+                      //     registerController.isLoading.value = false;
+                      //     if (widget.dataOCR.imageCard == null || widget.dataOCR.imageFromCard == null || widget.dataOCR.ktpData == null) {
+                      //       AppDialogActionCS.showFailedPopup(
+                      //         context: context,
+                      //         title: "Terjadi kesalahan",
+                      //         description: "Silakan ulangi proses kembali",
+                      //         mainButtonAction: () {
+                      //           Get.back();
+                      //         },
+                      //         buttonTitle: "Kembali",
+                      //         mainButtonColor: const Color(0xff1183FF),
+                      //       );
+                      //     } else {
+                      //       Get.to(
+                      //         () => ValidateDataIdScreen(
+                      //           dataOCR: widget.dataOCR,
+                      //         ),
+                      //         binding: RegisterBinding(),
+                      //       );
+                      //     }
+                      //   },
+                      // ),
                       SizedBox(height: 16.h),
                       MainButtonWidget(
                         title: "Lanjutkan",

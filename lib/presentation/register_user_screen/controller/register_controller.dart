@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:fingerprint_app/data/model/remote/registration/response/face_compare_process_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/ocr_process_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/verify_face_response_model.dart';
+import 'package:fingerprint_app/data/model/remote/registration/response/fingerprint_process_response_model.dart';
+import 'package:fingerprint_app/data/model/remote/registration/response/verify_fingerprint_response_model.dart';
 import 'package:fingerprint_app/data/repository/local/local_access_repository.dart';
 import 'package:fingerprint_app/data/repository/remote/access_repository.dart';
 import 'package:fingerprint_app/data/repository/remote/registration_repository.dart';
@@ -190,6 +192,81 @@ class RegisterController extends GetxController {
     }
   }
 
+  Future<void> fingerprintProcess({
+    required FingerprintImage fingerprintImage,
+    // required File fingerprintImage,
+    void Function(FingerprintProcessResponseModel result)? onSuccess,
+    void Function(String errorMessage)? onFailed,
+  }) async {
+    isLoading.value = true;
+    onFailedCallback(String errorMessage) {
+      isLoading.value = false;
+      onFailed?.call(errorMessage);
+    }
+
+    try {
+      if (fingerprintImage.base64Image == null) {
+        onFailedCallback.call("failed at processing image: need support data");
+        return;
+      }
+
+      File? outputFile = await AppDatatypeConverter().base64ToFile(
+        base64String: fingerprintImage.base64Image!,
+        fileName: "fingerprintImage.jpg",
+        format: "jpeg",
+      );
+      // File? outputFile = await AppDatatypeConverter().fileToFile(
+      //   sourceFile: fingerprintImage,
+      //   outputFileName: 'fingerprintImage.jpg',
+      //   format: 'jpeg',
+      //   quality: 100,
+      //   // resizeWidth: 200, // Resize to 200px width
+      // );
+
+      if (outputFile == null) {
+        onFailedCallback.call("failed at processing image");
+        return;
+      }
+
+      log("outputFile.path: ${outputFile.path}");
+      log("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
+      dio.MultipartFile image = await dio.MultipartFile.fromFile(
+        outputFile.path,
+        filename: outputFile.path.toString().split('/').last,
+        contentType: MediaType('image', 'jpeg'),
+      );
+
+      FingerprintProcessResponseModel? response = await registrationRepository.fingerprintProcess(
+        image: image,
+        requestData: {
+          "requestId": requestId.value,
+        },
+      );
+      if (response == null) {
+        onFailedCallback.call("response is null");
+        return;
+      }
+
+      if (response.statusCode == null) {
+        onFailedCallback.call("${response.message} #0001");
+        return;
+      }
+
+      if (response.statusCode != 200) {
+        onFailedCallback.call("${response.message} #0002");
+        return;
+      }
+
+      if (response.statusCode == 200) {
+        isLoading.value = false;
+        onSuccess?.call(response);
+        return;
+      }
+    } catch (e) {
+      onFailedCallback.call("${e.toString()} #0004");
+    }
+  }
+
   RxString continueUserId = ''.obs;
 
   Future<void> verifyFace({
@@ -235,6 +312,86 @@ class RegisterController extends GetxController {
       // );
 
       VerifyFaceResponseModel? response = await registrationRepository.verifyFace(
+        id: id,
+        image: image,
+      );
+      if (response == null) {
+        onFailedCallback.call("response is null");
+        return;
+      }
+
+      if (response.statusCode == null) {
+        onFailedCallback.call("${response.message} #0001");
+        return;
+      }
+
+      if (response.statusCode != 200) {
+        onFailedCallback.call("${response.message}: ${(response.data != null) ? (jsonEncode(response.data)) : ""} #0002");
+        return;
+      }
+
+      if (response.data == null) {
+        onFailedCallback.call("${response.message} #0003");
+        return;
+      }
+
+      if (response.statusCode == 200) {
+        isLoading.value = false;
+        onSuccess?.call(response);
+        return;
+      }
+    } catch (e) {
+      onFailedCallback.call("${e.toString()} #0004");
+    }
+  }
+
+  Future<void> verifyFingerprint({
+    required String id,
+    required FingerprintImage fingerprintImage,
+    // required File fingerprintImage,
+    void Function(VerifyFingerprintResponseModel result)? onSuccess,
+    void Function(String errorMessage)? onFailed,
+  }) async {
+    isLoading.value = true;
+    onFailedCallback(String errorMessage) {
+      isLoading.value = false;
+      onFailed?.call(errorMessage);
+    }
+
+    try {
+      if (fingerprintImage.base64Image == null) {
+        onFailedCallback.call("failed at processing image: need support data");
+        return;
+      }
+
+      File? outputFile = await AppDatatypeConverter().base64ToFile(
+        base64String: fingerprintImage.base64Image!,
+        fileName: "fingerprintImage.jpg",
+        format: "jpeg",
+      );
+
+      // File? outputFile = await AppDatatypeConverter().fileToFile(
+      //   sourceFile: faceLiveness,
+      //   outputFileName: 'verifyFace.jpg',
+      //   format: 'jpeg',
+      //   quality: 100,
+      //   // resizeWidth: 200, // Resize to 200px width
+      // );
+
+      if (outputFile == null) {
+        onFailedCallback.call("failed at processing image");
+        return;
+      }
+
+      log("outputFile.path: ${outputFile.path}");
+      log("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
+      dio.MultipartFile image = await dio.MultipartFile.fromFile(
+        outputFile.path,
+        filename: outputFile.path.toString().split('/').last,
+        contentType: MediaType('image', 'jpeg'),
+      );
+
+      VerifyFingerprintResponseModel? response = await registrationRepository.verifyFingerprint(
         id: id,
         image: image,
       );
