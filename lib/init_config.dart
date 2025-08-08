@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/data/repository/local/local_access_repository.dart';
 import 'package:fingerprint_app/env.dart';
+import 'package:no_screenshot/no_screenshot.dart';
 
 class InitConfig {
   static FamCodingSupply famCodingSupply = FamCodingSupply();
@@ -15,8 +18,16 @@ class InitConfig {
   static String accessToken = "";
   static bool testMode = false;
 
+  static final NoScreenshot _noScreenshot = NoScreenshot.instance;
+
+  // static void disableScreenshot() async {
+  //   bool result = await _noScreenshot.screenshotOff();
+  //   log('Screenshot Off: $result');
+  // }
+
   static Future<void> init({
     bool testModeValue = false,
+    bool screenshotActive = true,
   }) async {
     testMode = testModeValue;
 
@@ -34,5 +45,11 @@ class InitConfig {
     await famCodingSupply.appDeviceInfo.getDeviceData();
 
     InitConfig.accessToken = await LocalAccessRepository().getAccessToken() ?? "";
+
+    if (screenshotActive) {
+      await _noScreenshot.screenshotOn();
+    } else {
+      await _noScreenshot.screenshotOff();
+    }
   }
 }

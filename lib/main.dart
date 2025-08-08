@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 Future<void> main() async {
   await InitConfig.init(
     testModeValue: true,
+    screenshotActive: true,
   );
   runApp(const MyApp());
 }
