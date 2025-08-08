@@ -3,6 +3,8 @@ import 'package:fingerprint_app/init_config.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
-  await InitConfig.init();
+  await InitConfig.init(
+    testModeValue: true,
+  );
   runApp(const MyApp());
 }

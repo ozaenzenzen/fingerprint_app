@@ -41,7 +41,7 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
       if (registerController.currentScanFaceFlowType.value == ScanFaceFlowType.registerFlow) {
         await registerController.faceCompareProcess(
           faceLiveness: registerController.faceLiveness.value!,
-          onSuccess: (result) {
+          onSuccess: () {
             onSuccess?.call();
           },
           onFailed: (errorMessage) {

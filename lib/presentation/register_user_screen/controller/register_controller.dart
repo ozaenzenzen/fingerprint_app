@@ -40,7 +40,8 @@ class RegisterController extends GetxController {
   Future<void> ocrProcess({
     required File faceFromKtp,
     required Map<String, dynamic> reqBody,
-    void Function(OcrProcessResponseModel result)? onSuccess,
+    void Function()? onSuccess,
+    // void Function(OcrProcessResponseModel result)? onSuccess,
     void Function(String errorMessage)? onFailed,
   }) async {
     isLoading.value = true;
@@ -50,62 +51,62 @@ class RegisterController extends GetxController {
     }
 
     try {
-      File? outputFile = await AppDatatypeConverter().fileToFile(
-        sourceFile: faceFromKtp,
-        outputFileName: 'faceFromKtp.jpg',
-        format: 'jpeg',
-        quality: 100,
-        // resizeWidth: 200, // Resize to 200px width
-      );
-
-      if (outputFile == null) {
-        onFailedCallback.call("failed at processing image");
-        return;
-      }
-
-      log("outputFile.path: ${outputFile.path}");
-      log("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
-      dio.MultipartFile image = await dio.MultipartFile.fromFile(
-        outputFile.path,
-        filename: outputFile.path.toString().split('/').last,
-        contentType: MediaType('image', 'jpeg'),
-      );
-      // log("faceLiveness.path: ${faceFromKtp.path}");
-      // log("faceLiveness.path.toString().split('/').last: ${faceFromKtp.path.toString().split('/').last}");
-      // dio.MultipartFile image = await dio.MultipartFile.fromFile(
-      //   faceFromKtp.path,
-      //   filename: faceFromKtp.path.toString().split('/').last,
-      //   contentType: MediaType('image', 'png'),
-      // );
-      OcrProcessResponseModel? response = await registrationRepository.ocrProcess(
-        image: image,
-        requestData: reqBody,
-      );
-      if (response == null) {
-        onFailedCallback.call("response is null");
-        return;
-      }
-
-      if (response.statusCode == null) {
-        onFailedCallback.call("${response.message} #0001");
-        return;
-      }
-
-      if (response.statusCode != 200) {
-        onFailedCallback.call("${response.message}: ${(response.data != null) ? (jsonEncode(response.data)) : ""} #0002");
-        return;
-      }
-
-      if (response.data == null) {
-        onFailedCallback.call("${response.message} #0003");
-        return;
-      }
-
-      if (response.statusCode == 200) {
+      if (InitConfig.testMode) {
+        await Future.delayed(const Duration(seconds: 1));
         isLoading.value = false;
-        requestId.value = response.data?.requestId;
-        onSuccess?.call(response);
-        return;
+        onSuccess?.call();
+      } else {
+        File? outputFile = await AppDatatypeConverter().fileToFile(
+          sourceFile: faceFromKtp,
+          outputFileName: 'faceFromKtp.jpg',
+          format: 'jpeg',
+          quality: 100,
+          // resizeWidth: 200, // Resize to 200px width
+        );
+
+        if (outputFile == null) {
+          onFailedCallback.call("failed at processing image");
+          return;
+        }
+
+        log("outputFile.path: ${outputFile.path}");
+        log("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
+        dio.MultipartFile image = await dio.MultipartFile.fromFile(
+          outputFile.path,
+          filename: outputFile.path.toString().split('/').last,
+          contentType: MediaType('image', 'jpeg'),
+        );
+        OcrProcessResponseModel? response = await registrationRepository.ocrProcess(
+          image: image,
+          requestData: reqBody,
+        );
+        if (response == null) {
+          onFailedCallback.call("response is null");
+          return;
+        }
+
+        if (response.statusCode == null) {
+          onFailedCallback.call("${response.message} #0001");
+          return;
+        }
+
+        if (response.statusCode != 200) {
+          onFailedCallback.call("${response.message}: ${(response.data != null) ? (jsonEncode(response.data)) : ""} #0002");
+          return;
+        }
+
+        if (response.data == null) {
+          onFailedCallback.call("${response.message} #0003");
+          return;
+        }
+
+        if (response.statusCode == 200) {
+          isLoading.value = false;
+          requestId.value = response.data?.requestId;
+          onSuccess?.call();
+          // onSuccess?.call(response);
+          return;
+        }
       }
     } catch (e) {
       isLoading.value = false;
@@ -117,7 +118,8 @@ class RegisterController extends GetxController {
 
   Future<void> faceCompareProcess({
     required File faceLiveness,
-    void Function(FaceCompareProcessResponseModel result)? onSuccess,
+    void Function()? onSuccess,
+    // void Function(FaceCompareProcessResponseModel result)? onSuccess,
     void Function(String errorMessage)? onFailed,
   }) async {
     isLoading.value = true;
@@ -127,65 +129,64 @@ class RegisterController extends GetxController {
     }
 
     try {
-      File? outputFile = await AppDatatypeConverter().fileToFile(
-        sourceFile: faceLiveness,
-        outputFileName: 'faceLiveness.jpg',
-        format: 'jpeg',
-        quality: 100,
-        // resizeWidth: 200, // Resize to 200px width
-      );
-
-      if (outputFile == null) {
-        onFailedCallback.call("failed at processing image");
-        return;
-      }
-
-      log("outputFile.path: ${outputFile.path}");
-      log("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
-      dio.MultipartFile image = await dio.MultipartFile.fromFile(
-        outputFile.path,
-        filename: outputFile.path.toString().split('/').last,
-        contentType: MediaType('image', 'jpeg'),
-      );
-
-      // log("faceLiveness.path: ${faceLiveness.path}");
-      // log("faceLiveness.path.toString().split('/').last: ${faceLiveness.path.toString().split('/').last}");
-      // dio.MultipartFile image = await dio.MultipartFile.fromFile(
-      //   faceLiveness.path,
-      //   filename: faceLiveness.path.toString().split('/').last,
-      //   contentType: MediaType('image', 'png'),
-      // );
-
-      FaceCompareProcessResponseModel? response = await registrationRepository.faceCompareProcess(
-        image: image,
-        requestData: {
-          "requestId": requestId.value,
-        },
-      );
-      if (response == null) {
-        onFailedCallback.call("response is null");
-        return;
-      }
-
-      if (response.statusCode == null) {
-        onFailedCallback.call("${response.message} #0001");
-        return;
-      }
-
-      if (response.statusCode != 200) {
-        onFailedCallback.call("${response.message}: ${(response.data != null) ? (jsonEncode(response.data)) : ""} #0002");
-        return;
-      }
-
-      if (response.data == null) {
-        onFailedCallback.call("${response.message} #0003");
-        return;
-      }
-
-      if (response.statusCode == 200) {
+      if (InitConfig.testMode) {
+        await Future.delayed(const Duration(seconds: 1));
         isLoading.value = false;
-        onSuccess?.call(response);
-        return;
+        onSuccess?.call();
+      } else {
+        File? outputFile = await AppDatatypeConverter().fileToFile(
+          sourceFile: faceLiveness,
+          outputFileName: 'faceLiveness.jpg',
+          format: 'jpeg',
+          quality: 100,
+          // resizeWidth: 200, // Resize to 200px width
+        );
+
+        if (outputFile == null) {
+          onFailedCallback.call("failed at processing image");
+          return;
+        }
+
+        log("outputFile.path: ${outputFile.path}");
+        log("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
+        dio.MultipartFile image = await dio.MultipartFile.fromFile(
+          outputFile.path,
+          filename: outputFile.path.toString().split('/').last,
+          contentType: MediaType('image', 'jpeg'),
+        );
+
+        FaceCompareProcessResponseModel? response = await registrationRepository.faceCompareProcess(
+          image: image,
+          requestData: {
+            "requestId": requestId.value,
+          },
+        );
+        if (response == null) {
+          onFailedCallback.call("response is null");
+          return;
+        }
+
+        if (response.statusCode == null) {
+          onFailedCallback.call("${response.message} #0001");
+          return;
+        }
+
+        if (response.statusCode != 200) {
+          onFailedCallback.call("${response.message}: ${(response.data != null) ? (jsonEncode(response.data)) : ""} #0002");
+          return;
+        }
+
+        if (response.data == null) {
+          onFailedCallback.call("${response.message} #0003");
+          return;
+        }
+
+        if (response.statusCode == 200) {
+          isLoading.value = false;
+          onSuccess?.call();
+          // onSuccess?.call(response);
+          return;
+        }
       }
     } catch (e) {
       onFailedCallback.call("${e.toString()} #0004");
@@ -195,7 +196,8 @@ class RegisterController extends GetxController {
   Future<void> fingerprintProcess({
     required FingerprintImage fingerprintImage,
     // required File fingerprintImage,
-    void Function(FingerprintProcessResponseModel result)? onSuccess,
+    void Function()? onSuccess,
+    // void Function(FingerprintProcessResponseModel result)? onSuccess,
     void Function(String errorMessage)? onFailed,
   }) async {
     isLoading.value = true;
@@ -205,62 +207,69 @@ class RegisterController extends GetxController {
     }
 
     try {
-      if (fingerprintImage.base64Image == null) {
-        onFailedCallback.call("failed at processing image: need support data");
-        return;
-      }
-
-      File? outputFile = await AppDatatypeConverter().base64ToFile(
-        base64String: fingerprintImage.base64Image!,
-        fileName: "fingerprintImage.jpg",
-        format: "jpeg",
-      );
-      // File? outputFile = await AppDatatypeConverter().fileToFile(
-      //   sourceFile: fingerprintImage,
-      //   outputFileName: 'fingerprintImage.jpg',
-      //   format: 'jpeg',
-      //   quality: 100,
-      //   // resizeWidth: 200, // Resize to 200px width
-      // );
-
-      if (outputFile == null) {
-        onFailedCallback.call("failed at processing image");
-        return;
-      }
-
-      log("outputFile.path: ${outputFile.path}");
-      log("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
-      dio.MultipartFile image = await dio.MultipartFile.fromFile(
-        outputFile.path,
-        filename: outputFile.path.toString().split('/').last,
-        contentType: MediaType('image', 'jpeg'),
-      );
-
-      FingerprintProcessResponseModel? response = await registrationRepository.fingerprintProcess(
-        image: image,
-        requestData: {
-          "requestId": requestId.value,
-        },
-      );
-      if (response == null) {
-        onFailedCallback.call("response is null");
-        return;
-      }
-
-      if (response.statusCode == null) {
-        onFailedCallback.call("${response.message} #0001");
-        return;
-      }
-
-      if (response.statusCode != 200) {
-        onFailedCallback.call("${response.message} #0002");
-        return;
-      }
-
-      if (response.statusCode == 200) {
+      if (InitConfig.testMode) {
+        await Future.delayed(const Duration(seconds: 1));
         isLoading.value = false;
-        onSuccess?.call(response);
-        return;
+        onSuccess?.call();
+      } else {
+        if (fingerprintImage.base64Image == null) {
+          onFailedCallback.call("failed at processing image: need support data");
+          return;
+        }
+
+        File? outputFile = await AppDatatypeConverter().base64ToFile(
+          base64String: fingerprintImage.base64Image!,
+          fileName: "fingerprintImage.jpg",
+          format: "jpeg",
+        );
+        // File? outputFile = await AppDatatypeConverter().fileToFile(
+        //   sourceFile: fingerprintImage,
+        //   outputFileName: 'fingerprintImage.jpg',
+        //   format: 'jpeg',
+        //   quality: 100,
+        //   // resizeWidth: 200, // Resize to 200px width
+        // );
+
+        if (outputFile == null) {
+          onFailedCallback.call("failed at processing image");
+          return;
+        }
+
+        log("outputFile.path: ${outputFile.path}");
+        log("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
+        dio.MultipartFile image = await dio.MultipartFile.fromFile(
+          outputFile.path,
+          filename: outputFile.path.toString().split('/').last,
+          contentType: MediaType('image', 'jpeg'),
+        );
+
+        FingerprintProcessResponseModel? response = await registrationRepository.fingerprintProcess(
+          image: image,
+          requestData: {
+            "requestId": requestId.value,
+          },
+        );
+        if (response == null) {
+          onFailedCallback.call("response is null");
+          return;
+        }
+
+        if (response.statusCode == null) {
+          onFailedCallback.call("${response.message} #0001");
+          return;
+        }
+
+        if (response.statusCode != 200) {
+          onFailedCallback.call("${response.message} #0002");
+          return;
+        }
+
+        if (response.statusCode == 200) {
+          isLoading.value = false;
+          onSuccess?.call();
+          // onSuccess?.call(response);
+          return;
+        }
       }
     } catch (e) {
       onFailedCallback.call("${e.toString()} #0004");

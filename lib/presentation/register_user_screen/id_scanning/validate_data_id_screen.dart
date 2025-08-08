@@ -99,7 +99,7 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
     await controller.ocrProcess(
       faceFromKtp: controller.faceFromKtp.value!,
       reqBody: controller.ocrHolder.value!.toJson(),
-      onSuccess: (result) {
+      onSuccess: () {
         Get.to(
           () => InfoScanFaceScreen.registerFlow(),
           binding: RegisterBinding(),
@@ -184,13 +184,13 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
                                     children: [
                                       Text(
                                           """Dengan melanjutkan, Anda menyetujui bahwa aplikasi ini dapat menyimpan dan mengelola data pribadi Anda sesuai dengan Kebijakan Privasi kami. Data yang disimpan meliputi, namun tidak terbatas pada:
-        - NIK
-        - Nama lengkap
-        - Alamat
-                                  
-        Kami menjamin bahwa data Anda akan dijaga kerahasiaannya dan tidak akan dibagikan kepada pihak ketiga tanpa izin Anda.
-                            
-        Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan dan menggunakan data Anda sesuai dengan ketentuan di atas."""),
+- NIK
+- Nama lengkap
+- Alamat
+                          
+Kami menjamin bahwa data Anda akan dijaga kerahasiaannya dan tidak akan dibagikan kepada pihak ketiga tanpa izin Anda.
+                    
+Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan dan menggunakan data Anda sesuai dengan ketentuan di atas."""),
                                       SizedBox(height: kToolbarHeight + 16.h),
                                     ],
                                   ),

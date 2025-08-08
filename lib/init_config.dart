@@ -13,8 +13,13 @@ class InitConfig {
   // static LocalServiceHive localServiceHive = LocalServiceHive();
 
   static String accessToken = "";
+  static bool testMode = false;
 
-  static Future<void> init() async {
+  static Future<void> init({
+    bool testModeValue = false,
+  }) async {
+    testMode = testModeValue;
+
     AppLoggerCS.useLogger = true;
     AppLoggerCS.useFoundation = true;
     appApiService.useLogger = true;

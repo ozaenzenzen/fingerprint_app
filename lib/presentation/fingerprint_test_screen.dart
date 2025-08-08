@@ -468,7 +468,7 @@ class _FingerprintTestScreenState extends State<FingerprintTestScreen> {
                                                   if (widget.fingerprintCaptureFlowType == FingerprintCaptureFlowType.registerFlow) {
                                                     await registerController.fingerprintProcess(
                                                       fingerprintImage: _currentImage!,
-                                                      onSuccess: (result) {
+                                                      onSuccess: () {
                                                         Get.to(
                                                           () => FinishScanFingerScreen(),
                                                           binding: RegisterBinding(),
