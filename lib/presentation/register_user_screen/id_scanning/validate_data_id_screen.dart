@@ -152,7 +152,11 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
                             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             value: controller.isPrivacyAgreement.value,
                             onChanged: (value) {
-                              controller.isPrivacyAgreement.value = !controller.isPrivacyAgreement.value;
+                              if (controller.isPrivacyAgreement.value) {
+                                controller.isPrivacyAgreement.value = false;
+                              }
+                              // controller.isPrivacyAgreement.value = !controller.isPrivacyAgreement.value;
+                              // controller.isPrivacyAgreement.value = !controller.isPrivacyAgreement.value;
                               AppBottomSheetUtilsCS().showAppBottomSheetV2(
                                 // withClose: true,
                                 context,
@@ -191,6 +195,15 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
 Kami menjamin bahwa data Anda akan dijaga kerahasiaannya dan tidak akan dibagikan kepada pihak ketiga tanpa izin Anda.
                     
 Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan dan menggunakan data Anda sesuai dengan ketentuan di atas."""),
+                                      SizedBox(height: 16.h),
+                                      MainButtonWidget(
+                                        width: MediaQuery.of(context).size.width,
+                                        title: "Setuju",
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                          controller.isPrivacyAgreement.value = true;
+                                        },
+                                      ),
                                       SizedBox(height: kToolbarHeight + 16.h),
                                     ],
                                   ),
