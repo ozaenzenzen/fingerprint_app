@@ -6,6 +6,7 @@ import 'package:fingerprint_app/presentation/home_screeen/controller/home_contro
 import 'package:fingerprint_app/presentation/login_screen/controller/login_controller.dart';
 import 'package:fingerprint_app/presentation/login_screen/login_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/face_scanning/info_scan_face_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/register_user_screen.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
 import 'package:fingerprint_app/support/widget/app_loading_overlay_widget.dart';
@@ -29,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await homeController.getListRegistration(
-        onSuccess: (result) {
+        onSuccess: () {
           //
         },
         onFailed: (errorMessage) {
@@ -87,6 +88,27 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
+                              InkWell(
+                                onTap: () {
+                                  Get.to(
+                                    () => InfoScanFaceScreen.registerFlow(),
+                                    binding: RegisterBinding(),
+                                  );
+                                },
+                                child: Container(
+                                  height: 32.h,
+                                  width: 32.h,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white38,
+                                  ),
+                                  child: Icon(
+                                    Icons.face,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 8.w),
                               // InkWell(
                               //   onTap: () {
                               //     Get.to(
@@ -286,7 +308,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               onRefresh: () async {
                                 await homeController.getListRegistration(
-                                  onSuccess: (result) {
+                                  onSuccess: () {
                                     refreshController.refreshCompleted();
                                   },
                                   onFailed: (errorMessage) {

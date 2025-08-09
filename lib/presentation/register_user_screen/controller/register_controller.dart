@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:fingerprint_app/data/model/remote/registration/response/face_compare_process_response_model.dart';
+import 'package:fingerprint_app/data/model/remote/registration/response/get_list_registration_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/ocr_process_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/verify_face_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/fingerprint_process_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/verify_fingerprint_response_model.dart';
 import 'package:fingerprint_app/data/repository/local/local_access_repository.dart';
+import 'package:fingerprint_app/data/repository/local/local_home_repository.dart';
 import 'package:fingerprint_app/data/repository/remote/access_repository.dart';
 import 'package:fingerprint_app/data/repository/remote/registration_repository.dart';
 import 'package:fingerprint_app/domain/ocr_data_holder_model.dart';
@@ -18,6 +20,7 @@ import 'package:fingerprint_app/support/app_datatype_converter.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:http_parser/http_parser.dart';
+import 'package:uuid/uuid.dart';
 
 class RegisterController extends GetxController {
   final AccessRepository accessRepository = AccessRepository(InitConfig.appApiService);
@@ -37,6 +40,8 @@ class RegisterController extends GetxController {
 
   RxBool isLoading = false.obs;
 
+  String uuidDummy = Uuid().v4();
+
   Future<void> ocrProcess({
     required File faceFromKtp,
     required Map<String, dynamic> reqBody,
@@ -53,8 +58,31 @@ class RegisterController extends GetxController {
     try {
       if (InitConfig.testMode) {
         await Future.delayed(const Duration(seconds: 1));
-        isLoading.value = false;
-        onSuccess?.call();
+        List<ItemGetListRegistration>? dataLocal = await LocalHomeRepository().getListRegistration();
+        if (dataLocal != null) {
+          bool isExist = dataLocal.any((datas) => datas.id == uuidDummy);
+          if (!isExist) {
+            ItemGetListRegistration dataInput = ItemGetListRegistration(
+              id: uuidDummy,
+              registeredAt: DateTime.now(),
+              surveyor: SurveyorGetListRegistration(
+                fullName: "Surveyor Account",
+              ),
+              user: UserGetListRegistration(
+                nik: "${ocrHolder.value?.nik}",
+                fullName: "${ocrHolder.value?.nama}",
+              ),
+            );
+            dataLocal.add(dataInput);
+            await LocalHomeRepository().setListRegistration(dataLocal);
+          }
+          isLoading.value = false;
+          onSuccess?.call();
+          return;
+        } else {
+          onFailedCallback.call("failed at processing image");
+          return;
+        }
       } else {
         File? outputFile = await AppDatatypeConverter().fileToFile(
           sourceFile: faceFromKtp,
@@ -131,8 +159,31 @@ class RegisterController extends GetxController {
     try {
       if (InitConfig.testMode) {
         await Future.delayed(const Duration(seconds: 1));
-        isLoading.value = false;
-        onSuccess?.call();
+        List<ItemGetListRegistration>? dataLocal = await LocalHomeRepository().getListRegistration();
+        if (dataLocal != null) {
+          bool isExist = dataLocal.any((datas) => datas.id == uuidDummy);
+          if (!isExist) {
+            ItemGetListRegistration dataInput = ItemGetListRegistration(
+              id: uuidDummy,
+              registeredAt: DateTime.now(),
+              surveyor: SurveyorGetListRegistration(
+                fullName: "Surveyor Account",
+              ),
+              user: UserGetListRegistration(
+                nik: "${ocrHolder.value?.nik}",
+                fullName: "${ocrHolder.value?.nama}",
+              ),
+            );
+            dataLocal.add(dataInput);
+            await LocalHomeRepository().setListRegistration(dataLocal);
+          }
+          isLoading.value = false;
+          onSuccess?.call();
+          return;
+        } else {
+          onFailedCallback.call("failed at processing image");
+          return;
+        }
       } else {
         File? outputFile = await AppDatatypeConverter().fileToFile(
           sourceFile: faceLiveness,
@@ -209,8 +260,32 @@ class RegisterController extends GetxController {
     try {
       if (InitConfig.testMode) {
         await Future.delayed(const Duration(seconds: 1));
-        isLoading.value = false;
-        onSuccess?.call();
+        List<ItemGetListRegistration>? dataLocal = await LocalHomeRepository().getListRegistration();
+        if (dataLocal != null) {
+          bool isExist = dataLocal.any((datas) => datas.id == uuidDummy);
+          if (!isExist) {
+            ItemGetListRegistration dataInput = ItemGetListRegistration(
+              id: uuidDummy,
+              registeredAt: DateTime.now(),
+              surveyor: SurveyorGetListRegistration(
+                fullName: "Surveyor Account",
+              ),
+              user: UserGetListRegistration(
+                nik: "${ocrHolder.value?.nik}",
+                fullName: "${ocrHolder.value?.nama}",
+              ),
+            );
+            dataLocal.add(dataInput);
+            await LocalHomeRepository().setListRegistration(dataLocal);
+          }
+
+          isLoading.value = false;
+          onSuccess?.call();
+          return;
+        } else {
+          onFailedCallback.call("failed at processing image");
+          return;
+        }
       } else {
         if (fingerprintImage.base64Image == null) {
           onFailedCallback.call("failed at processing image: need support data");
@@ -384,7 +459,7 @@ class RegisterController extends GetxController {
         isLoading.value = false;
         VerifyFingerprintResponseModel resultDummy = VerifyFingerprintResponseModel(
           statusCode: 200,
-          message: "Sukses",
+          message: "Success data match",
           data: DataVerifyFingerprint(),
         );
         onSuccess?.call(resultDummy);

@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/get_list_registration_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/get_registration_by_id_response_model.dart';
 import 'package:fingerprint_app/data/repository/local/local_access_repository.dart';
+import 'package:fingerprint_app/data/repository/local/local_home_repository.dart';
 import 'package:fingerprint_app/data/repository/remote/access_repository.dart';
 import 'package:fingerprint_app/data/repository/remote/registration_repository.dart';
 import 'package:fingerprint_app/init_config.dart';
@@ -20,7 +23,7 @@ class HomeController extends GetxController {
 
   Future<void> getListRegistration({
     // int? currentPage = 1,
-    void Function(GetListRegistrationResponseModel result)? onSuccess,
+    void Function()? onSuccess,
     void Function(String errorMessage)? onFailed,
   }) async {
     AppLoggerCS.debugLog("[getListRegistration] called");
@@ -33,37 +36,50 @@ class HomeController extends GetxController {
     try {
       currentPage.value = 1;
 
-      GetListRegistrationResponseModel? response = await registrationRepository.getListRegistration(
-        currentPage: currentPage.value,
-      );
-      if (response == null) {
-        onFailedCallback.call("response is null");
-        return;
-      }
+      if (InitConfig.testMode) {
+        await Future.delayed(const Duration(seconds: 1));
+        List<ItemGetListRegistration>? dataListRegist = await LocalHomeRepository().getListRegistration();
+        if (dataListRegist != null) {
+          listRegistrationData.addAll(dataListRegist);
+          isLoadingHome.value = false;
+          onSuccess?.call();
+        } else {
+          onFailedCallback.call("response is null");
+          return;
+        }
+      } else {
+        GetListRegistrationResponseModel? response = await registrationRepository.getListRegistration(
+          currentPage: currentPage.value,
+        );
+        if (response == null) {
+          onFailedCallback.call("response is null");
+          return;
+        }
 
-      if (response.statusCode == null) {
-        onFailedCallback.call("${response.message} #0001");
-        return;
-      }
+        if (response.statusCode == null) {
+          onFailedCallback.call("${response.message} #0001");
+          return;
+        }
 
-      if (response.statusCode != 200) {
-        onFailedCallback.call("${response.message} #0002");
-        return;
-      }
+        if (response.statusCode != 200) {
+          onFailedCallback.call("${response.message} #0002");
+          return;
+        }
 
-      if (response.data == null) {
-        onFailedCallback.call("${response.message} #0003");
-        return;
-      }
+        if (response.data == null) {
+          onFailedCallback.call("${response.message} #0003");
+          return;
+        }
 
-      if (response.statusCode == 200) {
-        isLoadingHome.value = false;
-        responseRegistrationData.value = response;
-        listRegistrationData.addAll(response.data!.items!);
-        listRegistrationData.value = removeDuplicatesById(listRegistrationData);
+        if (response.statusCode == 200) {
+          isLoadingHome.value = false;
+          responseRegistrationData.value = response;
+          listRegistrationData.addAll(response.data!.items!);
+          listRegistrationData.value = removeDuplicatesById(listRegistrationData);
 
-        onSuccess?.call(response);
-        return;
+          onSuccess?.call();
+          return;
+        }
       }
     } catch (e) {
       onFailedCallback.call("e: $e");
@@ -85,7 +101,7 @@ class HomeController extends GetxController {
           currentPage++;
 
           await getListRegistration(
-            onSuccess: (result) {
+            onSuccess: () {
               isLoadingHome.value = false;
               onSuccess?.call();
             },
@@ -126,34 +142,110 @@ class HomeController extends GetxController {
     }
 
     try {
-      GetRegistrationByIdResponseModel? response = await registrationRepository.getRegistrationById(
-        id: id,
-      );
-      if (response == null) {
-        onFailedCallback.call("response is null");
-        return;
+      if (InitConfig.testMode) {
+        await Future.delayed(const Duration(seconds: 1));
+        String dataString = """
+{
+  "statusCode": 200,
+  "message": "Registration data retrieved successfully",
+  "data": {
+    "id": "REG-123456",
+    "ktpImageUrl": "https://example.com/ktp/123456.jpg",
+    "isDoneFingerprint": true,
+    "isDoneFacialRecognition": false,
+    "registeredAt": "2023-06-15T09:30:45Z",
+    "surveyor": {
+      "fullName": "Budi Santoso"
+    },
+    "user": {
+      "id": "USR-789",
+      "nik": "3273010101980001",
+      "fullName": "Debby Anggraini",
+      "placeOfBirth": "Jakarta",
+      "dateOfBirth": "1990-12-21",
+      "gender": "Female",
+      "bloodType": "A",
+      "address": "Jl. Merdeka No. 123",
+      "rt": "001",
+      "rw": "002",
+      "kelurahan": "Menteng",
+      "kecamatan": "Jakarta Pusat",
+      "city": "Jakarta",
+      "province": "DKI Jakarta",
+      "religion": "Islam",
+      "maritalStatus": "Single",
+      "occupation": "Software Developer",
+      "nationality": "Indonesia",
+      "validUntil": "Permanent",
+      "createdAt": "2023-06-01T08:00:00Z",
+      "updatedAt": "2023-06-15T09:30:45Z"
+    },
+    "registrationTimelines": [
+      {
+        "id": "TLN-001",
+        "registrationId": "REG-123456",
+        "userNik": "3273010101980001",
+        "step": "Document Upload",
+        "status": "Completed",
+        "createdAt": "2023-06-15T09:15:00Z",
+        "updatedAt": "2023-06-15T09:20:00Z"
+      },
+      {
+        "id": "TLN-002",
+        "registrationId": "REG-123456",
+        "userNik": "3273010101980001",
+        "step": "Fingerprint",
+        "status": "Completed",
+        "createdAt": "2023-06-15T09:25:00Z",
+        "updatedAt": "2023-06-15T09:28:00Z"
+      },
+      {
+        "id": "TLN-003",
+        "registrationId": "REG-123456",
+        "userNik": "3273010101980001",
+        "step": "Facial Recognition",
+        "status": "Pending",
+        "createdAt": "2023-06-15T09:30:00Z",
+        "updatedAt": "2023-06-15T09:30:00Z"
       }
-
-      if (response.statusCode == null) {
-        onFailedCallback.call("${response.message} #0001");
-        return;
-      }
-
-      if (response.statusCode != 200) {
-        onFailedCallback.call("${response.message} #0002");
-        return;
-      }
-
-      if (response.data == null) {
-        onFailedCallback.call("${response.message} #0003");
-        return;
-      }
-
-      if (response.statusCode == 200) {
+    ]
+  }
+}
+""";
+        GetRegistrationByIdResponseModel? response = GetRegistrationByIdResponseModel.fromJson(jsonDecode(dataString));
         isLoadingHome.value = false;
         responseDetailRegistration.value = response;
         onSuccess?.call(response);
-        return;
+      } else {
+        GetRegistrationByIdResponseModel? response = await registrationRepository.getRegistrationById(
+          id: id,
+        );
+        if (response == null) {
+          onFailedCallback.call("response is null");
+          return;
+        }
+
+        if (response.statusCode == null) {
+          onFailedCallback.call("${response.message} #0001");
+          return;
+        }
+
+        if (response.statusCode != 200) {
+          onFailedCallback.call("${response.message} #0002");
+          return;
+        }
+
+        if (response.data == null) {
+          onFailedCallback.call("${response.message} #0003");
+          return;
+        }
+
+        if (response.statusCode == 200) {
+          isLoadingHome.value = false;
+          responseDetailRegistration.value = response;
+          onSuccess?.call(response);
+          return;
+        }
       }
     } catch (e) {
       onFailedCallback.call("e: $e");
