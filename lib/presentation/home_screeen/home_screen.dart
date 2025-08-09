@@ -41,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainButtonAction: () {
               Get.back();
             },
+            mainButtonColor: const Color(0xff1183FF),
           );
         },
       );
@@ -122,6 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         mainButtonAction: () {
                                           Get.back();
                                         },
+                                        mainButtonColor: const Color(0xff1183FF),
                                       );
                                     },
                                   );
@@ -277,6 +279,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       mainButtonAction: () {
                                         Get.back();
                                       },
+                                      mainButtonColor: const Color(0xff1183FF),
                                     );
                                   },
                                 );
@@ -296,6 +299,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       mainButtonAction: () {
                                         Get.back();
                                       },
+                                      mainButtonColor: const Color(0xff1183FF),
                                     );
                                   },
                                 );
@@ -329,6 +333,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             mainButtonAction: () {
                                               Get.back();
                                             },
+                                            mainButtonColor: const Color(0xff1183FF),
                                           );
                                         },
                                       );
