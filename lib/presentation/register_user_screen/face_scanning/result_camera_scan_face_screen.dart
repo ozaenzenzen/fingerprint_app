@@ -61,7 +61,7 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
         await registerController.verifyFace(
           id: registerController.continueUserId.value,
           faceLiveness: registerController.faceLiveness.value!,
-          onSuccess: (result) {
+          onSuccess: () {
             onSuccess?.call();
           },
           onFailed: (errorMessage) {
@@ -117,10 +117,14 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
                       child: Column(
                         children: [
                           SizedBox(height: 124.h),
-                          Image.memory(base64Decode(widget.faceLiveness)),
+                          Image.memory(
+                            height: 300.h,
+                            base64Decode(widget.faceLiveness),
+                          ),
                           SizedBox(height: 78.h),
                           Text(
-                            "Pastikan hasil gambar terlihat jelas",
+                            "Pastikan hasil gambar wajah Anda terlihat jelas",
+                            textAlign: TextAlign.center,
                             style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w400,
                               fontSize: 16.sp,
