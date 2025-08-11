@@ -32,7 +32,7 @@ class InitConfig {
     testMode = testModeValue;
 
     AppLoggerCS.useLogger = true;
-    AppLoggerCS.useFoundation = true;
+    // AppLoggerCS.useFoundation = true;
     appApiService.useLogger = true;
 
     AppLoggerCS.debugLog("call init");
