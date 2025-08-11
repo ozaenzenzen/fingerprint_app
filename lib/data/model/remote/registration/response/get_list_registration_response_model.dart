@@ -47,12 +47,14 @@ class ItemGetListRegistration {
   DateTime? registeredAt;
   SurveyorGetListRegistration? surveyor;
   UserGetListRegistration? user;
+  LatestRegistrationTimelineGetListRegistration? latestRegistrationTimeline;
 
   ItemGetListRegistration({
     this.id,
     this.registeredAt,
     this.surveyor,
     this.user,
+    this.latestRegistrationTimeline,
   });
 
   factory ItemGetListRegistration.fromJson(Map<String, dynamic> json) => ItemGetListRegistration(
@@ -60,6 +62,7 @@ class ItemGetListRegistration {
         registeredAt: json["registeredAt"] == null ? null : DateTime.parse(json["registeredAt"]),
         surveyor: json["surveyor"] == null ? null : SurveyorGetListRegistration.fromJson(json["surveyor"]),
         user: json["user"] == null ? null : UserGetListRegistration.fromJson(json["user"]),
+        latestRegistrationTimeline: json["latestRegistrationTimeline"] == null ? null : LatestRegistrationTimelineGetListRegistration.fromJson(json["latestRegistrationTimeline"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -67,6 +70,27 @@ class ItemGetListRegistration {
         "registeredAt": registeredAt?.toIso8601String(),
         "surveyor": surveyor?.toJson(),
         "user": user?.toJson(),
+        "latestRegistrationTimeline": latestRegistrationTimeline?.toJson(),
+      };
+}
+
+class LatestRegistrationTimelineGetListRegistration {
+  String? step;
+  String? status;
+
+  LatestRegistrationTimelineGetListRegistration({
+    this.step,
+    this.status,
+  });
+
+  factory LatestRegistrationTimelineGetListRegistration.fromJson(Map<String, dynamic> json) => LatestRegistrationTimelineGetListRegistration(
+        step: json["step"],
+        status: json["status"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "step": step,
+        "status": status,
       };
 }
 

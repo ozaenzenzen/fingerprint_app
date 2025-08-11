@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               // InkWell(
                               //   onTap: () {
                               //     Get.to(
-                              //       () => FingerprintTestScreen(),
+                              //       () => FingerprintTestScreen.registerFlow(),
                               //       binding: RegisterBinding(),
                               //     );
                               //   },
