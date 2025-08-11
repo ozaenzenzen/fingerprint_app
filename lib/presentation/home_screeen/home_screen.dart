@@ -1,4 +1,5 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:fingerprint_app/data/model/remote/registration/response/get_list_registration_response_model.dart';
 import 'package:fingerprint_app/presentation/detail_user_screen/detail_user_screen.dart';
 import 'package:fingerprint_app/presentation/fingerprint_test_screen.dart';
 import 'package:fingerprint_app/presentation/home_screeen/binding/home_binding.dart';
@@ -333,7 +334,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 // itemCount: 13,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
-                                  return InkWell(
+                                  return RegistrationItemListWidget(
+                                    data: homeController.listRegistrationData[index],
                                     onTap: () async {
                                       await homeController.getRegistrationById(
                                         id: homeController.listRegistrationData[index].id ?? "",
@@ -360,54 +362,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                         },
                                       );
                                     },
-                                    child: Container(
-                                      // height: 62.h,
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 12.w,
-                                        vertical: 8.h,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: const Color(0xff1183FF),
-                                        ),
-                                        borderRadius: BorderRadius.circular(12.h),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "${homeController.listRegistrationData[index].user?.fullName}",
-                                                  // "Title $index",
-                                                  style: GoogleFonts.openSans(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 16.sp,
-                                                    color: const Color(0xff222222),
-                                                  ),
-                                                ),
-                                                SizedBox(height: 4.h),
-                                                Text(
-                                                  "${homeController.listRegistrationData[index].user?.nik}",
-                                                  // "Desc $index",
-                                                  style: GoogleFonts.openSans(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 12.sp,
-                                                    color: const Color(0xff5A6684),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(width: 8.w),
-                                          Icon(
-                                            Icons.keyboard_arrow_right_outlined,
-                                            size: 24.h,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
                                   );
                                 },
                                 separatorBuilder: (context, index) {
@@ -436,6 +390,95 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
       ],
+    );
+  }
+}
+
+class RegistrationItemListWidget extends StatelessWidget {
+  final Function()? onTap;
+  final ItemGetListRegistration data;
+
+  const RegistrationItemListWidget({
+    super.key,
+    this.onTap,
+    required this.data,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        onTap?.call();
+      },
+      child: Container(
+        // height: 62.h,
+        padding: EdgeInsets.symmetric(
+          horizontal: 12.w,
+          vertical: 8.h,
+        ),
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: const Color(0xff1183FF),
+          ),
+          borderRadius: BorderRadius.circular(12.h),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "${data.user?.fullName}",
+                    // "Title $index",
+                    style: GoogleFonts.openSans(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16.sp,
+                      color: const Color(0xff222222),
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    "${data.user?.nik}",
+                    // "Desc $index",
+                    style: GoogleFonts.openSans(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12.sp,
+                      color: const Color(0xff5A6684),
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 6.h,
+                      horizontal: 8.w,
+                    ),
+                    decoration: BoxDecoration(
+                      color: (data.latestRegistrationTimeline!.status == "SUCCESS") ? Colors.green : Colors.red,
+                      borderRadius: BorderRadius.circular(12.h),
+                    ),
+                    child: Text(
+                      "${data.latestRegistrationTimeline?.step}",
+                      // "Desc $index",
+                      style: GoogleFonts.openSans(
+                        fontWeight: FontWeight.w400,
+                        fontSize: 8.sp,
+                        color: Colors.white,
+                        // color: const Color(0xff5A6684),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: 8.w),
+            Icon(
+              Icons.keyboard_arrow_right_outlined,
+              size: 24.h,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
