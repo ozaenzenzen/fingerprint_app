@@ -25,6 +25,7 @@ class GetRegistrationByIdResponseModel {
 class DataGetRegistrationById {
   String? id;
   String? ktpImageUrl;
+  bool? isDoneVerifyNik;
   bool? isDoneFingerprint;
   bool? isDoneFacialRecognition;
   DateTime? registeredAt;
@@ -35,6 +36,7 @@ class DataGetRegistrationById {
   DataGetRegistrationById({
     this.id,
     this.ktpImageUrl,
+    this.isDoneVerifyNik,
     this.isDoneFingerprint,
     this.isDoneFacialRecognition,
     this.registeredAt,
@@ -46,19 +48,19 @@ class DataGetRegistrationById {
   factory DataGetRegistrationById.fromJson(Map<String, dynamic> json) => DataGetRegistrationById(
         id: json["id"],
         ktpImageUrl: json["ktpImageUrl"],
+        isDoneVerifyNik: json["isDoneVerifyNik"],
         isDoneFingerprint: json["isDoneFingerprint"],
         isDoneFacialRecognition: json["isDoneFacialRecognition"],
         registeredAt: json["registeredAt"] == null ? null : DateTime.parse(json["registeredAt"]),
         surveyor: json["surveyor"] == null ? null : SurveyorGetRegistrationById.fromJson(json["surveyor"]),
         user: json["user"] == null ? null : UserGetRegistrationById.fromJson(json["user"]),
-        registrationTimelines: json["registrationTimelines"] == null
-            ? []
-            : List<RegistrationTimelineGetRegistrationById>.from(json["registrationTimelines"]!.map((x) => RegistrationTimelineGetRegistrationById.fromJson(x))),
+        registrationTimelines: json["registrationTimelines"] == null ? [] : List<RegistrationTimelineGetRegistrationById>.from(json["registrationTimelines"]!.map((x) => RegistrationTimelineGetRegistrationById.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "ktpImageUrl": ktpImageUrl,
+        "isDoneVerifyNik": isDoneVerifyNik,
         "isDoneFingerprint": isDoneFingerprint,
         "isDoneFacialRecognition": isDoneFacialRecognition,
         "registeredAt": registeredAt?.toIso8601String(),
@@ -71,7 +73,6 @@ class DataGetRegistrationById {
 class RegistrationTimelineGetRegistrationById {
   String? id;
   String? registrationId;
-  String? userNik;
   String? step;
   String? status;
   DateTime? createdAt;
@@ -80,7 +81,6 @@ class RegistrationTimelineGetRegistrationById {
   RegistrationTimelineGetRegistrationById({
     this.id,
     this.registrationId,
-    this.userNik,
     this.step,
     this.status,
     this.createdAt,
@@ -90,7 +90,6 @@ class RegistrationTimelineGetRegistrationById {
   factory RegistrationTimelineGetRegistrationById.fromJson(Map<String, dynamic> json) => RegistrationTimelineGetRegistrationById(
         id: json["id"],
         registrationId: json["registrationId"],
-        userNik: json["userNik"],
         step: json["step"],
         status: json["status"],
         createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
@@ -100,7 +99,6 @@ class RegistrationTimelineGetRegistrationById {
   Map<String, dynamic> toJson() => {
         "id": id,
         "registrationId": registrationId,
-        "userNik": userNik,
         "step": step,
         "status": status,
         "createdAt": createdAt?.toIso8601String(),

@@ -1,4 +1,5 @@
 import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:fam_coding_supply/ui/widget/app_tooltip_widget.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/get_registration_by_id_response_model.dart';
 import 'package:fingerprint_app/presentation/fingerprint_test_screen.dart';
 import 'package:fingerprint_app/presentation/home_screeen/controller/home_controller.dart';
@@ -68,6 +69,8 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
     kewarganegaraanController.text = "${widget.data.user?.nationality}";
     berlakuHinggaController.text = "${widget.data.user?.validUntil}";
   }
+
+  final tooltipController = SuperTooltipController();
 
   @override
   Widget build(BuildContext context) {
@@ -744,6 +747,16 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                                         color: const Color(0xff1183FF),
                                       ),
                                     ),
+                                    suffixIcon: (widget.data.isDoneVerifyNik != null && widget.data.isDoneVerifyNik!)
+                                        ? AppTooltipWidget(
+                                            tooltipController: tooltipController,
+                                            message: "NIK Verified",
+                                            child: Icon(
+                                              Icons.check_circle,
+                                              color: Colors.green,
+                                            ),
+                                          )
+                                        : null,
                                     floatingLabelBehavior: FloatingLabelBehavior.always,
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12.h),
