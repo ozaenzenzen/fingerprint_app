@@ -216,6 +216,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     mainButtonAction: () {
                                       Get.back();
                                     },
+                                    mainButtonColor: const Color(0xff1183FF),
                                   );
                                 },
                               );
