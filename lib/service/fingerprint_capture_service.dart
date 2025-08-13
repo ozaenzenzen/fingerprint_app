@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:fam_coding_supply/logic/app_logger.dart';
 import 'package:flutter/services.dart';
 import 'dart:typed_data';
 import 'dart:async';
@@ -24,7 +25,7 @@ class FingerprintCaptureService {
       final bool result = await platform.invokeMethod('initReader', {
         'readerIndex': readerIndex,
       });
-      log("[initializeReader] result: $result");
+      AppLoggerCS.debugLog("[initializeReader] result: $result");
       return result;
     } on PlatformException catch (e) {
       print("Failed to initialize reader: '${e.message}'");

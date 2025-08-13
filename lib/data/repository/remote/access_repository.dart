@@ -12,7 +12,7 @@ class AccessRepository {
   AccessRepository(this.appApiService);
 
   Future<LoginResponseModel?> login(LoginRequestModel data) async {
-    log("data: ${jsonEncode(data.toJson())}");
+    AppLoggerCS.debugLog("data: ${jsonEncode(data.toJson())}");
     try {
       final response = await appApiService.call(
         AppApiPath.login,
@@ -22,7 +22,7 @@ class AccessRepository {
           'Accept': 'application/json',
         },
       );
-      log("[login] response.data: ${jsonEncode(response.data)}");
+      AppLoggerCS.debugLog("[login] response.data: ${jsonEncode(response.data)}");
       if (response.data != null) {
         return LoginResponseModel.fromJson(response.data);
       } else {

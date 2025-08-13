@@ -122,7 +122,7 @@ class _FingerprintTestScreenState extends State<FingerprintTestScreen> {
         },
         onGranted: () async {
           final availability = await _fingerprintService.checkAvailabilityNew();
-          log("availability: ${jsonEncode(availability)}");
+          AppLoggerCS.debugLog("availability: ${jsonEncode(availability)}");
           setState(() {
             _availability = availability;
             _status = availability.message;
@@ -135,7 +135,7 @@ class _FingerprintTestScreenState extends State<FingerprintTestScreen> {
             _showSnackBar(availability.message, isError: true);
           }
           // final availability = await _fingerprintService.checkAvailability();
-          // log("availability: $availability");
+          // AppLoggerCS.debugLog("availability: $availability");
           // setState(() {
           //   _availability = availability;
           //   _status = availability.message;

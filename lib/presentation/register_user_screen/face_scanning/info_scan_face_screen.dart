@@ -211,7 +211,7 @@ class _InfoScanFaceScreenState extends State<InfoScanFaceScreen> {
                                   Get.to(
                                     () => CameraScanFaceScreen(
                                       callback: (dataImage) {
-                                        log("callback here");
+                                        AppLoggerCS.debugLog("callback here");
                                         Get.back();
                                         Get.to(
                                           () => ResultCameraScanFaceScreen(

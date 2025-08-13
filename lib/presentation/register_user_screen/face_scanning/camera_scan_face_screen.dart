@@ -34,7 +34,7 @@ class _CameraScanFaceScreenState extends State<CameraScanFaceScreen> {
       );
 
       if (data != null) {
-        log('data captured $data');
+        AppLoggerCS.debugLog('data captured $data');
         XFile? imageCaptured;
         imageCaptured = data;
         File tempImage;
@@ -43,7 +43,7 @@ class _CameraScanFaceScreenState extends State<CameraScanFaceScreen> {
         );
         var bytes = await tempImage.readAsBytes();
         captured = base64Encode(bytes);
-        log('tempImage ${tempImage.path}');
+        AppLoggerCS.debugLog('tempImage ${tempImage.path}');
         widget.callback!.call(captured!);
 
         registerController.faceLiveness.value = tempImage;
@@ -57,14 +57,14 @@ class _CameraScanFaceScreenState extends State<CameraScanFaceScreen> {
   }
 
   void actionTakePictureV2(BuildContext context) async {
-    log("here");
+    AppLoggerCS.debugLog("here");
     if (cameraController != null) {
       String? data = await SaasLivenessHelper().takePictureAsBase64(
         cameraController!,
       );
       if (data != null) {
         captured = data;
-        // log('captured $captured');
+        // AppLoggerCS.debugLog('captured $captured');
         widget.callback?.call(captured!);
 
         // registerController.faceLiveness.value = await AppDatatypeConverter().convertBase64ToFile(

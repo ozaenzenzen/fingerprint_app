@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:fam_coding_supply/logic/app_logger.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/face_compare_process_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/get_list_registration_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/ocr_process_response_model.dart';
@@ -97,8 +98,8 @@ class RegisterController extends GetxController {
           return;
         }
 
-        log("outputFile.path: ${outputFile.path}");
-        log("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
+        AppLoggerCS.debugLog("outputFile.path: ${outputFile.path}");
+        AppLoggerCS.debugLog("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
         dio.MultipartFile image = await dio.MultipartFile.fromFile(
           outputFile.path,
           filename: outputFile.path.toString().split('/').last,
@@ -198,8 +199,8 @@ class RegisterController extends GetxController {
           return;
         }
 
-        log("outputFile.path: ${outputFile.path}");
-        log("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
+        AppLoggerCS.debugLog("outputFile.path: ${outputFile.path}");
+        AppLoggerCS.debugLog("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
         dio.MultipartFile image = await dio.MultipartFile.fromFile(
           outputFile.path,
           filename: outputFile.path.toString().split('/').last,
@@ -310,8 +311,8 @@ class RegisterController extends GetxController {
           return;
         }
 
-        log("outputFile.path: ${outputFile.path}");
-        log("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
+        AppLoggerCS.debugLog("outputFile.path: ${outputFile.path}");
+        AppLoggerCS.debugLog("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
         dio.MultipartFile image = await dio.MultipartFile.fromFile(
           outputFile.path,
           filename: outputFile.path.toString().split('/').last,
@@ -384,16 +385,16 @@ class RegisterController extends GetxController {
           return;
         }
 
-        log("outputFile.path: ${outputFile.path}");
-        log("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
+        AppLoggerCS.debugLog("outputFile.path: ${outputFile.path}");
+        AppLoggerCS.debugLog("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
         dio.MultipartFile image = await dio.MultipartFile.fromFile(
           outputFile.path,
           filename: outputFile.path.toString().split('/').last,
           contentType: MediaType('image', 'jpeg'),
         );
 
-        // log("faceLiveness.path: ${faceLiveness.path}");
-        // log("faceLiveness.path.toString().split('/').last: ${faceLiveness.path.toString().split('/').last}");
+        // AppLoggerCS.debugLog("faceLiveness.path: ${faceLiveness.path}");
+        // AppLoggerCS.debugLog("faceLiveness.path.toString().split('/').last: ${faceLiveness.path.toString().split('/').last}");
         // dio.MultipartFile image = await dio.MultipartFile.fromFile(
         //   faceLiveness.path,
         //   filename: faceLiveness.path.toString().split('/').last,
@@ -483,8 +484,8 @@ class RegisterController extends GetxController {
           return;
         }
 
-        log("outputFile.path: ${outputFile.path}");
-        log("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
+        AppLoggerCS.debugLog("outputFile.path: ${outputFile.path}");
+        AppLoggerCS.debugLog("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
         dio.MultipartFile image = await dio.MultipartFile.fromFile(
           outputFile.path,
           filename: outputFile.path.toString().split('/').last,

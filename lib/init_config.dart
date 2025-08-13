@@ -22,7 +22,7 @@ class InitConfig {
 
   // static void disableScreenshot() async {
   //   bool result = await _noScreenshot.screenshotOff();
-  //   log('Screenshot Off: $result');
+  //   AppLoggerCS.debugLog('Screenshot Off: $result');
   // }
 
   static Future<void> init({
@@ -33,9 +33,7 @@ class InitConfig {
 
     AppLoggerCS.useLogger = true;
     // AppLoggerCS.useFoundation = true;
-    appApiService.useLogger = true;
-
-    AppLoggerCS.debugLog("call init");
+    // appApiService.useLogger = true;
 
     EnvironmentConfig.flavor = Flavor.staging;
 

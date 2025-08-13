@@ -103,7 +103,7 @@ class RegistrationRepository {
           "Content-Type": "multipart/form-data",
         },
       );
-      log("[ocrProcess] response.data: ${jsonEncode(response.data)}");
+      AppLoggerCS.debugLog("[ocrProcess] response.data: ${jsonEncode(response.data)}");
       if (response.data != null) {
         return OcrProcessResponseModel.fromJson(response.data);
       } else {
@@ -134,7 +134,7 @@ class RegistrationRepository {
           "Content-Type": "multipart/form-data",
         },
       );
-      log("[faceCompareProcess] response.data: ${jsonEncode(response.data)}");
+      AppLoggerCS.debugLog("[faceCompareProcess] response.data: ${jsonEncode(response.data)}");
       if (response.data != null) {
         return FaceCompareProcessResponseModel.fromJson(response.data);
       } else {
@@ -165,7 +165,7 @@ class RegistrationRepository {
           "Content-Type": "multipart/form-data",
         },
       );
-      log("[fingerprintProcess] response.data: ${jsonEncode(response.data)}");
+      AppLoggerCS.debugLog("[fingerprintProcess] response.data: ${jsonEncode(response.data)}");
       if (response.data != null) {
         return FingerprintProcessResponseModel.fromJson(response.data);
       } else {
@@ -197,7 +197,7 @@ class RegistrationRepository {
           "Content-Type": "multipart/form-data",
         },
       );
-      log("[verifyFace] response.data: ${jsonEncode(response.data)}");
+      AppLoggerCS.debugLog("[verifyFace] response.data: ${jsonEncode(response.data)}");
       if (response.data != null) {
         return VerifyFaceResponseModel.fromJson(response.data);
       } else {
@@ -229,7 +229,7 @@ class RegistrationRepository {
           "Content-Type": "multipart/form-data",
         },
       );
-      log("[verifyFingerprint] response.data: ${jsonEncode(response.data)}");
+      AppLoggerCS.debugLog("[verifyFingerprint] response.data: ${jsonEncode(response.data)}");
       if (response.data != null) {
         return VerifyFingerprintResponseModel.fromJson(response.data);
       } else {
