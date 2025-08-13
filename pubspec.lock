@@ -201,6 +201,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.2"
+  equatable:
+    dependency: transitive
+    description:
+      name: equatable
+      sha256: "567c64b3cb4cf82397aac55f4f0cbd3ca20d77c6c03bedbc4ceaddc08904aef7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.7"
   fake_async:
     dependency: transitive
     description:
@@ -525,6 +533,13 @@ packages:
       relative: true
     source: path
     version: "0.13.1"
+  google_mlkit_object_detection:
+    dependency: transitive
+    description:
+      path: "../google_mlkit_object_detection-0.15.0"
+      relative: true
+    source: path
+    version: "0.15.0"
   google_mlkit_text_recognition:
     dependency: transitive
     description:
@@ -985,6 +1000,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.1"
+  string_similarity:
+    dependency: transitive
+    description:
+      name: string_similarity
+      sha256: b4b73ec3af3e4203504b136dfbcdbca29edea4eb373684811b76ded9f40a54b9
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.1"
   super_tooltip:
     dependency: transitive
     description:
