@@ -178,8 +178,8 @@ class _CameraScanFaceScreenState extends State<CameraScanFaceScreen> {
               //   ),
               // ),
               SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.sizeOf(context).height,
+                width: MediaQuery.sizeOf(context).width,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -229,7 +229,7 @@ class _CameraScanFaceScreenState extends State<CameraScanFaceScreen> {
             child: Container(
               alignment: Alignment.centerLeft,
               height: kToolbarHeight,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               // color: Colors.red,
               child: Stack(
                 children: [

@@ -292,8 +292,8 @@ class _FingerprintTestScreenState extends State<FingerprintTestScreen> {
             body: Stack(
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.sizeOf(context).width,
+                  height: MediaQuery.sizeOf(context).height,
                   decoration: BoxDecoration(
                     gradient: RadialGradient(
                       colors: [
@@ -453,7 +453,7 @@ class _FingerprintTestScreenState extends State<FingerprintTestScreen> {
                                         SizedBox(height: 16.h),
                                         MainButtonWidget(
                                           title: widget.fingerprintCaptureFlowType == FingerprintCaptureFlowType.registerFlow ? "Simpan" : "Verify",
-                                          width: MediaQuery.of(context).size.width,
+                                          width: MediaQuery.sizeOf(context).width,
                                           onPressed: () {
                                             if (_currentImage != null) {
                                               AppDialogActionCS.showWarningPopup(
@@ -619,7 +619,7 @@ class _FingerprintTestScreenState extends State<FingerprintTestScreen> {
                   child: Container(
                     alignment: Alignment.centerLeft,
                     height: kToolbarHeight,
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     // color: Colors.red,
                     child: Stack(
                       children: [

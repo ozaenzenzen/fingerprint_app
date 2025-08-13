@@ -159,8 +159,8 @@ class _CameraScanIdScreenState extends State<CameraScanIdScreen> {
                 ),
                 if (isLoadingScreen)
                   Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.sizeOf(context).height,
+                    width: MediaQuery.sizeOf(context).width,
                     color: Colors.black.withOpacity(0.5),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -187,7 +187,7 @@ class _CameraScanIdScreenState extends State<CameraScanIdScreen> {
             Container(
               alignment: Alignment.centerLeft,
               height: kToolbarHeight,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               // color: Colors.red,
               child: Stack(
                 children: [

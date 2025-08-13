@@ -107,8 +107,8 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
               child: Stack(
                 children: [
                   Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.sizeOf(context).width,
+                    height: MediaQuery.sizeOf(context).height,
                     color: const Color(0xff0E1925),
                     padding: EdgeInsets.symmetric(
                       horizontal: 16.w,
@@ -135,7 +135,7 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
                           MainButtonWidget.inverse(
                             title: "Ambil Ulang",
                             height: 48.h,
-                            width: MediaQuery.of(context).size.width,
+                            width: MediaQuery.sizeOf(context).width,
                             onPressed: () {
                               Navigator.pop(context);
                               registerController.faceLiveness.value = null;
@@ -146,7 +146,7 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
                           MainButtonWidget.inverse(
                             title: "Kembali ke Home",
                             height: 48.h,
-                            width: MediaQuery.of(context).size.width,
+                            width: MediaQuery.sizeOf(context).width,
                             onPressed: () async {
                               AppDialogActionCS.showWarningPopup(
                                 context: context,
@@ -174,7 +174,7 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
                           MainButtonWidget(
                             title: "Lanjutkan ke Pindai Sidik Jari",
                             height: 48.h,
-                            width: MediaQuery.of(context).size.width,
+                            width: MediaQuery.sizeOf(context).width,
                             onPressed: () async {
                               await processHandler(
                                 onSuccess: () {
@@ -194,7 +194,7 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
                   Container(
                     alignment: Alignment.centerLeft,
                     height: kToolbarHeight,
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     // color: Colors.red,
                     child: Stack(
                       children: [

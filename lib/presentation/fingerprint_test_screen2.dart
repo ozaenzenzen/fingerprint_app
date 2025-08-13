@@ -113,8 +113,8 @@ class _FingerprintTestScreen2State extends State<FingerprintTestScreen2> {
         body: Stack(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.sizeOf(context).width,
+              height: MediaQuery.sizeOf(context).height,
               decoration: BoxDecoration(
                 gradient: RadialGradient(
                   colors: [
@@ -273,7 +273,7 @@ class _FingerprintTestScreen2State extends State<FingerprintTestScreen2> {
                                     SizedBox(height: 16.h),
                                     MainButtonWidget(
                                       title: "Simpan",
-                                      width: MediaQuery.of(context).size.width,
+                                      width: MediaQuery.sizeOf(context).width,
                                       onPressed: () {
                                         if (_currentImage != null) {
                                           AppDialogActionCS.showWarningPopup(
@@ -386,7 +386,7 @@ class _FingerprintTestScreen2State extends State<FingerprintTestScreen2> {
               child: Container(
                 alignment: Alignment.centerLeft,
                 height: kToolbarHeight,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 // color: Colors.red,
                 child: Stack(
                   children: [

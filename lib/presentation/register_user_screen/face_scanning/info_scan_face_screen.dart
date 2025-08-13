@@ -56,7 +56,7 @@ class _InfoScanFaceScreenState extends State<InfoScanFaceScreen> {
                     children: [
                       Container(
                         height: 432.h,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(34.h),
@@ -72,7 +72,7 @@ class _InfoScanFaceScreenState extends State<InfoScanFaceScreen> {
                       ),
                       //
                       SizedBox(
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -265,7 +265,7 @@ class _InfoScanFaceScreenState extends State<InfoScanFaceScreen> {
                 child: Container(
                   alignment: Alignment.centerLeft,
                   height: kToolbarHeight,
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.sizeOf(context).width,
                   // color: Colors.red,
                   child: Stack(
                     children: [

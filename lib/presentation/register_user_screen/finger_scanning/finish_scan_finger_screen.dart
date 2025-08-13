@@ -22,7 +22,7 @@ class _FinishScanFingerScreenState extends State<FinishScanFingerScreen> {
         body: Stack(
           children: [
             Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               decoration: BoxDecoration(
                 gradient: RadialGradient(
                   colors: [
@@ -45,7 +45,7 @@ class _FinishScanFingerScreenState extends State<FinishScanFingerScreen> {
               child: Container(
                 alignment: Alignment.centerLeft,
                 height: kToolbarHeight,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 // color: Colors.red,
                 child: Stack(
                   children: [

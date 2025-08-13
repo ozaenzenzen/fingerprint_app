@@ -21,21 +21,21 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
           Stack(
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.sizeOf(context).height,
+                width: MediaQuery.sizeOf(context).width,
                 child: Column(
                   children: [
                     Image.asset(
                       AppAssets.bgLoginRectangle,
                       fit: BoxFit.cover,
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                     ),
                   ],
                 ),
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.sizeOf(context).height,
+                width: MediaQuery.sizeOf(context).width,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -140,7 +140,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
                     SizedBox(height: 32.h),
                     SizedBox(
                       height: 40.h,
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           elevation: 0,
@@ -182,7 +182,7 @@ class _RegisterUserScreenState extends State<RegisterUserScreen> {
             child: Container(
               alignment: Alignment.centerLeft,
               height: kToolbarHeight,
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               // color: Colors.red,
               child: Stack(
                 children: [

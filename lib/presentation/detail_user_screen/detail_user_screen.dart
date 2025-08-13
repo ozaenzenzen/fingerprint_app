@@ -94,7 +94,7 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                 Container(
                   alignment: Alignment.centerLeft,
                   height: kToolbarHeight,
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery.sizeOf(context).width,
                   // color: Colors.red,
                   child: Stack(
                     children: [
@@ -144,7 +144,7 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                 SizedBox(height: 24.h),
                 SizedBox(
                   height: 40.h,
-                  // width: MediaQuery.of(context).size.width,
+                  // width: MediaQuery.sizeOf(context).width,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
@@ -276,7 +276,7 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                 SizedBox(height: 24.h),
                 Expanded(
                   child: Container(
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery.sizeOf(context).width,
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(

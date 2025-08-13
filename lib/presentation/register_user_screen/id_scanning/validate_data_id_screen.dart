@@ -200,7 +200,7 @@ Kami menjamin bahwa data Anda akan dijaga kerahasiaannya dan tidak akan dibagika
 Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan dan menggunakan data Anda sesuai dengan ketentuan di atas."""),
                                       SizedBox(height: 16.h),
                                       MainButtonWidget(
-                                        width: MediaQuery.of(context).size.width,
+                                        width: MediaQuery.sizeOf(context).width,
                                         title: "Setuju",
                                         onPressed: () {
                                           Navigator.pop(context);
@@ -228,7 +228,7 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                     SizedBox(height: 8.h),
                     MainButtonWidget(
                       title: "Simpan",
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       onPressed: () {
                         if (!controller.isPrivacyAgreement.value) {
                           AppDialogActionCS.showFailedPopup(
@@ -324,7 +324,7 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                     Container(
                       alignment: Alignment.centerLeft,
                       height: kToolbarHeight,
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       // color: Colors.red,
                       child: Stack(
                         children: [
@@ -445,7 +445,7 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                     SizedBox(height: 24.h),
                     Expanded(
                       child: Container(
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(

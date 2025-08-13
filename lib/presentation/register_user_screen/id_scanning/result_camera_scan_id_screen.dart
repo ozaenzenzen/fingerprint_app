@@ -54,8 +54,8 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
           child: Stack(
             children: [
               Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.sizeOf(context).width,
+                height: MediaQuery.sizeOf(context).height,
                 color: const Color(0xff0E1925),
                 padding: EdgeInsets.symmetric(
                   horizontal: 16.w,
@@ -89,7 +89,7 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
                       MainButtonWidget.inverse(
                         title: "Ambil Ulang",
                         height: 48.h,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         onPressed: () {
                           Navigator.pop(context);
                           widget.retryCaptureCallback?.call();
@@ -99,7 +99,7 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
                       // MainButtonWidget.inverse(
                       //   title: "Kembali ke Home",
                       //   height: 48.h,
-                      //   width: MediaQuery.of(context).size.width,
+                      //   width: MediaQuery.sizeOf(context).width,
                       //   onPressed: () async {
                       //     registerController.isLoading.value = false;
                       //     if (widget.dataOCR.imageCard == null || widget.dataOCR.imageFromCard == null || widget.dataOCR.ktpData == null) {
@@ -127,7 +127,7 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
                       MainButtonWidget(
                         title: "Lanjutkan",
                         height: 48.h,
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         onPressed: () {
                           registerController.isLoading.value = false;
                           if (widget.dataOCR.imageCard == null || widget.dataOCR.imageFromCard == null || widget.dataOCR.ktpData == null) {
@@ -158,7 +158,7 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
               Container(
                 alignment: Alignment.centerLeft,
                 height: kToolbarHeight,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 // color: Colors.red,
                 child: Stack(
                   children: [

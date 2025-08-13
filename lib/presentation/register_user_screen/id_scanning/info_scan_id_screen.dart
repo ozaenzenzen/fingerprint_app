@@ -26,7 +26,7 @@ class _InfoScanIdScreenState extends State<InfoScanIdScreen> {
                   children: [
                     Container(
                       height: 432.h,
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(34.h),
@@ -42,7 +42,7 @@ class _InfoScanIdScreenState extends State<InfoScanIdScreen> {
                     ),
                     //
                     SizedBox(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.sizeOf(context).width,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -173,7 +173,7 @@ class _InfoScanIdScreenState extends State<InfoScanIdScreen> {
                       SizedBox(height: 24.h),
                       MainButtonWidget(
                         title: "Go to Scan",
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery.sizeOf(context).width,
                         onPressed: () {
                           Get.to(
                             () => CameraScanIdScreen(),
@@ -205,7 +205,7 @@ class _InfoScanIdScreenState extends State<InfoScanIdScreen> {
               child: Container(
                 alignment: Alignment.centerLeft,
                 height: kToolbarHeight,
-                width: MediaQuery.of(context).size.width,
+                width: MediaQuery.sizeOf(context).width,
                 // color: Colors.red,
                 child: Stack(
                   children: [
