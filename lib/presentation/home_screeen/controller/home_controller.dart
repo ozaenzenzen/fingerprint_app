@@ -318,4 +318,6 @@ class HomeController extends GetxController {
     }
     callbackSetState?.call();
   }
+
+  RxString searchTextFieldValue = ''.obs;
 }

@@ -25,4 +25,5 @@ class AppAssets {
   static String imageScanningFace = "assets/image_scanning_face.png";
   static String imageScanningFinger = "assets/image_scanning_finger.png";
   static String imageScanningId = "assets/image_scanning_id.png";
+  static String iconClose = "assets/icon_close.png";
 }

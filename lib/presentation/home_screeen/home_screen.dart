@@ -26,6 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final LoginController loginController = Get.find<LoginController>();
   final HomeController homeController = Get.find<HomeController>();
 
+  TextEditingController searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -202,28 +204,53 @@ class _HomeScreenState extends State<HomeScreen> {
                           SizedBox(height: 24.h),
                           Row(
                             children: [
-                              Flexible(
-                                child: SizedBox(
-                                  height: 40.h,
-                                  child: TextField(
-                                    decoration: InputDecoration(
-                                      prefixIcon: Padding(
-                                        padding: EdgeInsets.all(10.h),
-                                        child: Image.asset(
-                                          AppAssets.iconSearch,
-                                          height: 20.h,
-                                          width: 20.h,
+                              Obx(() {
+                                return Expanded(
+                                  child: SizedBox(
+                                    height: 40.h,
+                                    child: TextField(
+                                      controller: searchController,
+                                      onChanged: (value) {
+                                        homeController.searchTextFieldValue.value = value;
+                                      },
+                                      decoration: InputDecoration(
+                                        prefixIcon: Padding(
+                                          padding: EdgeInsets.all(10.h),
+                                          child: Image.asset(
+                                            AppAssets.iconSearch,
+                                            height: 20.h,
+                                            width: 20.h,
+                                          ),
                                         ),
-                                      ),
-                                      fillColor: Colors.white,
-                                      filled: true,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(80.h),
+                                        suffixIcon: (homeController.searchTextFieldValue.value == "")
+                                            ? null
+                                            : InkWell(
+                                                onTap: () {
+                                                  AppLoggerCS.debugLog("Testing click");
+                                                  searchController.clear();
+                                                  homeController.searchTextFieldValue.value = "";
+                                                },
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(10.h),
+                                                  child: Image.asset(
+                                                    AppAssets.iconClose,
+                                                    color: Colors.grey,
+                                                    height: 20.h,
+                                                    width: 20.h,
+                                                  ),
+                                                ),
+                                              ),
+                                        fillColor: Colors.white,
+                                        filled: true,
+                                        contentPadding: EdgeInsets.all(10.h),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(80.h),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ),
+                                );
+                              }),
                               SizedBox(width: 12.w),
                               InkWell(
                                 onTap: () {
