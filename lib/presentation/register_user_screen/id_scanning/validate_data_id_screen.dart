@@ -186,8 +186,7 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
                                   ),
                                   child: Column(
                                     children: [
-                                      Text(
-                                          """Dengan melanjutkan, Anda menyetujui bahwa aplikasi ini dapat menyimpan dan mengelola data pribadi Anda sesuai dengan Kebijakan Privasi kami. Data yang disimpan meliputi, namun tidak terbatas pada:
+                                      Text("""Dengan melanjutkan, Anda menyetujui bahwa aplikasi ini dapat menyimpan dan mengelola data pribadi Anda sesuai dengan Kebijakan Privasi kami. Data yang disimpan meliputi, namun tidak terbatas pada:
 - NIK
 - Nama lengkap
 - Alamat
@@ -239,32 +238,36 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                             mainButtonColor: const Color(0xff1183FF),
                           );
                         } else {
-                          AppDialogActionCS.showWarningPopup(
-                            context: context,
-                            title: "Warning",
-                            description: "Apakah Anda yakin semua data sudah benar?",
-                            isHorizontal: false,
-                            mainButtonAction: () {
-                              Get.back();
-                              submitHandler();
-                            },
-                            mainButtonTitle: "Ya",
-                            mainButtonColor: const Color(0xff1183FF),
-                            secondaryButtonAction: () {
-                              Get.back();
-                            },
-                            secondaryButtonTitle: "Kembali",
-                            secondaryButtonColor: const Color(0xff5A6684),
-                          );
-
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) {
-                          //       return InfoScanFaceScreen();
-                          //     },
-                          //   ),
-                          // );
+                          if (controller.errorTextNIK.value != null || controller.errorTextRT.value != null || controller.errorTextRW.value != null) {
+                            AppDialogActionCS.showFailedPopup(
+                              context: context,
+                              title: "Terjadi kesalahan",
+                              description: "Masih terdapat field belum terisi dengan benar",
+                              mainButtonAction: () {
+                                Get.back();
+                              },
+                              buttonTitle: "Kembali",
+                              mainButtonColor: const Color(0xff1183FF),
+                            );
+                          } else {
+                            AppDialogActionCS.showWarningPopup(
+                              context: context,
+                              title: "Warning",
+                              description: "Apakah Anda yakin semua data sudah benar?",
+                              isHorizontal: false,
+                              mainButtonAction: () {
+                                Get.back();
+                                submitHandler();
+                              },
+                              mainButtonTitle: "Ya",
+                              mainButtonColor: const Color(0xff1183FF),
+                              secondaryButtonAction: () {
+                                Get.back();
+                              },
+                              secondaryButtonTitle: "Kembali",
+                              secondaryButtonColor: const Color(0xff5A6684),
+                            );
+                          }
                         }
                       },
                     ),
@@ -437,47 +440,53 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                 child: Column(
                                   children: [
                                     SizedBox(height: 18.h),
-                                    TextField(
-                                      controller: nikController,
-                                      inputFormatters: [
-                                        UpperCaseTextFormatter(), // Custom formatter to force uppercase
-                                      ],
-                                      keyboardType: TextInputType.number,
-                                      onChanged: controller.validateTextNIK,
-                                      decoration: InputDecoration(
-                                        errorText: controller.errorTextNIK.value,
-                                        counterText: "${nikController.text.length}/${controller.maxLengthNIK}",
-                                        counterStyle: GoogleFonts.openSans(
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.w400,
-                                          color: const Color(0xff1183FF),
-                                        ),
-                                        label: Text(
-                                          "NIK",
-                                          style: GoogleFonts.openSans(
-                                            fontSize: 14.sp,
+                                    Obx(() {
+                                      return TextField(
+                                        controller: nikController,
+                                        inputFormatters: [
+                                          UpperCaseTextFormatter(), // Custom formatter to force uppercase
+                                        ],
+                                        keyboardType: TextInputType.number,
+                                        onChanged: (value) {
+                                          controller.validateTextNIK(
+                                            value,
+                                          );
+                                        },
+                                        decoration: InputDecoration(
+                                          errorText: controller.errorTextNIK.value,
+                                          counterText: "${controller.lengthTextNIK}/${controller.maxLengthNIK}",
+                                          counterStyle: GoogleFonts.openSans(
+                                            fontSize: 10.sp,
                                             fontWeight: FontWeight.w400,
                                             color: const Color(0xff1183FF),
                                           ),
-                                        ),
-                                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12.h),
-                                        ),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12.h),
-                                          borderSide: BorderSide(
-                                            color: const Color(0xff1183FF),
+                                          label: Text(
+                                            "NIK",
+                                            style: GoogleFonts.openSans(
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400,
+                                              color: const Color(0xff1183FF),
+                                            ),
+                                          ),
+                                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(12.h),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(12.h),
+                                            borderSide: BorderSide(
+                                              color: const Color(0xff1183FF),
+                                            ),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(12.h),
+                                            borderSide: BorderSide(
+                                              color: const Color(0xff1183FF),
+                                            ),
                                           ),
                                         ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(12.h),
-                                          borderSide: BorderSide(
-                                            color: const Color(0xff1183FF),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                      );
+                                    }),
                                     SizedBox(height: 22.h),
                                     TextField(
                                       controller: namaController,
@@ -705,7 +714,7 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                               onChanged: controller.validateTextRT,
                                               decoration: InputDecoration(
                                                 errorText: controller.errorTextRT.value,
-                                                counterText: "${rtController.text.length}/${controller.maxLengthRT}",
+                                                counterText: "${controller.lengthTextRT}/${controller.maxLengthRT}",
                                                 counterStyle: GoogleFonts.openSans(
                                                   fontSize: 10.sp,
                                                   fontWeight: FontWeight.w400,
@@ -748,7 +757,7 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                               onChanged: controller.validateTextRW,
                                               decoration: InputDecoration(
                                                 errorText: controller.errorTextRW.value,
-                                                counterText: "${rwController.text.length}/${controller.maxLengthRW}",
+                                                counterText: "${controller.lengthTextRW}/${controller.maxLengthRW}",
                                                 counterStyle: GoogleFonts.openSans(
                                                   fontSize: 10.sp,
                                                   fontWeight: FontWeight.w400,
