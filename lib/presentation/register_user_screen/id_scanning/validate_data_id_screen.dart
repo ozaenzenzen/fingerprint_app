@@ -283,23 +283,53 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                 mainButtonColor: const Color(0xff1183FF),
                               );
                             } else {
-                              AppDialogActionCS.showWarningPopup(
-                                context: context,
-                                title: "Warning",
-                                description: "Apakah Anda yakin semua data sudah benar?",
-                                isHorizontal: false,
-                                mainButtonAction: () {
-                                  Get.back();
-                                  submitHandler();
-                                },
-                                mainButtonTitle: "Ya",
-                                mainButtonColor: const Color(0xff1183FF),
-                                secondaryButtonAction: () {
-                                  Get.back();
-                                },
-                                secondaryButtonTitle: "Kembali",
-                                secondaryButtonColor: const Color(0xff5A6684),
-                              );
+                              if (addressController.text == "null" ||
+                                  nikController.text == "null" ||
+                                  namaController.text == "null" ||
+                                  tempatLahirController.text == "null" ||
+                                  tanggalLahirController.text == "null" ||
+                                  jenisKelaminController.text == "null" ||
+                                  // golonganDarahController.text == "null" ||
+                                  rtController.text == "null" ||
+                                  rwController.text == "null" ||
+                                  kelurahanDesaController.text == "null" ||
+                                  kecamatanController.text == "null" ||
+                                  kotaController.text == "null" ||
+                                  provinsiController.text == "null" ||
+                                  agamaController.text == "null" ||
+                                  maritalStatusController.text == "null" ||
+                                  pekerjaanController.text == "null" ||
+                                  kewarganegaraanController.text == "null" ||
+                                  berlakuHinggaController.text == "null") {
+                                AppDialogActionCS.showFailedPopup(
+                                  context: context,
+                                  title: "Terjadi kesalahan",
+                                  description: "Masih terdapat field dengan nilai null",
+                                  mainButtonAction: () {
+                                    Get.back();
+                                  },
+                                  buttonTitle: "Kembali",
+                                  mainButtonColor: const Color(0xff1183FF),
+                                );
+                              } else {
+                                AppDialogActionCS.showWarningPopup(
+                                  context: context,
+                                  title: "Warning",
+                                  description: "Apakah Anda yakin semua data sudah benar?",
+                                  isHorizontal: false,
+                                  mainButtonAction: () {
+                                    Get.back();
+                                    submitHandler();
+                                  },
+                                  mainButtonTitle: "Ya",
+                                  mainButtonColor: const Color(0xff1183FF),
+                                  secondaryButtonAction: () {
+                                    Get.back();
+                                  },
+                                  secondaryButtonTitle: "Kembali",
+                                  secondaryButtonColor: const Color(0xff5A6684),
+                                );
+                              }
                             }
                           }
                         }
