@@ -49,7 +49,7 @@ class RegistrationRepository {
           "Authorization": "Bearer ${InitConfig.accessToken}",
         },
       );
-      AppLoggerCS.debugLog("[getListRegistration] response.data: ${response.data}");
+      // AppLoggerCS.debugLog("[getListRegistration] response.data: ${response.data}");
       if (response.data != null) {
         return GetListRegistrationResponseModel.fromJson(response.data);
       } else {
