@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:camera/camera.dart';
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
+import 'package:fingerprint_app/presentation/register_user_screen/controller/register_controller.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/id_scanning/result_camera_scan_id_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/support/camera_ocr_data_model.dart';
 import 'package:fingerprint_app/support/app_assets.dart';
@@ -125,6 +126,7 @@ class _CameraScanIdScreenState extends State<CameraScanIdScreen> {
                         dataOCR: dataHolder,
                         retryCaptureCallback: () {
                           cameraController?.resumePreview();
+                          dataHolder = CameraOcrDataModel();
                         },
                       ),
                       binding: RegisterBinding(),
