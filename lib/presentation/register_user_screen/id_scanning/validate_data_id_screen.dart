@@ -101,7 +101,8 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
       berlakuHingga: berlakuHinggaController.text,
     );
     await controller.ocrProcess(
-      faceFromKtp: controller.faceFromKtp.value!,
+      faceFromKtp: controller.ktpImage.value!,
+      // faceFromKtp: controller.faceFromKtp.value!,
       reqBody: controller.ocrHolder.value!.toJson(),
       onSuccess: () {
         Get.to(

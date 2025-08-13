@@ -37,6 +37,10 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
           base64String: widget.dataOCR.imageFromCard!,
           fileName: "faceFromKtp",
         );
+        registerController.ktpImage.value = await AppDatatypeConverter().convertBase64ToFile(
+          base64String: widget.dataOCR.imageCard!,
+          fileName: "ktpImage",
+        );
       }
     });
   }

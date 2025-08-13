@@ -31,6 +31,7 @@ class RegisterController extends GetxController {
   Rxn<ScanFaceFlowType> currentScanFaceFlowType = Rxn<ScanFaceFlowType>();
 
   Rxn<OcrDataHolderModel> ocrHolder = Rxn<OcrDataHolderModel>();
+  Rxn<File> ktpImage = Rxn<File>();
   Rxn<File> faceFromKtp = Rxn<File>();
   Rxn<File> faceLiveness = Rxn<File>();
   Rxn<FingerprintImage> fingerprintData = Rxn<FingerprintImage>();
@@ -87,7 +88,8 @@ class RegisterController extends GetxController {
       } else {
         File? outputFile = await AppDatatypeConverter().fileToFile(
           sourceFile: faceFromKtp,
-          outputFileName: 'faceFromKtp.jpg',
+          outputFileName: 'ktpImage.jpg',
+          // outputFileName: 'faceFromKtp.jpg',
           format: 'jpeg',
           quality: 100,
           // resizeWidth: 200, // Resize to 200px width
