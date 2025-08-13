@@ -44,7 +44,7 @@ class _ResultCameraScanIdScreenState extends State<ResultCameraScanIdScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false,
+      canPop: true,
       onPopInvokedWithResult: (didPop, result) {
         widget.retryCaptureCallback?.call();
       },
