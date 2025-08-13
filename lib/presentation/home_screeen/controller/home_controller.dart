@@ -35,6 +35,9 @@ class HomeController extends GetxController {
 
     try {
       currentPage.value = 1;
+      if (currentPage.value == 1) {
+        listRegistrationData.value = [];
+      }
 
       if (InitConfig.testMode) {
         await Future.delayed(const Duration(seconds: 1));

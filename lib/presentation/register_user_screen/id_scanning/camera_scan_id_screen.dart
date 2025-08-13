@@ -128,22 +128,7 @@ class _CameraScanIdScreenState extends State<CameraScanIdScreen> {
                         },
                       ),
                       binding: RegisterBinding(),
-                    );
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) {
-                    //       AppLoggerCS.debugLog("dataHolder: ${jsonEncode(dataHolder)}");
-                    //       return ResultCameraScanIdScreen(
-                    //         dataOCR: dataHolder,
-                    //         retryCaptureCallback: () {
-                    //           cameraController?.resumePreview();
-                    //         },
-                    //       );
-                    //     },
-                    //   ),
-                    // );
-                    //
+                    );                
 
                     // widget.callback?.call(recognizedText.text);
                     // // debugPrint('data recognizedText ${recognizedText.text}');
