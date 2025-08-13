@@ -231,9 +231,25 @@ class _InfoScanFaceScreenState extends State<InfoScanFaceScreen> {
                               child: MainButtonWidget.grey(
                                 title: "Back to Home",
                                 onPressed: () {
-                                  Get.offAll(
-                                    () => HomeScreen(),
-                                    binding: HomeBinding(),
+                                  AppDialogActionCS.showWarningPopup(
+                                    context: context,
+                                    title: "Warning",
+                                    description: "Proses Face Recognition belum tersimpan. Apakah Anda yakin ingin ke halaman home?",
+                                    mainButtonTitle: "Ya",
+                                    mainButtonColor: const Color(0xff1183FF),
+                                    mainButtonAction: () {
+                                      Get.back();
+                                      Get.offAll(
+                                        () => HomeScreen(),
+                                        binding: HomeBinding(),
+                                      );
+                                    },
+                                    isHorizontal: false,
+                                    secondaryButtonColor: Colors.grey,
+                                    secondaryButtonTitle: "Tidak",
+                                    secondaryButtonAction: () {
+                                      Get.back();
+                                    },
                                   );
                                 },
                               ),

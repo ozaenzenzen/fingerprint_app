@@ -73,6 +73,10 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
     pekerjaanController.text = "${widget.dataOCR.ktpData?.profession}";
     kewarganegaraanController.text = "${widget.dataOCR.ktpData?.nationality}";
     berlakuHinggaController.text = "${widget.dataOCR.ktpData?.expired}";
+
+    controller.lengthTextNIK.value = nikController.text.length;
+    controller.lengthTextRT.value = rtController.text.length;
+    controller.lengthTextRW.value = rwController.text.length;
   }
 
   void submitHandler() async {
@@ -238,11 +242,28 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                             mainButtonColor: const Color(0xff1183FF),
                           );
                         } else {
-                          if (controller.errorTextNIK.value != null || controller.errorTextRT.value != null || controller.errorTextRW.value != null) {
+                          if (addressController.text.isEmpty ||
+                              nikController.text.isEmpty ||
+                              namaController.text.isEmpty ||
+                              tempatLahirController.text.isEmpty ||
+                              tanggalLahirController.text.isEmpty ||
+                              jenisKelaminController.text.isEmpty ||
+                              golonganDarahController.text.isEmpty ||
+                              rtController.text.isEmpty ||
+                              rwController.text.isEmpty ||
+                              kelurahanDesaController.text.isEmpty ||
+                              kecamatanController.text.isEmpty ||
+                              kotaController.text.isEmpty ||
+                              provinsiController.text.isEmpty ||
+                              agamaController.text.isEmpty ||
+                              maritalStatusController.text.isEmpty ||
+                              pekerjaanController.text.isEmpty ||
+                              kewarganegaraanController.text.isEmpty ||
+                              berlakuHinggaController.text.isEmpty) {
                             AppDialogActionCS.showFailedPopup(
                               context: context,
                               title: "Terjadi kesalahan",
-                              description: "Masih terdapat field belum terisi dengan benar",
+                              description: "Masih terdapat field belum terisi",
                               mainButtonAction: () {
                                 Get.back();
                               },
@@ -250,23 +271,36 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                               mainButtonColor: const Color(0xff1183FF),
                             );
                           } else {
-                            AppDialogActionCS.showWarningPopup(
-                              context: context,
-                              title: "Warning",
-                              description: "Apakah Anda yakin semua data sudah benar?",
-                              isHorizontal: false,
-                              mainButtonAction: () {
-                                Get.back();
-                                submitHandler();
-                              },
-                              mainButtonTitle: "Ya",
-                              mainButtonColor: const Color(0xff1183FF),
-                              secondaryButtonAction: () {
-                                Get.back();
-                              },
-                              secondaryButtonTitle: "Kembali",
-                              secondaryButtonColor: const Color(0xff5A6684),
-                            );
+                            if (controller.errorTextNIK.value != null || controller.errorTextRT.value != null || controller.errorTextRW.value != null) {
+                              AppDialogActionCS.showFailedPopup(
+                                context: context,
+                                title: "Terjadi kesalahan",
+                                description: "Masih terdapat field belum terisi dengan benar",
+                                mainButtonAction: () {
+                                  Get.back();
+                                },
+                                buttonTitle: "Kembali",
+                                mainButtonColor: const Color(0xff1183FF),
+                              );
+                            } else {
+                              AppDialogActionCS.showWarningPopup(
+                                context: context,
+                                title: "Warning",
+                                description: "Apakah Anda yakin semua data sudah benar?",
+                                isHorizontal: false,
+                                mainButtonAction: () {
+                                  Get.back();
+                                  submitHandler();
+                                },
+                                mainButtonTitle: "Ya",
+                                mainButtonColor: const Color(0xff1183FF),
+                                secondaryButtonAction: () {
+                                  Get.back();
+                                },
+                                secondaryButtonTitle: "Kembali",
+                                secondaryButtonColor: const Color(0xff5A6684),
+                              );
+                            }
                           }
                         }
                       },

@@ -116,12 +116,12 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          SizedBox(height: 124.h),
+                          SizedBox(height: 84.h),
                           Image.memory(
                             height: 300.h,
                             base64Decode(widget.faceLiveness),
                           ),
-                          SizedBox(height: 78.h),
+                          SizedBox(height: 38.h),
                           Text(
                             "Pastikan hasil gambar wajah Anda terlihat jelas",
                             textAlign: TextAlign.center,
@@ -131,7 +131,7 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
                               color: const Color(0xffFFFFFF),
                             ),
                           ),
-                          SizedBox(height: 78.h),
+                          SizedBox(height: 38.h),
                           MainButtonWidget.inverse(
                             title: "Ambil Ulang",
                             height: 48.h,
@@ -148,12 +148,24 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
                             height: 48.h,
                             width: MediaQuery.of(context).size.width,
                             onPressed: () async {
-                              await processHandler(
-                                onSuccess: () {
+                              AppDialogActionCS.showWarningPopup(
+                                context: context,
+                                title: "Warning",
+                                description: "Proses Face Recognition belum tersimpan. Apakah Anda yakin ingin ke halaman home?",
+                                mainButtonTitle: "Ya",
+                                mainButtonColor: const Color(0xff1183FF),
+                                mainButtonAction: () {
+                                  Get.back();
                                   Get.offAll(
                                     () => HomeScreen(),
                                     binding: HomeBinding(),
                                   );
+                                },
+                                isHorizontal: false,
+                                secondaryButtonColor: Colors.grey,
+                                secondaryButtonTitle: "Tidak",
+                                secondaryButtonAction: () {
+                                  Get.back();
                                 },
                               );
                             },
@@ -191,7 +203,7 @@ class _ResultCameraScanFaceScreenState extends State<ResultCameraScanFaceScreen>
                           height: 40.h,
                           alignment: Alignment.center,
                           child: Text(
-                            "Capture Face",
+                            "Result Capture Face",
                             style: GoogleFonts.lato(
                               color: Colors.white,
                               fontSize: 16.sp,
