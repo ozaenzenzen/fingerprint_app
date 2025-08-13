@@ -133,12 +133,42 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                   ),
                 ),
                 SizedBox(height: 16.h),
-                SizedBox(
-                  // color: Colors.red,
-                  child: Image.asset(
-                    AppAssets.imageKtp,
-                    fit: BoxFit.cover,
-                    height: 174.h,
+                Flexible(
+                  child: Padding(
+                    padding: EdgeInsets.all(16.w),
+                    child: PageView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        SizedBox(
+                          // color: Colors.red,
+                          child: (widget.data.ktpImageUrl != null)
+                              ? Image.network(
+                                  widget.data.ktpImageUrl!,
+                                  fit: BoxFit.cover,
+                                  height: 174.h,
+                                )
+                              : Image.asset(
+                                  AppAssets.imageKtp,
+                                  fit: BoxFit.cover,
+                                  height: 174.h,
+                                ),
+                        ),
+                        SizedBox(
+                          // color: Colors.red,
+                          child: (widget.data.faceRecognitionImageUrl != null)
+                              ? Image.network(
+                                  widget.data.faceRecognitionImageUrl!,
+                                  // fit: BoxFit.cover,
+                                  height: 174.h,
+                                )
+                              : Image.asset(
+                                  AppAssets.imageKtp,
+                                  fit: BoxFit.cover,
+                                  height: 174.h,
+                                ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(height: 24.h),

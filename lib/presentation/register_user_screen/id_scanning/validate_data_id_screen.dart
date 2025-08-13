@@ -191,7 +191,8 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
                                   ),
                                   child: Column(
                                     children: [
-                                      Text("""Dengan melanjutkan, Anda menyetujui bahwa aplikasi ini dapat menyimpan dan mengelola data pribadi Anda sesuai dengan Kebijakan Privasi kami. Data yang disimpan meliputi, namun tidak terbatas pada:
+                                      Text(
+                                          """Dengan melanjutkan, Anda menyetujui bahwa aplikasi ini dapat menyimpan dan mengelola data pribadi Anda sesuai dengan Kebijakan Privasi kami. Data yang disimpan meliputi, namun tidak terbatas pada:
 - NIK
 - Nama lengkap
 - Alamat

@@ -47,14 +47,14 @@ class ItemGetListRegistration {
   DateTime? registeredAt;
   SurveyorGetListRegistration? surveyor;
   UserGetListRegistration? user;
-  LatestRegistrationTimelineGetListRegistration? latestRegistrationTimeline;
+  List<RegistrationTimelineGetListRegistration>? registrationTimelines;
 
   ItemGetListRegistration({
     this.id,
     this.registeredAt,
     this.surveyor,
     this.user,
-    this.latestRegistrationTimeline,
+    this.registrationTimelines,
   });
 
   factory ItemGetListRegistration.fromJson(Map<String, dynamic> json) => ItemGetListRegistration(
@@ -62,7 +62,9 @@ class ItemGetListRegistration {
         registeredAt: json["registeredAt"] == null ? null : DateTime.parse(json["registeredAt"]),
         surveyor: json["surveyor"] == null ? null : SurveyorGetListRegistration.fromJson(json["surveyor"]),
         user: json["user"] == null ? null : UserGetListRegistration.fromJson(json["user"]),
-        latestRegistrationTimeline: json["latestRegistrationTimeline"] == null ? null : LatestRegistrationTimelineGetListRegistration.fromJson(json["latestRegistrationTimeline"]),
+        registrationTimelines: json["registrationTimelines"] == null
+            ? []
+            : List<RegistrationTimelineGetListRegistration>.from(json["registrationTimelines"]!.map((x) => RegistrationTimelineGetListRegistration.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -70,27 +72,31 @@ class ItemGetListRegistration {
         "registeredAt": registeredAt?.toIso8601String(),
         "surveyor": surveyor?.toJson(),
         "user": user?.toJson(),
-        "latestRegistrationTimeline": latestRegistrationTimeline?.toJson(),
+        "registrationTimelines": registrationTimelines == null ? [] : List<dynamic>.from(registrationTimelines!.map((x) => x.toJson())),
       };
 }
 
-class LatestRegistrationTimelineGetListRegistration {
+class RegistrationTimelineGetListRegistration {
   String? step;
   String? status;
+  DateTime? createdAt;
 
-  LatestRegistrationTimelineGetListRegistration({
+  RegistrationTimelineGetListRegistration({
     this.step,
     this.status,
+    this.createdAt,
   });
 
-  factory LatestRegistrationTimelineGetListRegistration.fromJson(Map<String, dynamic> json) => LatestRegistrationTimelineGetListRegistration(
+  factory RegistrationTimelineGetListRegistration.fromJson(Map<String, dynamic> json) => RegistrationTimelineGetListRegistration(
         step: json["step"],
         status: json["status"],
+        createdAt: json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
       );
 
   Map<String, dynamic> toJson() => {
         "step": step,
         "status": status,
+        "createdAt": createdAt?.toIso8601String(),
       };
 }
 

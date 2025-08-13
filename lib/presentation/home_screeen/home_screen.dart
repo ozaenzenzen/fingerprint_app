@@ -479,27 +479,70 @@ class RegistrationItemListWidget extends StatelessWidget {
                       color: const Color(0xff5A6684),
                     ),
                   ),
-                  SizedBox(height: 4.h),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 6.h,
-                      horizontal: 8.w,
-                    ),
-                    decoration: BoxDecoration(
-                      color: (data.latestRegistrationTimeline!.status == "SUCCESS") ? Colors.green : Colors.red,
-                      borderRadius: BorderRadius.circular(12.h),
-                    ),
-                    child: Text(
-                      "${data.latestRegistrationTimeline?.step}",
-                      // "Desc $index",
-                      style: GoogleFonts.openSans(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 8.sp,
-                        color: Colors.white,
-                        // color: const Color(0xff5A6684),
-                      ),
-                    ),
+                  SizedBox(height: 8.h),
+                  Wrap(
+                    spacing: 4.w,
+                    children: data.registrationTimelines!.map(
+                      (e) {
+                        return Container(
+                          padding: EdgeInsets.symmetric(
+                            vertical: 6.h,
+                            horizontal: 8.w,
+                          ),
+                          decoration: BoxDecoration(
+                            color: (e.status == "SUCCESS") ? Colors.green : Colors.red,
+                            // color: (data.registrationTimelines?[index].status == "SUCCESS") ? Colors.green : Colors.red,
+                            borderRadius: BorderRadius.circular(12.h),
+                          ),
+                          child: Text(
+                            "${e.step}",
+                            // "${data.registrationTimelines?[index].step}",
+                            // "Desc $index",
+                            style: GoogleFonts.openSans(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 10.sp,
+                              color: Colors.white,
+                              // color: const Color(0xff5A6684),
+                            ),
+                          ),
+                        );
+                      },
+                    ).toList(),
                   ),
+                  // SizedBox(
+                  //   height: 40.h,
+                  //   child: ListView.separated(
+                  //     shrinkWrap: true,
+                  //     scrollDirection: Axis.horizontal,
+                  //     itemCount: (data.registrationTimelines != null) ? data.registrationTimelines!.length : 0,
+                  //     itemBuilder: (context, index) {
+                  //       return Container(
+                  //         height: 40.h,
+                  //         padding: EdgeInsets.symmetric(
+                  //           vertical: 6.h,
+                  //           horizontal: 8.w,
+                  //         ),
+                  //         decoration: BoxDecoration(
+                  //           color: (data.registrationTimelines?[index].status == "SUCCESS") ? Colors.green : Colors.red,
+                  //           borderRadius: BorderRadius.circular(12.h),
+                  //         ),
+                  //         child: Text(
+                  //           "${data.registrationTimelines?[index].step}",
+                  //           // "Desc $index",
+                  //           style: GoogleFonts.openSans(
+                  //             fontWeight: FontWeight.w400,
+                  //             fontSize: 8.sp,
+                  //             color: Colors.white,
+                  //             // color: const Color(0xff5A6684),
+                  //           ),
+                  //         ),
+                  //       );
+                  //     },
+                  //     separatorBuilder: (context, index) {
+                  //       return SizedBox(width: 8.w);
+                  //     },
+                  //   ),
+                  // ),
                 ],
               ),
             ),

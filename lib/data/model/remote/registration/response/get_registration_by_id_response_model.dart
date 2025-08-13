@@ -25,6 +25,8 @@ class GetRegistrationByIdResponseModel {
 class DataGetRegistrationById {
   String? id;
   String? ktpImageUrl;
+  String? faceRecognitionImageUrl;
+  double? faceRecognitionScore;
   bool? isDoneVerifyNik;
   bool? isDoneFingerprint;
   bool? isDoneFacialRecognition;
@@ -36,6 +38,8 @@ class DataGetRegistrationById {
   DataGetRegistrationById({
     this.id,
     this.ktpImageUrl,
+    this.faceRecognitionImageUrl,
+    this.faceRecognitionScore,
     this.isDoneVerifyNik,
     this.isDoneFingerprint,
     this.isDoneFacialRecognition,
@@ -48,18 +52,24 @@ class DataGetRegistrationById {
   factory DataGetRegistrationById.fromJson(Map<String, dynamic> json) => DataGetRegistrationById(
         id: json["id"],
         ktpImageUrl: json["ktpImageUrl"],
+        faceRecognitionImageUrl: json["faceRecognitionImageUrl"],
+        faceRecognitionScore: json["faceRecognitionScore"]?.toDouble(),
         isDoneVerifyNik: json["isDoneVerifyNik"],
         isDoneFingerprint: json["isDoneFingerprint"],
         isDoneFacialRecognition: json["isDoneFacialRecognition"],
         registeredAt: json["registeredAt"] == null ? null : DateTime.parse(json["registeredAt"]),
         surveyor: json["surveyor"] == null ? null : SurveyorGetRegistrationById.fromJson(json["surveyor"]),
         user: json["user"] == null ? null : UserGetRegistrationById.fromJson(json["user"]),
-        registrationTimelines: json["registrationTimelines"] == null ? [] : List<RegistrationTimelineGetRegistrationById>.from(json["registrationTimelines"]!.map((x) => RegistrationTimelineGetRegistrationById.fromJson(x))),
+        registrationTimelines: json["registrationTimelines"] == null
+            ? []
+            : List<RegistrationTimelineGetRegistrationById>.from(json["registrationTimelines"]!.map((x) => RegistrationTimelineGetRegistrationById.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "ktpImageUrl": ktpImageUrl,
+        "faceRecognitionImageUrl": faceRecognitionImageUrl,
+        "faceRecognitionScore": faceRecognitionScore,
         "isDoneVerifyNik": isDoneVerifyNik,
         "isDoneFingerprint": isDoneFingerprint,
         "isDoneFacialRecognition": isDoneFacialRecognition,
