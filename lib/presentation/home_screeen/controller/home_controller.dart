@@ -35,9 +35,6 @@ class HomeController extends GetxController {
 
     try {
       currentPage.value = 1;
-      if (currentPage.value == 1) {
-        listRegistrationData.value = [];
-      }
 
       if (InitConfig.testMode) {
         await Future.delayed(const Duration(seconds: 1));
@@ -75,6 +72,9 @@ class HomeController extends GetxController {
         }
 
         if (response.statusCode == 200) {
+          if (currentPage.value == 1) {
+            listRegistrationData.value = [];
+          }
           isLoadingHome.value = false;
           responseRegistrationData.value = response;
           listRegistrationData.addAll(response.data!.items!);
