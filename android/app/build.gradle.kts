@@ -46,7 +46,8 @@ android {
                         val separator = "_"
                         val buildType = buildType.name
                         val version = versionName
-                        val formattedDate = SimpleDateFormat("MM-dd-yyyy_hh-mm").format(Date())
+                        val formattedDate = SimpleDateFormat("MM-dd-yyyy").format(Date())
+                        // val formattedDate = SimpleDateFormat("MM-dd-yyyy_hh-mm").format(Date())
                         val filename =
                             "$project$version$separator$buildType$separator$formattedDate.apk"
                         output.outputFileName = filename

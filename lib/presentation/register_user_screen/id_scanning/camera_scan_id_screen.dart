@@ -146,6 +146,7 @@ class _CameraScanIdScreenState extends State<CameraScanIdScreen> {
                           description: "Support data is null, please try again",
                           mainButtonAction: () {
                             Get.back();
+                            cameraController?.resumePreview();
                           },
                           buttonTitle: "Kembali",
                           mainButtonColor: const Color(0xff1183FF),
@@ -180,6 +181,7 @@ class _CameraScanIdScreenState extends State<CameraScanIdScreen> {
                           description: "Support data is null, please try again",
                           mainButtonAction: () {
                             Get.back();
+                            cameraController?.resumePreview();
                           },
                           buttonTitle: "Kembali",
                           mainButtonColor: const Color(0xff1183FF),
