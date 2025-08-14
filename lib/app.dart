@@ -6,6 +6,7 @@ import 'package:fingerprint_app/presentation/home_screeen/home_screen.dart';
 import 'package:fingerprint_app/presentation/login_screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:ui' as ui;
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -58,18 +59,36 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       // designSize: const Size(411, 869),
-      child: GetMaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      child: _wrapWithBanner(
+        child: GetMaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          ),
+          initialBinding: RootBinding(),
+          // initialBinding: isLogin ? HomeBinding() : LoginBinding(),
+          home: isLogin ? const HomeScreen() : const LoginScreen(),
+          // initialBinding: isLogin ? LoginBinding() : HomeBinding(),
+          // home: isLogin ? const LoginScreen() : const HomeScreen(),
+          // home: const MyHomePage(title: 'Flutter Demo Home Page'),
         ),
-        initialBinding: RootBinding(),
-        // initialBinding: isLogin ? HomeBinding() : LoginBinding(),
-        home: isLogin ? const HomeScreen() : const LoginScreen(),
-        // initialBinding: isLogin ? LoginBinding() : HomeBinding(),
-        // home: isLogin ? const LoginScreen() : const HomeScreen(),
-        // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       ),
+    );
+  }
+
+  Widget _wrapWithBanner({required Widget child}) {
+    return Banner(
+      location: BannerLocation.topStart,
+      message: (InitConfig.useOCRApi) ? 'OCR Api' : 'OCR Mobile',
+      color: Colors.green.withOpacity(0.6),
+      textStyle: TextStyle(
+        fontWeight: FontWeight.w700,
+        fontSize: 12.0,
+        letterSpacing: 1.0,
+      ),
+      textDirection: ui.TextDirection.ltr,
+      layoutDirection: ui.TextDirection.rtl,
+      child: child,
     );
   }
 }
