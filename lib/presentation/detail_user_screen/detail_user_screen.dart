@@ -47,6 +47,8 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
 
   final PageController _pageController = PageController();
 
+  final formatterDob = DateFormat("dd-MM-yyyy");
+
   @override
   void initState() {
     super.initState();
@@ -55,7 +57,7 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
     namaController.text = "${widget.data.user?.fullName}";
     // ttlController.text = "${widget.dataOCR.ktpData?.birthDate}, ${widget.dataOCR.ktpData?.birthPlace}";
     tempatLahirController.text = "${widget.data.user?.placeOfBirth}";
-    tanggalLahirController.text = widget.data.user?.dateOfBirth != null ? DateFormat("yyyy-dd-mm").format(widget.data.user!.dateOfBirth!) : "";
+    tanggalLahirController.text = widget.data.user?.dateOfBirth != null ? formatterDob.format(widget.data.user!.dateOfBirth!) : "";
     jenisKelaminController.text = (widget.data.user?.gender?.toLowerCase() == "perempuan") ? "Female" : "Male";
     golonganDarahController.text = "${widget.data.user?.bloodType}";
     // rtRwController.text = "${widget.dataOCR.ktpData?.rt}/${widget.dataOCR.ktpData?.rw}";
@@ -936,7 +938,7 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                                   //     currentDate: controller.tanggalLahirChosen.value,
                                   //   );
                                   //   if (tanggalLahirChosen != null) {
-                                  //     tanggalLahirController.text = DateFormat("yyyy-MM-dd").format(tanggalLahirChosen);
+                                  //     tanggalLahirController.text = formatterDob.format(tanggalLahirChosen);
                                   //     controller.tanggalLahirChosen.value = tanggalLahirChosen;
                                   //   }
                                   // },

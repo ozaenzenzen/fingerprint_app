@@ -533,13 +533,6 @@ packages:
       relative: true
     source: path
     version: "0.13.1"
-  google_mlkit_object_detection:
-    dependency: transitive
-    description:
-      path: "../google_mlkit_object_detection-0.15.0"
-      relative: true
-    source: path
-    version: "0.15.0"
   google_mlkit_text_recognition:
     dependency: transitive
     description:
