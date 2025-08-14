@@ -5,7 +5,7 @@ import 'dart:io';
 import 'package:fam_coding_supply/logic/app_logger.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/face_compare_process_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/get_list_registration_response_model.dart';
-import 'package:fingerprint_app/data/model/remote/registration/response/ocr_api_response_model.dart';
+import 'package:fingerprint_app/data/model/remote/registration/response/ocr_api_ktp_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/ocr_process_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/verify_face_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/fingerprint_process_response_model.dart';

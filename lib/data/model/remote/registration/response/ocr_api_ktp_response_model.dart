@@ -16,7 +16,7 @@ class OcrApiKtpResponseModel {
       nik: data?.nik,
       name: data?.fullName,
       birthPlace: data?.placeOfBirth,
-      birthDate: data?.dateOfBirth,
+      birthDate: data?.dateOfBirth?.toIso8601String(),
       gender: data?.gender,
       bloodType: data?.bloodType,
       address: data?.address,
@@ -51,7 +51,7 @@ class DataOcrApiKtp {
   String? nik;
   String? fullName;
   String? placeOfBirth;
-  String? dateOfBirth;
+  DateTime? dateOfBirth;
   String? gender;
   dynamic bloodType;
   String? address;
@@ -92,7 +92,7 @@ class DataOcrApiKtp {
         nik: json["nik"],
         fullName: json["fullName"],
         placeOfBirth: json["placeOfBirth"],
-        dateOfBirth: json["dateOfBirth"],
+        dateOfBirth: (json["dateOfBirth"] == null) ? null : DateTime.parse(json["dateOfBirth"]),
         gender: json["gender"],
         bloodType: json["bloodType"],
         address: json["address"],
@@ -113,7 +113,7 @@ class DataOcrApiKtp {
         "nik": nik,
         "fullName": fullName,
         "placeOfBirth": placeOfBirth,
-        "dateOfBirth": dateOfBirth,
+        "dateOfBirth": dateOfBirth?.toIso8601String(),
         "gender": gender,
         "bloodType": bloodType,
         "address": address,
