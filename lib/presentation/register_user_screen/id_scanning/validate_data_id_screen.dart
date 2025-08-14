@@ -296,8 +296,8 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                   tanggalLahirController.text.isEmpty ||
                                   jenisKelaminController.text == "null" ||
                                   jenisKelaminController.text.isEmpty ||
-                                  golonganDarahController.text == "null" ||
-                                  golonganDarahController.text.isEmpty ||
+                                  // golonganDarahController.text == "null" ||
+                                  // golonganDarahController.text.isEmpty ||
                                   rtController.text == "null" ||
                                   rtController.text.isEmpty ||
                                   rwController.text == "null" ||
