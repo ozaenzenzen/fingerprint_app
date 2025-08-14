@@ -18,6 +18,7 @@ class InitConfig {
   static String accessToken = "";
   static bool testMode = false;
   static bool useOCRApi = false;
+  static bool useCustomBanner = false;
 
   static final NoScreenshot _noScreenshot = NoScreenshot.instance;
 
@@ -30,9 +31,11 @@ class InitConfig {
     bool testModeValue = false,
     bool screenshotActive = true,
     bool useOCRApiValue = false,
+    bool useCustomBannerValue = true,
   }) async {
     testMode = testModeValue;
     useOCRApi = useOCRApiValue;
+    useCustomBanner = useCustomBannerValue;
 
     AppLoggerCS.useLogger = true;
     // AppLoggerCS.useFoundation = true;

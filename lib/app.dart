@@ -77,18 +77,22 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Widget _wrapWithBanner({required Widget child}) {
-    return Banner(
-      location: BannerLocation.topStart,
-      message: (InitConfig.useOCRApi) ? 'OCR Api' : 'OCR Mobile',
-      color: Colors.green.withOpacity(0.6),
-      textStyle: TextStyle(
-        fontWeight: FontWeight.w700,
-        fontSize: 12.0,
-        letterSpacing: 1.0,
-      ),
-      textDirection: ui.TextDirection.ltr,
-      layoutDirection: ui.TextDirection.rtl,
-      child: child,
-    );
+    if (InitConfig.useCustomBanner) {
+      return Banner(
+        location: BannerLocation.topStart,
+        message: (InitConfig.useOCRApi) ? 'OCR Api' : 'OCR Mobile',
+        color: Colors.green.withOpacity(0.6),
+        textStyle: TextStyle(
+          fontWeight: FontWeight.w700,
+          fontSize: 12.0,
+          letterSpacing: 1.0,
+        ),
+        textDirection: ui.TextDirection.ltr,
+        layoutDirection: ui.TextDirection.rtl,
+        child: child,
+      );
+    } else {
+      return child;
+    }
   }
 }
