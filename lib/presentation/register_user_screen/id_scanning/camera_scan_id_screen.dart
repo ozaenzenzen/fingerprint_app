@@ -143,7 +143,7 @@ class _CameraScanIdScreenState extends State<CameraScanIdScreen> {
                         AppDialogActionCS.showFailedPopup(
                           context: context,
                           title: "Terjadi kesalahan",
-                          description: "Suport data is null",
+                          description: "Support data is null, please try again",
                           mainButtonAction: () {
                             Get.back();
                           },
@@ -158,20 +158,33 @@ class _CameraScanIdScreenState extends State<CameraScanIdScreen> {
                     dataHolder.imageFromCard = base64Image;
                   },
                   onTextDetected: (RecognizedText recognizedText) async {
+                    KTPData? handler = await compute(OCRHandler().recognizedText, recognizedText);
+                    debugPrint('data recognizedText ${handler?.toJson()}');
+                    widget.callback?.call(handler!.toJson().toString());
                     if (!InitConfig.useOCRApi) {
-                      KTPData? handler = await compute(OCRHandler().recognizedText, recognizedText);
-                      debugPrint('data recognizedText ${handler?.toJson()}');
-                      widget.callback?.call(handler!.toJson().toString());
-                      Get.to(
-                        () => ResultCameraScanIdScreen(
-                          dataOCR: dataHolder,
-                          retryCaptureCallback: () {
-                            cameraController?.resumePreview();
-                            dataHolder = CameraOcrDataModel();
+                      if (dataHolder.imageCard != null) {
+                        Get.to(
+                          () => ResultCameraScanIdScreen(
+                            dataOCR: dataHolder,
+                            retryCaptureCallback: () {
+                              cameraController?.resumePreview();
+                              dataHolder = CameraOcrDataModel();
+                            },
+                          ),
+                          binding: RegisterBinding(),
+                        );
+                      } else {
+                        AppDialogActionCS.showFailedPopup(
+                          context: context,
+                          title: "Terjadi kesalahan",
+                          description: "Support data is null, please try again",
+                          mainButtonAction: () {
+                            Get.back();
                           },
-                        ),
-                        binding: RegisterBinding(),
-                      );
+                          buttonTitle: "Kembali",
+                          mainButtonColor: const Color(0xff1183FF),
+                        );
+                      }
                     }
                   },
                   onKTPDetected: (KTPData ktpData) {
