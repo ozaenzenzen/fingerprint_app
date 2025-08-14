@@ -88,7 +88,7 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
       tempatLahir: tempatLahirController.text,
       tanggalLahir: tanggalLahirController.text,
       jenisKelamin: jenisKelaminController.text,
-      golonganDarah: golonganDarahController.text,
+      golonganDarah: (golonganDarahController.text.isEmpty) ? null : golonganDarahController.text,
       address: addressController.text,
       rt: rtController.text,
       rw: rwController.text,
