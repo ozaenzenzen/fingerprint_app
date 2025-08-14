@@ -648,7 +648,8 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                           currentDate: controller.tanggalLahirChosen.value,
                                         );
                                         if (tanggalLahirChosen != null) {
-                                          tanggalLahirController.text = DateFormat("yyyy-MM-dd").format(tanggalLahirChosen);
+                                          tanggalLahirController.text = DateFormat("dd-MM-yyyy").format(tanggalLahirChosen);
+                                          // tanggalLahirController.text = DateFormat("yyyy-MM-dd").format(tanggalLahirChosen);
                                           controller.tanggalLahirChosen.value = tanggalLahirChosen;
                                         }
                                       },
