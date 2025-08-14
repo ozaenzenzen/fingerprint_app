@@ -213,6 +213,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onChanged: (value) {
                                         homeController.searchTextFieldValue.value = value;
                                       },
+                                      onSubmitted: (value) async {
+                                        // Search Keyword
+                                        homeController.searchTextFieldValue.value = value;
+                                        await homeController.getListRegistration(
+                                          onSuccess: () {
+                                            //
+                                          },
+                                          onFailed: (errorMessage) {
+                                            refreshController.loadComplete();
+                                            AppDialogActionCS.showFailedPopup(
+                                              context: context,
+                                              title: "Terjadi kesalahan",
+                                              description: errorMessage,
+                                              buttonTitle: "Kembali",
+                                              mainButtonAction: () {
+                                                Get.back();
+                                              },
+                                              mainButtonColor: const Color(0xff1183FF),
+                                            );
+                                          },
+                                        );
+                                      },
                                       decoration: InputDecoration(
                                         prefixIcon: Padding(
                                           padding: EdgeInsets.all(10.h),
@@ -222,13 +244,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                             width: 20.h,
                                           ),
                                         ),
-                                        suffixIcon: (homeController.searchTextFieldValue.value == "")
+                                        suffixIcon: (homeController.searchTextFieldValue.value == "" || homeController.searchTextFieldValue.value == null)
                                             ? null
                                             : InkWell(
                                                 onTap: () {
                                                   AppLoggerCS.debugLog("Testing click");
                                                   searchController.clear();
-                                                  homeController.searchTextFieldValue.value = "";
+                                                  homeController.searchTextFieldValue.value = null;
                                                 },
                                                 child: Padding(
                                                   padding: EdgeInsets.all(10.h),
@@ -339,6 +361,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   );
                                 },
                                 onRefresh: () async {
+                                  searchController.clear();
+                                  homeController.searchTextFieldValue.value = null;
                                   await homeController.getListRegistration(
                                     onSuccess: () {
                                       refreshController.refreshCompleted();

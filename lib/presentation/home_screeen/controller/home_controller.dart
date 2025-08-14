@@ -49,6 +49,7 @@ class HomeController extends GetxController {
         }
       } else {
         GetListRegistrationResponseModel? response = await registrationRepository.getListRegistration(
+          searchQuery: searchTextFieldValue.value,
           currentPage: currentPage.value,
         );
         if (response == null) {
@@ -319,5 +320,6 @@ class HomeController extends GetxController {
     callbackSetState?.call();
   }
 
-  RxString searchTextFieldValue = ''.obs;
+  // RxString searchTextFieldValue = ''.obs;
+  Rxn<String> searchTextFieldValue = Rxn(null);
 }
