@@ -251,7 +251,7 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                               tempatLahirController.text.isEmpty ||
                               tanggalLahirController.text.isEmpty ||
                               jenisKelaminController.text.isEmpty ||
-                              golonganDarahController.text.isEmpty ||
+                              // golonganDarahController.text.isEmpty ||
                               rtController.text.isEmpty ||
                               rwController.text.isEmpty ||
                               kelurahanDesaController.text.isEmpty ||
