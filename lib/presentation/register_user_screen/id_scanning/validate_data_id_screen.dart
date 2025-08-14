@@ -50,6 +50,8 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
 
   final RegisterController controller = Get.find<RegisterController>();
 
+  final formatterDob = DateFormat("dd-MM-yyyy");
+
   @override
   void initState() {
     super.initState();
@@ -58,7 +60,7 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
     namaController.text = "${widget.dataOCR.ktpData?.name}";
     // ttlController.text = "${widget.dataOCR.ktpData?.birthDate}, ${widget.dataOCR.ktpData?.birthPlace}";
     tempatLahirController.text = "${widget.dataOCR.ktpData?.birthPlace}";
-    tanggalLahirController.text = "${widget.dataOCR.ktpData?.birthDate}";
+    tanggalLahirController.text = widget.dataOCR.ktpData!.birthDate != null ? "${formatterDob.parse(widget.dataOCR.ktpData!.birthDate!)}" : "";
     jenisKelaminController.text = (widget.dataOCR.ktpData?.gender?.toLowerCase() == "perempuan") ? "Female" : "Male";
     golonganDarahController.text = "${widget.dataOCR.ktpData?.bloodType}";
     // rtRwController.text = "${widget.dataOCR.ktpData?.rt}/${widget.dataOCR.ktpData?.rw}";
@@ -648,8 +650,8 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                                           currentDate: controller.tanggalLahirChosen.value,
                                         );
                                         if (tanggalLahirChosen != null) {
-                                          tanggalLahirController.text = DateFormat("dd-MM-yyyy").format(tanggalLahirChosen);
-                                          // tanggalLahirController.text = DateFormat("yyyy-MM-dd").format(tanggalLahirChosen);
+                                          tanggalLahirController.text = formatterDob.format(tanggalLahirChosen);
+                                          // tanggalLahirController.text = formatterDob.format(tanggalLahirChosen);
                                           controller.tanggalLahirChosen.value = tanggalLahirChosen;
                                         }
                                       },
