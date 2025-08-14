@@ -10,7 +10,7 @@
             "type": "dart",
             "args": [
                 "--flavor",
-				"dev",
+				"development",
 				"--target",
 				"lib/main_development.dart",
             ],
