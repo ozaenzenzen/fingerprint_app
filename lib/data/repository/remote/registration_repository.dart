@@ -5,6 +5,7 @@ import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/face_compare_process_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/get_list_registration_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/get_registration_by_id_response_model.dart';
+import 'package:fingerprint_app/data/model/remote/registration/response/ocr_api_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/ocr_process_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/verify_face_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/fingerprint_process_response_model.dart';
@@ -237,6 +238,68 @@ class RegistrationRepository {
       }
     } catch (errorMessage) {
       AppLoggerCS.debugLog("[RegistrationRepository][verifyFingerprint] errorMessage $errorMessage");
+      return null;
+    }
+  }
+
+  Future<OcrApiKtpResponseModel?> ocrApiKtp({
+    required dio.MultipartFile image,
+  }) async {
+    Map<String, dynamic> requestDataEdited = {
+      'image': image,
+    };
+
+    String path = AppApiPath.ocrApiKtp;
+    try {
+      final response = await appApiService.call(
+        path,
+        request: requestDataEdited,
+        method: MethodRequestCS.post,
+        useFormData: true,
+        header: {
+          "Authorization": "Bearer ${InitConfig.accessToken}",
+          "Content-Type": "multipart/form-data",
+        },
+      );
+      AppLoggerCS.debugLog("[ocrApiKtp] response.data: ${jsonEncode(response.data)}");
+      if (response.data != null) {
+        return OcrApiKtpResponseModel.fromJson(response.data);
+      } else {
+        return null;
+      }
+    } catch (errorMessage) {
+      AppLoggerCS.debugLog("[RegistrationRepository][ocrApiKtp] errorMessage $errorMessage");
+      return null;
+    }
+  }
+
+  Future<OcrApiKtpResponseModel?> ocrApiBpkb({
+    required dio.MultipartFile image,
+  }) async {
+    Map<String, dynamic> requestDataEdited = {
+      'file': image,
+    };
+
+    String path = AppApiPath.ocrApiBpkb;
+    try {
+      final response = await appApiService.call(
+        path,
+        request: requestDataEdited,
+        method: MethodRequestCS.post,
+        useFormData: true,
+        header: {
+          "Authorization": "Bearer ${InitConfig.accessToken}",
+          "Content-Type": "multipart/form-data",
+        },
+      );
+      AppLoggerCS.debugLog("[ocrApiBpkb] response.data: ${jsonEncode(response.data)}");
+      if (response.data != null) {
+        return OcrApiKtpResponseModel.fromJson(response.data);
+      } else {
+        return null;
+      }
+    } catch (errorMessage) {
+      AppLoggerCS.debugLog("[RegistrationRepository][ocrApiBpkb] errorMessage $errorMessage");
       return null;
     }
   }

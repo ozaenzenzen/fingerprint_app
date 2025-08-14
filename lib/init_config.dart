@@ -17,6 +17,7 @@ class InitConfig {
 
   static String accessToken = "";
   static bool testMode = false;
+  static bool useOCRApi = false;
 
   static final NoScreenshot _noScreenshot = NoScreenshot.instance;
 
@@ -28,8 +29,10 @@ class InitConfig {
   static Future<void> init({
     bool testModeValue = false,
     bool screenshotActive = true,
+    bool useOCRApiValue = false,
   }) async {
     testMode = testModeValue;
+    useOCRApi = useOCRApiValue;
 
     AppLoggerCS.useLogger = true;
     // AppLoggerCS.useFoundation = true;

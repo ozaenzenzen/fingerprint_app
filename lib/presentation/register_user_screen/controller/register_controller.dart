@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:fam_coding_supply/logic/app_logger.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/face_compare_process_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/get_list_registration_response_model.dart';
+import 'package:fingerprint_app/data/model/remote/registration/response/ocr_api_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/ocr_process_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/verify_face_response_model.dart';
 import 'package:fingerprint_app/data/model/remote/registration/response/fingerprint_process_response_model.dart';
@@ -21,6 +22,7 @@ import 'package:fingerprint_app/support/app_datatype_converter.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:http_parser/http_parser.dart';
+import 'package:saas_mlkit/saas_mlkit.dart';
 import 'package:uuid/uuid.dart';
 
 class RegisterController extends GetxController {
@@ -591,5 +593,83 @@ class RegisterController extends GetxController {
       errorTextRW.value = null;
     }
     callbackSetState?.call();
+  }
+
+  Future<void> ocrApiKtp({
+    // required File ktpImage,
+    required String ktpImage,
+    void Function(KTPData resultKtpData)? onSuccess,
+    void Function(String errorMessage)? onFailed,
+  }) async {
+    isLoading.value = true;
+    onFailedCallback(String errorMessage) {
+      isLoading.value = false;
+      onFailed?.call(errorMessage);
+    }
+
+    try {
+      File? convertToFile = await AppDatatypeConverter().convertBase64ToFile(
+        base64String: ktpImage,
+        fileName: "ktpImage",
+      );
+
+      if (convertToFile == null) {
+        onFailedCallback.call("failed at processing image #0011");
+        return;
+      }
+
+      File? outputFile = await AppDatatypeConverter().fileToFile(
+        sourceFile: convertToFile,
+        outputFileName: 'ktpImage.jpg',
+        format: 'jpeg',
+        quality: 100,
+        // resizeWidth: 200, // Resize to 200px width
+      );
+
+      if (outputFile == null) {
+        onFailedCallback.call("failed at processing image #0012");
+        return;
+      }
+
+      AppLoggerCS.debugLog("outputFile.path: ${outputFile.path}");
+      AppLoggerCS.debugLog("outputFile.path.toString().split('/').last: ${outputFile.path.toString().split('/').last}");
+      dio.MultipartFile image = await dio.MultipartFile.fromFile(
+        outputFile.path,
+        filename: outputFile.path.toString().split('/').last,
+        contentType: MediaType('image', 'jpeg'),
+      );
+      OcrApiKtpResponseModel? response = await registrationRepository.ocrApiKtp(
+        image: image,
+      );
+      if (response == null) {
+        onFailedCallback.call("response is null #0001");
+        return;
+      }
+
+      if (response.statusCode == null) {
+        onFailedCallback.call("${response.message} #0002");
+        return;
+      }
+
+      if (response.statusCode != 200) {
+        onFailedCallback.call("${response.message}: ${(response.data != null) ? (jsonEncode(response.data)) : ""} #0003");
+        return;
+      }
+
+      if (response.data == null) {
+        onFailedCallback.call("${response.message} #0004");
+        return;
+      }
+
+      if (response.statusCode == 200) {
+        isLoading.value = false;
+        KTPData mappingKtpData = response.toKtpData();
+        onSuccess?.call(mappingKtpData);
+        return;
+      }
+    } catch (e) {
+      isLoading.value = false;
+      onFailedCallback.call("${e.toString()} #0005");
+    }
   }
 }

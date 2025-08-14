@@ -45,6 +45,8 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
   TextEditingController kewarganegaraanController = TextEditingController();
   TextEditingController berlakuHinggaController = TextEditingController();
 
+  final PageController _pageController = PageController();
+
   @override
   void initState() {
     super.initState();
@@ -136,37 +138,86 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                 Flexible(
                   child: Padding(
                     padding: EdgeInsets.all(16.w),
-                    child: PageView(
-                      scrollDirection: Axis.horizontal,
+                    child: Stack(
                       children: [
-                        SizedBox(
-                          // color: Colors.red,
-                          child: (widget.data.ktpImageUrl != null)
-                              ? Image.network(
-                                  widget.data.ktpImageUrl!,
-                                  fit: BoxFit.cover,
-                                  height: 174.h,
-                                )
-                              : Image.asset(
-                                  AppAssets.imageKtp,
-                                  fit: BoxFit.cover,
-                                  height: 174.h,
-                                ),
+                        PageView(
+                          controller: _pageController,
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            if (widget.data.ktpImageUrl != null)
+                              SizedBox(
+                                // color: Colors.red,
+                                child: (widget.data.ktpImageUrl != null)
+                                    ? Image.network(
+                                        widget.data.ktpImageUrl!,
+                                        fit: BoxFit.cover,
+                                        height: 174.h,
+                                      )
+                                    : Image.asset(
+                                        AppAssets.imageKtp,
+                                        fit: BoxFit.cover,
+                                        height: 174.h,
+                                      ),
+                              ),
+                            if (widget.data.faceRecognitionImageUrl != null)
+                              SizedBox(
+                                // color: Colors.red,
+                                child: (widget.data.faceRecognitionImageUrl != null)
+                                    ? Image.network(
+                                        widget.data.faceRecognitionImageUrl!,
+                                        // fit: BoxFit.cover,
+                                        height: 174.h,
+                                      )
+                                    : Image.asset(
+                                        AppAssets.imageKtp,
+                                        fit: BoxFit.cover,
+                                        height: 174.h,
+                                      ),
+                              ),
+                          ],
                         ),
-                        SizedBox(
-                          // color: Colors.red,
-                          child: (widget.data.faceRecognitionImageUrl != null)
-                              ? Image.network(
-                                  widget.data.faceRecognitionImageUrl!,
-                                  // fit: BoxFit.cover,
-                                  height: 174.h,
-                                )
-                              : Image.asset(
-                                  AppAssets.imageKtp,
-                                  fit: BoxFit.cover,
-                                  height: 174.h,
+                        if (widget.data.ktpImageUrl != null && widget.data.faceRecognitionImageUrl != null)
+                          Container(
+                            // color: Colors.amber,
+                            alignment: Alignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    if (_pageController.hasClients) {
+                                      _pageController.previousPage(
+                                        duration: const Duration(milliseconds: 400),
+                                        curve: Curves.easeInOut,
+                                      );
+                                    }
+                                  },
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.white54,
+                                    child: Icon(
+                                      Icons.arrow_back_ios_new,
+                                    ),
+                                  ),
                                 ),
-                        ),
+                                InkWell(
+                                  onTap: () {
+                                    if (_pageController.hasClients) {
+                                      _pageController.nextPage(
+                                        duration: const Duration(milliseconds: 400),
+                                        curve: Curves.easeInOut,
+                                      );
+                                    }
+                                  },
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.white54,
+                                    child: Icon(
+                                      Icons.arrow_forward_ios,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                       ],
                     ),
                   ),

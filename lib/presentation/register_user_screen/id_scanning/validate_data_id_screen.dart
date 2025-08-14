@@ -191,8 +191,7 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
                                   ),
                                   child: Column(
                                     children: [
-                                      Text(
-                                          """Dengan melanjutkan, Anda menyetujui bahwa aplikasi ini dapat menyimpan dan mengelola data pribadi Anda sesuai dengan Kebijakan Privasi kami. Data yang disimpan meliputi, namun tidak terbatas pada:
+                                      Text("""Dengan melanjutkan, Anda menyetujui bahwa aplikasi ini dapat menyimpan dan mengelola data pribadi Anda sesuai dengan Kebijakan Privasi kami. Data yang disimpan meliputi, namun tidak terbatas pada:
 - NIK
 - Nama lengkap
 - Alamat
@@ -286,27 +285,45 @@ Dengan menekan tombol "Setuju", Anda memberikan izin kepada kami untuk menyimpan
                               );
                             } else {
                               if (addressController.text == "null" ||
+                                  addressController.text.isEmpty ||
                                   nikController.text == "null" ||
+                                  nikController.text.isEmpty ||
                                   namaController.text == "null" ||
+                                  namaController.text.isEmpty ||
                                   tempatLahirController.text == "null" ||
+                                  tempatLahirController.text.isEmpty ||
                                   tanggalLahirController.text == "null" ||
+                                  tanggalLahirController.text.isEmpty ||
                                   jenisKelaminController.text == "null" ||
-                                  // golonganDarahController.text == "null" ||
+                                  jenisKelaminController.text.isEmpty ||
+                                  golonganDarahController.text == "null" ||
+                                  golonganDarahController.text.isEmpty ||
                                   rtController.text == "null" ||
+                                  rtController.text.isEmpty ||
                                   rwController.text == "null" ||
+                                  rwController.text.isEmpty ||
                                   kelurahanDesaController.text == "null" ||
+                                  kelurahanDesaController.text.isEmpty ||
                                   kecamatanController.text == "null" ||
+                                  kecamatanController.text.isEmpty ||
                                   kotaController.text == "null" ||
+                                  kotaController.text.isEmpty ||
                                   provinsiController.text == "null" ||
+                                  provinsiController.text.isEmpty ||
                                   agamaController.text == "null" ||
+                                  agamaController.text.isEmpty ||
                                   maritalStatusController.text == "null" ||
+                                  maritalStatusController.text.isEmpty ||
                                   pekerjaanController.text == "null" ||
+                                  pekerjaanController.text.isEmpty ||
                                   kewarganegaraanController.text == "null" ||
-                                  berlakuHinggaController.text == "null") {
+                                  kewarganegaraanController.text.isEmpty ||
+                                  berlakuHinggaController.text == "null" ||
+                                  berlakuHinggaController.text.isEmpty) {
                                 AppDialogActionCS.showFailedPopup(
                                   context: context,
                                   title: "Terjadi kesalahan",
-                                  description: "Masih terdapat field dengan nilai null",
+                                  description: "Masih terdapat field dengan nilai null or empty",
                                   mainButtonAction: () {
                                     Get.back();
                                   },

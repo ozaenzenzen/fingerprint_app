@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:camera/camera.dart';
 import 'package:fam_coding_supply/fam_coding_supply.dart';
+import 'package:fingerprint_app/init_config.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/controller/register_controller.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/id_scanning/result_camera_scan_id_screen.dart';
@@ -39,6 +40,8 @@ class _CameraScanIdScreenState extends State<CameraScanIdScreen> {
 
   CameraOcrDataModel dataHolder = CameraOcrDataModel();
   // Map<String, dynamic> dataHolder = {};
+
+  final RegisterController registerController = Get.find<RegisterController>();
 
   @override
   Widget build(BuildContext context) {
@@ -78,14 +81,6 @@ class _CameraScanIdScreenState extends State<CameraScanIdScreen> {
                       ),
                       child: Center(
                         child: Container(
-                          // margin: const EdgeInsets.all(6.81),
-                          // decoration: BoxDecoration(
-                          //   shape: BoxShape.circle,
-                          //   // border: Border.all(
-                          //   //   color: const Color(0xFF6F6F6F),
-                          //   //   width: 2,
-                          //   // ),
-                          // ),
                           child: Image.asset(
                             AppAssets.iconCamera1,
                             height: 32.h,
@@ -99,50 +94,89 @@ class _CameraScanIdScreenState extends State<CameraScanIdScreen> {
                   onControllerCreated: (controller) {
                     cameraController = controller;
                   },
-                  onTakePict: (String base64Image) {
-                    // debugPrint('data base64Image $base64Image');
+                  onTakePict: (String base64Image) async {
                     widget.callbackImageCard?.call(base64Image);
-
-                    // Map<String, dynamic> onTakePictMap = {'onTakePict': base64Image};
-                    // dataHolder.addAll(onTakePictMap);
                     dataHolder.imageCard = base64Image;
+                    if (InitConfig.useOCRApi) {
+                      if (dataHolder.imageCard != null) {
+                        setState(() {
+                          isLoadingScreen = true;
+                        });
+                        await registerController.ocrApiKtp(
+                          ktpImage: dataHolder.imageCard!,
+                          onSuccess: (KTPData resultKtpData) {
+                            setState(() {
+                              isLoadingScreen = false;
+                            });
+                            dataHolder.ktpData = resultKtpData;
+                            Get.to(
+                              () => ResultCameraScanIdScreen(
+                                dataOCR: dataHolder,
+                                retryCaptureCallback: () {
+                                  cameraController?.resumePreview();
+                                  dataHolder = CameraOcrDataModel();
+                                },
+                              ),
+                              binding: RegisterBinding(),
+                            );
+                          },
+                          onFailed: (errorMessage) {
+                            setState(() {
+                              isLoadingScreen = false;
+                            });
+                            AppDialogActionCS.showFailedPopup(
+                              context: context,
+                              title: "Terjadi kesalahan",
+                              description: errorMessage,
+                              mainButtonAction: () {
+                                Get.back();
+                              },
+                              buttonTitle: "Kembali",
+                              mainButtonColor: const Color(0xff1183FF),
+                            );
+                          },
+                        );
+                      } else {
+                        setState(() {
+                          isLoadingScreen = false;
+                        });
+                        AppDialogActionCS.showFailedPopup(
+                          context: context,
+                          title: "Terjadi kesalahan",
+                          description: "Suport data is null",
+                          mainButtonAction: () {
+                            Get.back();
+                          },
+                          buttonTitle: "Kembali",
+                          mainButtonColor: const Color(0xff1183FF),
+                        );
+                      }
+                    }
                   },
                   croppedFaceCard: (String? base64Image) {
                     widget.callbackImage?.call(base64Image);
-
-                    // Map<String, dynamic> croppedFaceCardMap = {'croppedFaceCard': base64Image};
-                    // dataHolder.addAll(croppedFaceCardMap);
                     dataHolder.imageFromCard = base64Image;
                   },
                   onTextDetected: (RecognizedText recognizedText) async {
-                    KTPData? handler = await compute(OCRHandler().recognizedText, recognizedText);
-                    debugPrint('data recognizedText ${handler?.toJson()}');
-                    // KtpocrData? data = await OCRHandlerV2.getKtpData(recognizedText);
-                    // debugPrint('data KtpocrData ${data?.toJson()}');
-                    widget.callback?.call(handler!.toJson().toString());
-                    // Navigator.pop(context);
-                    Get.to(
-                      () => ResultCameraScanIdScreen(
-                        dataOCR: dataHolder,
-                        retryCaptureCallback: () {
-                          cameraController?.resumePreview();
-                          dataHolder = CameraOcrDataModel();
-                        },
-                      ),
-                      binding: RegisterBinding(),
-                    );                
-
-                    // widget.callback?.call(recognizedText.text);
-                    // // debugPrint('data recognizedText ${recognizedText.text}');
-                    // Navigator.pop(context);
+                    if (!InitConfig.useOCRApi) {
+                      KTPData? handler = await compute(OCRHandler().recognizedText, recognizedText);
+                      debugPrint('data recognizedText ${handler?.toJson()}');
+                      widget.callback?.call(handler!.toJson().toString());
+                      Get.to(
+                        () => ResultCameraScanIdScreen(
+                          dataOCR: dataHolder,
+                          retryCaptureCallback: () {
+                            cameraController?.resumePreview();
+                            dataHolder = CameraOcrDataModel();
+                          },
+                        ),
+                        binding: RegisterBinding(),
+                      );
+                    }
                   },
                   onKTPDetected: (KTPData ktpData) {
                     debugPrint('data ktpData ${jsonEncode(ktpData.toJson())}');
-
-                    // Map<String, dynamic> ktpDataMap = {'ktpData': ktpData.toJson()};
-                    // dataHolder.addAll(ktpDataMap);
                     dataHolder.ktpData = ktpData;
-
                     widget.callbackKTPMapping?.call(ktpData.toJson().toString());
                   },
                   onSIMDetected: (SIMData simData) {
@@ -153,10 +187,16 @@ class _CameraScanIdScreenState extends State<CameraScanIdScreen> {
                     debugPrint('data passportData ${passportData.toJson()}');
                   },
                   onLoading: (bool isLoading) {
-                    debugPrint('isLoading now $isLoading');
-                    setState(() {
-                      isLoadingScreen = isLoading;
-                    });
+                    if (InitConfig.useOCRApi) {
+                      setState(() {
+                        isLoadingScreen = true;
+                      });
+                    } else {
+                      debugPrint('isLoading now $isLoading');
+                      setState(() {
+                        isLoadingScreen = isLoading;
+                      });
+                    }
                   },
                 ),
                 if (isLoadingScreen)

@@ -7,6 +7,7 @@ Future<void> main() async {
     testModeValue: false,
     // testModeValue: true,
     screenshotActive: true,
+    // useOCRApiValue: true,
   );
   runApp(const MyApp());
 }

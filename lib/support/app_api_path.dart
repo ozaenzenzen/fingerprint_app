@@ -11,4 +11,7 @@ class AppApiPath {
   static const String fingerprintProcess = "/api/v1.0/registrations/fingerprint";
   static const String verifyFace = "/api/v1.0/registrations"; // /40e3eae2-f555-49ab-b8e1-4a2249ffe923/verify-face
   static const String verifyFingeprint = "/api/v1.0/registrations"; // /40e3eae2-f555-49ab-b8e1-4a2249ffe923/verify-fingerprint
+
+  static const String ocrApiKtp = "/api/v1.0/ocr-ktp";
+  static const String ocrApiBpkb = "/api/v1.0/ocr-bpkb";
 }
