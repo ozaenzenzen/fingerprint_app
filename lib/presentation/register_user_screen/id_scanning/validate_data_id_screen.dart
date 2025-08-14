@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:fam_coding_supply/fam_coding_supply.dart';
 import 'package:fam_coding_supply/logic/app_bottomsheet_utils.dart';
 import 'package:fingerprint_app/domain/ocr_data_holder_model.dart';
+import 'package:fingerprint_app/init_config.dart';
 import 'package:fingerprint_app/presentation/home_screeen/binding/home_binding.dart';
 import 'package:fingerprint_app/presentation/home_screeen/home_screen.dart';
 import 'package:fingerprint_app/presentation/register_user_screen/binding/register_binding.dart';
@@ -60,7 +61,12 @@ class _ValidateDataIdScreenState extends State<ValidateDataIdScreen> {
     namaController.text = "${widget.dataOCR.ktpData?.name}";
     // ttlController.text = "${widget.dataOCR.ktpData?.birthDate}, ${widget.dataOCR.ktpData?.birthPlace}";
     tempatLahirController.text = "${widget.dataOCR.ktpData?.birthPlace}";
-    tanggalLahirController.text = widget.dataOCR.ktpData!.birthDate != null ? "${formatterDob.parse(widget.dataOCR.ktpData!.birthDate!)}" : "";
+    if (InitConfig.useOCRApi) {
+      tanggalLahirController.text = widget.dataOCR.ktpData!.birthDate != null ? formatterDob.format(formatterDob.parse(widget.dataOCR.ktpData!.birthDate!)) : "";
+    } else {
+      tanggalLahirController.text = widget.dataOCR.ktpData!.birthDate != null ? "${formatterDob.parse(widget.dataOCR.ktpData!.birthDate!)}" : "";
+    }
+
     jenisKelaminController.text = (widget.dataOCR.ktpData?.gender?.toLowerCase() == "perempuan") ? "Female" : "Male";
     golonganDarahController.text = "${widget.dataOCR.ktpData?.bloodType}";
     // rtRwController.text = "${widget.dataOCR.ktpData?.rt}/${widget.dataOCR.ktpData?.rw}";
