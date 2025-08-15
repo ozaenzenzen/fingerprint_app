@@ -224,6 +224,15 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
                     ),
                   ),
                 ),
+                SizedBox(height: 12.h),
+                Text(
+                  "Similarity Score: ${NumberFormat.decimalPatternDigits().format(widget.data.faceRecognitionScore)}%",
+                  style: GoogleFonts.lato(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
                 SizedBox(height: 24.h),
                 SizedBox(
                   height: 40.h,
